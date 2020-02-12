@@ -13,24 +13,27 @@
 #' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @return Nothing returned. Output written to file.
-#' @import utils reticulate
+#' @import utils reticulate rjson
 #' @export
 install_CondaSysReqs <- function(pkg,channels=NULL,pathToMiniConda=NULL){
   # pathToMiniConda <- "~/Desktop/testConda"
 
-  if(is.null(pathToMiniConda)) pathToMiniConda <- reticulate:::miniconda_path()
+  if(is.null(pathToMiniConda)) pathToMiniConda <- reticulate::miniconda_path()
 
   packageDesciptions <- utils::packageDescription(pkg,fields = "SystemRequirements")
-  CondaSysReq <- gsub("CondaSysReq:","",packageDesciptions[grepl("^CondaSysReq",packageDesciptions)])
-  rjson:::fromJSON(json_str=CondaSysReq)
+  CondaSysReqJson <- gsub("CondaSysReq:","",packageDesciptions[grepl("^CondaSysReq",packageDesciptions)])
+  CondaSysReq <- rjson::fromJSON(json_str=CondaSysReqJson)
   pathToCondaInstall <- pathToMiniConda
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
 
   defaultChannels <- c("bioconda","defaults","conda-forge")
-  channels <- unique(c(channels,defaultChannels))
+  channels <- unique(c(CondaSysReq$main$channels,defaultChannels))
   environment <- paste0(pkg,"_",utils::packageVersion(pkg))
   reticulate::install_miniconda(pathToCondaInstall)
   reticulate::conda_create(envname=environment,conda=pathToConda)
+  reticulate::conda_install(envname = environment,packages = CondaSysReq$main$packages,
+                            conda=pathToConda,
+                            channel = channels)
   return(list(pathToConda=pathToConda,environment=environment))
 }
 
