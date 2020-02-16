@@ -12,6 +12,7 @@
 #' @param pkg Package to install Conda System Requirements from.
 #' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
 #' @param pathToMiniConda NULL Path to miniconda installation
+#' @param updateEnv Update existing package's conda environment if already installed.
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @export
