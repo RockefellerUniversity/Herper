@@ -1,7 +1,7 @@
 Package: CondaSysReqs
 Type: Package
 Title: Install Conda packages from System Requirements section of package Description file
-Version: 0.9.0
+Version: 0.9.1
 Author: Matt Paul and Thomas Carroll
 Maintainer: BRC <brcru@gmail.com>
 Description: Install Conda packages from System Requirements section of package Description file.

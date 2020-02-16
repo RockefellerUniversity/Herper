@@ -15,7 +15,7 @@
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @export
-install_CondaSysReqs <- function(pkg,channels=NULL,pathToMiniConda=NULL){
+install_CondaSysReqs <- function(pkg,channels=NULL,pathToMiniConda=NULL,updateEnv=FALSE){
   # pathToMiniConda <- "~/Desktop/testConda"
 
   if(is.null(pathToMiniConda)) pathToMiniConda <- reticulate::miniconda_path()
@@ -26,14 +26,22 @@ install_CondaSysReqs <- function(pkg,channels=NULL,pathToMiniConda=NULL){
   pathToCondaInstall <- pathToMiniConda
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
 
+  
   defaultChannels <- c("bioconda","defaults","conda-forge")
   channels <- unique(c(CondaSysReq$main$channels,defaultChannels))
   environment <- paste0(pkg,"_",utils::packageVersion(pkg))
-  reticulate::install_miniconda(pathToCondaInstall)
-  reticulate::conda_create(envname=environment,conda=pathToConda)
-  reticulate::conda_install(envname = environment,packages = CondaSysReq$main$packages,
-                            conda=pathToConda,
-                            channel = channels)
+  pathToMiniCondaPkgEnv <- file.path(pathToMiniConda,"envs",environment)
+  
+  miniCondaPathExists <- reticulate:::miniconda_exists(pathToMiniConda)
+  miniCondaPkgEnvPathExists <- dir.exists(pathToMiniCondaPkgEnv)
+  
+  if(!miniCondaPathExists) reticulate::install_miniconda(pathToCondaInstall)
+  if(!miniCondaPkgEnvPathExists) reticulate::conda_create(envname=environment,conda=pathToConda)
+  if(!miniCondaPkgEnvPathExists | (miniCondaPkgEnvPathExists & updateEnv)){
+    reticulate::conda_install(envname = environment,packages = CondaSysReq$main$packages,
+                              conda=pathToConda,
+                              channel = channels)
+  }
   return(list(pathToConda=pathToConda,environment=environment))
 }
 
