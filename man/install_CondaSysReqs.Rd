@@ -4,7 +4,12 @@
 \alias{install_CondaSysReqs}
 \title{Install Conda requirements listed in the System Requirement field of description}
 \usage{
-install_CondaSysReqs(pkg, channels = NULL, pathToMiniConda = NULL)
+install_CondaSysReqs(
+  pkg,
+  channels = NULL,
+  pathToMiniConda = NULL,
+  updateEnv = FALSE
+)
 }
 \arguments{
 \item{pkg}{Package to install Conda System Requirements from.}
@@ -12,6 +17,8 @@ install_CondaSysReqs(pkg, channels = NULL, pathToMiniConda = NULL)
 \item{channels}{Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)}
 
 \item{pathToMiniConda}{NULL Path to miniconda installation}
+
+\item{updateEnv}{Update existing package's conda environment if already installed.}
 }
 \value{
 Nothing returned. Output written to file.

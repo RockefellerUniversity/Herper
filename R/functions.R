@@ -1,3 +1,16 @@
+miniconda_exists <- function (path = miniconda_path()) 
+{
+  conda <- miniconda_conda(path)
+  file.exists(conda)
+}
+
+miniconda_conda <- function (path = miniconda_path()) 
+{
+  exe <- if (is_windows()) 
+    "condabin/conda.bat"
+  else "bin/conda"
+  file.path(path, exe)
+}
 
 #' Install Conda requirements listed in the System Requirement field of description
 #'
@@ -33,7 +46,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,pathToMiniConda=NULL,updateEn
   environment <- paste0(pkg,"_",utils::packageVersion(pkg))
   pathToMiniCondaPkgEnv <- file.path(pathToMiniConda,"envs",environment)
   
-  miniCondaPathExists <- reticulate:::miniconda_exists(pathToMiniConda)
+  miniCondaPathExists <- miniconda_exists(pathToMiniConda)
   miniCondaPkgEnvPathExists <- dir.exists(pathToMiniCondaPkgEnv)
   
   if(!miniCondaPathExists) reticulate::install_miniconda(pathToCondaInstall)

@@ -7,7 +7,7 @@ Maintainer: BRC <brcru@gmail.com>
 Description: Install Conda packages from System Requirements section of package Description file.
 Depends: reticulate
 Imports: utils, rjson
-License:  GPL-3
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
