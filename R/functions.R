@@ -1,3 +1,7 @@
+is_windows <- function () {
+  identical(.Platform$OS.type, "windows")
+}
+
 miniconda_exists <- function (path = miniconda_path()) 
 {
   conda <- miniconda_conda(path)
