@@ -14,4 +14,4 @@ jobs:
     steps:
       - name: echo
         run: |
-          sudo docker –-version
+          sudo docker --version
