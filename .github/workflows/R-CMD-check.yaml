@@ -9,10 +9,16 @@ on:
 name: R-CMD-check
 
 jobs:
-  my_job:
+  R-CMD-check:
     runs-on: [self-hosted]
     steps:
-      - name: echo
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@master
+      - name: Install dependencies
         run: |
-          sudo docker --version
-          sudo docker pull bioconductor/bioconductor_docker:devel
+          install.packages(c("remotes", "rcmdcheck"))
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
+      - name: Check
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+        shell: Rscript {0}
