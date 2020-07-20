@@ -85,6 +85,7 @@ jobs:
           BiocManager::install("devtools")
           BiocManager::install("pkgdown")
           BiocManager::install("BiocStyle")
+          BiocManager::install("git2r")
         shell: Rscript {0}
 
 
@@ -101,6 +102,8 @@ jobs:
           rmarkdown::render("README.Rmd")
         shell: Rscript {0}
       - name: Deploy package
-        run: pkgdown::deploy_to_branch(new_process = FALSE)
+        run: |
+          git2r::config(user.name = "ThomasCarroll",user.email = "tc.infomatics@gmail.com")
+          pkgdown::deploy_to_branch(new_process = FALSE)
         shell: Rscript {0}
 
