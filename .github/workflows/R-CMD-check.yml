@@ -84,6 +84,7 @@ jobs:
           BiocManager::install("BiocCheck")
           BiocManager::install("devtools")
           BiocManager::install("pkgdown")
+          BiocManager::install("BiocStyle")
         shell: Rscript {0}
 
 
