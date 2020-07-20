@@ -60,7 +60,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,pathToMiniConda=NULL,updateEn
                               conda=pathToConda,
                               channel = channels)
   }
-  pathToEnvBin <- dirname(dirname(pathToConda),"envs",environment,"bin")
+  pathToEnvBin <- file.path(dirname(dirname(pathToConda)),"envs",environment,"bin")
   return(list(pathToConda=pathToConda,environment=environment,pathToEnvBin=pathToEnvBin))
 }
 
