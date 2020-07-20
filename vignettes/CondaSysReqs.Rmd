@@ -66,12 +66,13 @@ Although we will not activate the environment, many tools can be used straight f
 ```{r}
 pathToMacs <- file.path(pathToConda$pathToEnvBin,"macs2")
 pathToMacs
-system(paste(pathToMacs,"-h"))
+Macs_help <- system(paste(pathToMacs,"-h"),intern = TRUE)
+Macs_help
 
 pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
 pathToSalmon
-system(paste(pathToSalmon,"-h"))
-
+Salmon_help <- system(paste(pathToSalmon,"-h"),intern = TRUE)
+Salmon_help
 ```
 
 # Acknowledgements
