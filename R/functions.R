@@ -60,7 +60,8 @@ install_CondaSysReqs <- function(pkg,channels=NULL,pathToMiniConda=NULL,updateEn
                               conda=pathToConda,
                               channel = channels)
   }
-  return(list(pathToConda=pathToConda,environment=environment))
+  pathToEnvBin <- file.path(dirname(dirname(pathToConda)),"envs",environment,"bin")
+  return(list(pathToConda=pathToConda,environment=environment,pathToEnvBin=pathToEnvBin))
 }
 
 
@@ -107,7 +108,8 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
                               conda=pathToConda,
                               channel = channels)
   }
-  return(list(pathToConda=pathToConda,environment=environment))
+  pathToEnvBin <- file.path(dirname(dirname(pathToConda)),"envs",environment,"bin")
+  return(list(pathToConda=pathToConda,environment=environment,pathToEnvBin=pathToEnvBin))
 }
 
 
