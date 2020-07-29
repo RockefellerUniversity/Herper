@@ -150,6 +150,34 @@ export_CondaEnv <- function(env_name,yml_export=NULL,pathToMiniConda=NULL,depend
 }
 
 
-
+#' Import Conda environment.
+#'
+#' IMport Conda environment
+#'
+#'
+#' @name import_CondaEnv
+#' @rdname import_CondaEnv
+#'
+#'
+#' @author Matt Paul
+#' @param yml_import conda environment yml file
+#' @param pathToMiniConda NULL Path to miniconda installation
+#' @return Nothing returned. Output written to file.
+#' @import reticulate
+#' @export
+import_CondaEnv <- function(yml_import,pathToMiniConda=NULL){
+  # pathToMiniConda <- "~/Desktop/testConda"
+  
+  if(is.null(pathToMiniConda)) pathToMiniConda <- reticulate::miniconda_path()
+  
+  pathToCondaInstall <- pathToMiniConda
+  pathToConda <- file.path(pathToCondaInstall,"bin","conda")
+  
+  #need to add check for existence of yml
+  #need to check there is no conflicting yml name
+  
+  system(paste(pathToConda,"env create -f", yml_import))
+  
+}
 
  
