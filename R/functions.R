@@ -111,3 +111,36 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
 }
 
 
+#' Export Conda environment.
+#'
+#' Export Conda environment
+#'
+#'
+#' @name export_CondaEnv
+#' @rdname export_CondaEnv
+#'
+#'
+#' @author Matt Paul
+#' @param env_name Name of environment you want to save
+#' @param yml_export Destination for exported environment yml file
+#' @param pathToMiniConda NULL Path to miniconda installation
+#' @return Nothing returned. Output written to file.
+#' @import reticulate
+#' @export
+export_CondaEnv <- function(env_name,yml_export=NULL,pathToMiniConda=NULL){
+  # pathToMiniConda <- "~/Desktop/testConda"
+  
+  if(is.null(pathToMiniConda)) pathToMiniConda <- reticulate::miniconda_path()
+  
+  pathToCondaInstall <- pathToMiniConda
+  pathToConda <- file.path(pathToCondaInstall,"bin","conda")
+  
+  if(is.null(yml_export)){
+    export_path<-paste0(env_name, ".yml")
+  }else{export_path<-yml_export}
+  
+  #need to add check for existence
+  
+  system(paste(pathToConda,"env export -n", env_name, ">", export_path))
+}
+ 
