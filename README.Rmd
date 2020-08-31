@@ -1,5 +1,5 @@
 ---
-title: "Intro to CondaSysReqs"
+title: "Intro to Herper"
 author: "BRC"
 date: "7/20/2020"
 output: 
@@ -11,11 +11,12 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Introduction
-
-The CondaSysReqs package offers a simple toolset to install and manage Conda environments from R using the the **install_CondaTools**  and **install_CondaSysReqs** functions.
-
-# Installation
+#### The Herper package is a simple toolset to install and manage Conda packages and environments from R.
+ 
+ ______
+ 
+ 
+## Installation
 
 Use the `BiocManager` package to download and install the package from our Github repository:
 
@@ -32,33 +33,60 @@ library(CondaSysReqs)
 ```
 
 
-# Simple install Conda Environment from R console using **install_CondaTools**. 
+## Simple install of Conda packages from R console using **install_CondaTools**. 
 
-The  **install_CondaTools()** function allows the user to specify required Conda software and the desired environment to install into.
+The **install_CondaTools()** function allows the user to specify required Conda software and the desired environment to install into.
 
-Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location).
+Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location). If you already have Miniconda installed you specifythe path with the *pathToMiniConda* parameter.
 
 ```{r}
-install_CondaTools("salmon","myCondaToolSet")
+install_CondaTools("salmon", "myCondaToolSet")
 ```
 
 We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
 
 ```{r}
-pathToConda <- install_CondaTools("macs2","myCondaToolSet",updateEnv = TRUE)
+pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE)
 pathToConda
 ```
 
-Although we will not activate the environment, many tools can be used straight from the Conda environment's bin directory.
+## Export of Conda environments to YAML files using **export_CondaEnv**.
+
+The **export_CondaEnv** function allows the user to export the environment information to a *.yml* file. These environment YAML files contain all essential information about the package, allowing for reproducibilty and easy distribution of Conda system configuration for collaboration. 
 
 ```{r}
-pathToMacs <- file.path(pathToConda$pathToEnvBin,"macs2")
+yml_name <- paste0("myCondaToolSet_", format(Sys.Date(), "%Y%m%d"),".yml")
+export_CondaEnv("myCondaToolSet", yml_name)
+```
+
+The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the *depends* paramter. 
+```{r}
+yml_name <- paste0("myCondaToolSet_nodeps_", format(Sys.Date(), "%Y%m%d"),".yml")
+export_CondaEnv("myCondaToolSet", yml_name, depends=FALSE)
+```
+
+## Import of Conda environments from YAML files using **import_CondaEnv**.
+
+The **import_CondaEnv** function allows the user to create a new conda environment from a *.yml* file. These can be previously exported from conda, **export_CondaEnv** or manually created. 
+
+Users can simply provide a path to the YAML file for import. They can also add an environment name, but by default the name will be taken from the YAML. 
+
+```{r}
+import_CondaEnv(yml_name, "myCondaToolSet2")
+```
+
+## Running Conda packages from R console.
+
+Although we will not activate the environment, many tools can be used straight from the Conda environment's bin directory. When the result of **install_CondaTools()** is assigned to a variable, it will contain the path to the bin directory for that environment. Users can then run these tools with **System()** commands
+
+```{r}
+pathToMacs <- file.path(pathToConda$pathToEnvBin, "macs2")
 pathToMacs
-Macs_help <- system(paste(pathToMacs,"-h"),intern = TRUE)
+Macs_help <- system(paste(pathToMacs,"-h"), intern = TRUE)
 Macs_help
 
-pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
+pathToSalmon <- file.path(pathToConda$pathToEnvBin, "salmon")
 pathToSalmon
-Salmon_help <- system(paste(pathToSalmon,"-h"),intern = TRUE)
+Salmon_help <- system(paste(pathToSalmon,"-h"), intern = TRUE)
 Salmon_help
 ```
