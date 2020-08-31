@@ -154,7 +154,7 @@ export_CondaEnv <- function(env_name,yml_export=NULL,pathToMiniConda=NULL,depend
 
 #' Import Conda environment.
 #'
-#' IMport Conda environment
+#' Import Conda environment
 #'
 #'
 #' @name import_CondaEnv
@@ -167,10 +167,18 @@ export_CondaEnv <- function(env_name,yml_export=NULL,pathToMiniConda=NULL,depend
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
 #' @export
-import_CondaEnv <- function(yml_import,pathToMiniConda=NULL){
+import_CondaEnv <- function(yml_import, name=NULL, pathToMiniConda=NULL){
   # pathToMiniConda <- "~/Desktop/testConda"
   
   if(is.null(pathToMiniConda)) pathToMiniConda <- reticulate::miniconda_path()
+  
+  if(!is.null(name)){
+    file.copy(yml_import, "tmp.yml")
+    tmp <- readLines("tmp.yml")
+    tmp[1]<-paste0("name: ", name)
+    writeLines(tmp,"tmp.yml")
+    yml_import <- "tmp.yml"
+  }
   
   pathToCondaInstall <- pathToMiniConda
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
@@ -179,7 +187,10 @@ import_CondaEnv <- function(yml_import,pathToMiniConda=NULL){
   #need to check there is no conflicting yml name
   
   system(paste(pathToConda,"env create -f", yml_import))
-  
+ 
+  if(!is.null(name)){
+   unlink("tmp.yml") 
+  }
 }
 
  
