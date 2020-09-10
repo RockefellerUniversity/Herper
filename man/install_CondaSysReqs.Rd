@@ -10,7 +10,8 @@ install_CondaSysReqs(
   env = NULL,
   pathToMiniConda = NULL,
   updateEnv = FALSE,
-  SysReqsAsJSON = TRUE
+  SysReqsAsJSON = TRUE,
+  SysReqsSep = ","
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ install_CondaSysReqs(
 \item{updateEnv}{Update existing package's conda environment if already installed.}
 
 \item{SysReqsAsJSON}{Parse the SystemRequirements in JSON format (see Details). Default is TRUE.}
+
+\item{SysReqsSep}{Separator used in SystemRequirement field.}
 }
 \value{
 Nothing returned. Output written to file.
