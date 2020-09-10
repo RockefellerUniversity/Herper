@@ -1,7 +1,10 @@
 ---
 title: "Intro to Herper"
-author: "BRC"
-date: "7/20/2020"
+author: 
+- Matt Paul
+- Bioinformatics Resource Center - Rockefeller University
+- "mpaul@rockefeller.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   html_document:
     theme: cosmo
@@ -11,7 +14,9 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#### The Herper package is a simple toolset to install and manage Conda packages and environments from R.
+---
+
+### The Herper package is a simple toolset to install and manage Conda packages and environments from R.
  
  ______
  
@@ -32,7 +37,7 @@ Once installed, load it into your R session:
 library(CondaSysReqs)
 ```
 
-
+---
 ## Simple install of Conda packages from R console using **install_CondaTools**. 
 
 The **install_CondaTools()** function allows the user to specify required Conda software and the desired environment to install into.
@@ -50,6 +55,7 @@ pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE)
 pathToConda
 ```
 
+---
 ## Export of Conda environments to YAML files using **export_CondaEnv**.
 
 The **export_CondaEnv** function allows the user to export the environment information to a *.yml* file. These environment YAML files contain all essential information about the package, allowing for reproducibilty and easy distribution of Conda system configuration for collaboration. 
@@ -65,9 +71,10 @@ yml_name <- paste0("myCondaToolSet_nodeps_", format(Sys.Date(), "%Y%m%d"),".yml"
 export_CondaEnv("myCondaToolSet", yml_name, depends=FALSE)
 ```
 
+---
 ## Import of Conda environments from YAML files using **import_CondaEnv**.
 
-The **import_CondaEnv** function allows the user to create a new conda environment from a *.yml* file. These can be previously exported from conda, **export_CondaEnv** or manually created. 
+The **import_CondaEnv** function allows the user to create a new conda environment from a *.yml* file. These can be previously exported from conda, **export_CondaEnv**, renv or manually created. 
 
 Users can simply provide a path to the YAML file for import. They can also add an environment name, but by default the name will be taken from the YAML. 
 
@@ -75,6 +82,7 @@ Users can simply provide a path to the YAML file for import. They can also add a
 import_CondaEnv(yml_name, "myCondaToolSet2")
 ```
 
+---
 ## Running Conda packages from R console.
 
 Although we will not activate the environment, many tools can be used straight from the Conda environment's bin directory. When the result of **install_CondaTools()** is assigned to a variable, it will contain the path to the bin directory for that environment. Users can then run these tools with **System()** commands
