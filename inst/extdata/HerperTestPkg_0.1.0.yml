@@ -1,0 +1,43 @@
+name: HerperTestPkg_0.1.0
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - bzip2=1.0.8=h1de35cc_0
+  - ca-certificates=2020.7.22=0
+  - certifi=2020.6.20=py37_0
+  - gsl=2.6=ha2d443c_0
+  - htslib=1.10.2=h422799e_1
+  - krb5=1.18.2=h75d18d8_0
+  - libblas=3.8.0=17_openblas
+  - libcblas=3.8.0=17_openblas
+  - libcurl=7.71.1=h8a08a2b_1
+  - libcxx=10.0.0=1
+  - libdeflate=1.6=h0b31af3_0
+  - libedit=3.1.20191231=h1de35cc_1
+  - libffi=3.3=hb1e8313_2
+  - libgfortran=4.0.0=3
+  - libgfortran4=7.5.0=h1565451_3
+  - liblapack=3.8.0=17_openblas
+  - libopenblas=0.3.10=openmp_h63d9170_4
+  - libssh2=1.9.0=ha12b0ac_1
+  - llvm-openmp=10.0.1=h28b9765_0
+  - ncurses=6.2=h0a44026_1
+  - numpy=1.19.1=py37h1efc2f6_2
+  - openssl=1.1.1g=h1de35cc_0
+  - pip=20.2.2=py37_0
+  - python=3.7.9=h26836e1_0
+  - python_abi=3.7=1_cp37m
+  - readline=8.0=h1de35cc_0
+  - rmats=4.1.0=py37h45d32e6_4
+  - samtools=1.10=hf7e01e7_3
+  - setuptools=49.6.0=py37_0
+  - sqlite=3.33.0=hffcf06c_0
+  - star=2.7.5c=0
+  - tk=8.6.10=hb0a8c7a_0
+  - wheel=0.35.1=py_0
+  - xz=5.2.5=h1de35cc_0
+  - zlib=1.2.11=h1de35cc_3
+prefix: /Users/thomascarroll/Library/r-miniconda/envs/HerperTestPkg_0.1.0
+

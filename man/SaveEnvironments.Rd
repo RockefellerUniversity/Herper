@@ -2,6 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{export_CondaEnv}
 \alias{export_CondaEnv}
+\alias{import_CondaEnv}
 \title{Export Conda environment.}
 \usage{
 export_CondaEnv(
@@ -10,6 +11,8 @@ export_CondaEnv(
   pathToMiniConda = NULL,
   depends = TRUE
 )
+
+import_CondaEnv(yml_import, name = NULL, pathToMiniConda = NULL)
 }
 \arguments{
 \item{env_name}{Name of environment you want to save}
@@ -19,13 +22,29 @@ export_CondaEnv(
 \item{pathToMiniConda}{NULL Path to miniconda installation}
 
 \item{depends}{if FALSE will only include packages explicitly installed and not dependencies}
+
+\item{yml_import}{conda environment yml file}
+
+\item{name}{Name of the environment to create.}
 }
 \value{
+Nothing returned. Output written to file.
+
 Nothing returned. Output written to file.
 }
 \description{
 Export Conda environment
+
+Import Conda environment
+}
+\examples{
+testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
+condaDir <- tempdir()
+import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
+export_CondaEnv("HerperTest",yml_export=tempfile(),pathToMiniConda=condaDir)
 }
 \author{
+Matt Paul
+
 Matt Paul
 }

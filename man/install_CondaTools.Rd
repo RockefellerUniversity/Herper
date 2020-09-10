@@ -15,7 +15,7 @@ install_CondaTools(
 \arguments{
 \item{tools}{software to install using conda.}
 
-\item{env}{Conda environment to install tools into.}
+\item{env}{Name of Conda environment to install tools into.}
 
 \item{channels}{Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)}
 
@@ -28,6 +28,10 @@ Nothing returned. Output written to file.
 }
 \description{
 Install Conda requirements
+}
+\examples{
+condaPaths <- install_CondaTools("salmon","salmon",pathToMiniConda=tempdir())
+system2(file.path(condaPaths$pathToEnvBin,"salmon"),args = "--help")
 }
 \author{
 Thomas Carroll

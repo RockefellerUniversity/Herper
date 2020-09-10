@@ -7,8 +7,10 @@
 install_CondaSysReqs(
   pkg,
   channels = NULL,
+  env = NULL,
   pathToMiniConda = NULL,
-  updateEnv = FALSE
+  updateEnv = FALSE,
+  SysReqsAsJSON = TRUE
 )
 }
 \arguments{
@@ -16,15 +18,25 @@ install_CondaSysReqs(
 
 \item{channels}{Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)}
 
+\item{env}{Name of Conda environment to install tools into.}
+
 \item{pathToMiniConda}{NULL Path to miniconda installation}
 
 \item{updateEnv}{Update existing package's conda environment if already installed.}
+
+\item{SysReqsAsJSON}{Parse the SystemRequirements in JSON format (see Details). Default is TRUE.}
 }
 \value{
 Nothing returned. Output written to file.
 }
 \description{
 Install Conda requirements
+}
+\examples{
+testPkg <- system.file("extdata/HerperTestPkg",package="CondaSysReqs")
+install.packages(testPkg,type = "source",repos = NULL)
+condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=tempdir(),SysReqsAsJSON=FALSE)
+system2(file.path(condaPaths$pathToEnvBin,"samtools"),args = "--help")
 }
 \author{
 Thomas Carroll

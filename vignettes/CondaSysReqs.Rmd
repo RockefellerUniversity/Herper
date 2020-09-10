@@ -1,10 +1,8 @@
-
 ---
 title: "Installing and managing Conda environments with the CondaSysReqs package"
 author: "Tom Carroll, Doug Barrows and Matt Paul"
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
 package: CondaSysReqs
-
 output:
   BiocStyle::html_document:
      number_sections: yes
