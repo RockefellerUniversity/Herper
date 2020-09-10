@@ -5,13 +5,21 @@ author:
 - Bioinformatics Resource Center - Rockefeller University
 - "mpaul@rockefeller.edu"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: 
-  html_document:
-    theme: cosmo
+  BiocStyle::html_document:
+     number_sections: yes
+     toc: true
+vignette: >
+  %\VignetteIndexEntry{CondaSysReqs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\usepackage[utf8]{inputenc}
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, echo=FALSE, results="hide", include = FALSE}
+knitr::opts_chunk$set(tidy=FALSE, cache=FALSE,
+                      #dev="png",
+                      message=FALSE, error=FALSE, warning=TRUE)
+options(width=100)
 ```
 
 #### The Herper package is a simple toolset to install and manage Conda packages and environments from R.
@@ -31,7 +39,7 @@ BiocManager::install("https://github.com/RockefellerUniversity/CondaSysReqs")
 
 Once installed, load it into your R session:
 
-```{r, warning=FALSE, message=FALSE}
+```{r}
 library(CondaSysReqs)
 ```
 
@@ -47,7 +55,7 @@ Miniconda is installed as part of the process (by default into the r-reticulate'
 install_CondaTools("salmon", "myCondaToolSet")
 ```
 
-```{r, echo=F, eval=T, warning=FALSE, message=FALSE}
+```{r, echo=F, eval=T}
 install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/")
 ```
 
@@ -63,7 +71,7 @@ The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Tha
 
 ## Session Information
 
-```{r}
-devtools::session_info()
+```{r sessionInfo}
+sessionInfo()
 ```
 
