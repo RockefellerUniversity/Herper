@@ -416,12 +416,12 @@ summary {
 BiocManager::install(&quot;https://github.com/RockefellerUniversity/CondaSysReqs&quot;)</code></pre>
 <p>Once installed, load it into your R session:</p>
 <pre class="r"><code>library(CondaSysReqs)</code></pre>
-<pre><code>## Loading required package: reticulate</code></pre>
 </div>
 <div id="install-conda-packages-with-install_condatools." class="section level2">
 <h2>Install Conda packages with <strong>install_CondaTools</strong>.</h2>
 <p>The <strong>install_CondaTools()</strong> function allows the user to specify required Conda software and the desired environment to install into.</p>
 <p>Miniconda is installed as part of the process (by default into the r-reticulate’s default Conda location). If you already have Miniconda installed you specify the path with the <em>pathToMiniConda</em> parameter.</p>
+<pre class="r"><code>install_CondaTools(&quot;salmon&quot;, &quot;myCondaToolSet&quot;)</code></pre>
 <pre><code>## $pathToConda
 ## [1] &quot;/tmp//r-miniconda/bin/conda&quot;
 ## 
@@ -430,11 +430,14 @@ BiocManager::install(&quot;https://github.com/RockefellerUniversity/CondaSysReqs
 ## 
 ## $pathToEnvBin
 ## [1] &quot;/tmp//r-miniconda/envs/myCondaToolSet/bin&quot;</code></pre>
-<pre class="r"><code>install_CondaTools(&quot;salmon&quot;, &quot;myCondaToolSet&quot;)</code></pre>
 </div>
 <div id="install-r-package-dependencies-install_condatools." class="section level2">
 <h2>Install R package dependencies <strong>install_CondaTools</strong>.</h2>
 <pre class="r"><code>#install_CondaTools(&quot;salmon&quot;, &quot;myCondaToolSet&quot;)</code></pre>
+</div>
+<div id="acknowledgements" class="section level2">
+<h2>Acknowledgements</h2>
+<p>The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.</p>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session Information</h2>

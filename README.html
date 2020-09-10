@@ -418,16 +418,7 @@ summary {
 <h2>Simple install of Conda packages from R console using <strong>install_CondaTools</strong>.</h2>
 <p>The <strong>install_CondaTools()</strong> function allows the user to specify required Conda software and the desired environment to install into.</p>
 <p>Miniconda is installed as part of the process (by default into the r-reticulate’s default Conda location). If you already have Miniconda installed you specify the path with the <em>pathToMiniConda</em> parameter.</p>
-<pre><code>## $pathToConda
-## [1] &quot;/tmp//r-miniconda/bin/conda&quot;
-## 
-## $environment
-## [1] &quot;myCondaToolSet&quot;
-## 
-## $pathToEnvBin
-## [1] &quot;/tmp//r-miniconda/envs/myCondaToolSet/bin&quot;</code></pre>
 <pre class="r"><code>install_CondaTools(&quot;salmon&quot;, &quot;myCondaToolSet&quot;)</code></pre>
-<p>We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>.</p>
 <pre><code>## $pathToConda
 ## [1] &quot;/tmp//r-miniconda/bin/conda&quot;
 ## 
@@ -436,8 +427,17 @@ summary {
 ## 
 ## $pathToEnvBin
 ## [1] &quot;/tmp//r-miniconda/envs/myCondaToolSet/bin&quot;</code></pre>
+<p>We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>.</p>
 <pre class="r"><code>pathToConda &lt;- install_CondaTools(&quot;macs2&quot;, &quot;myCondaToolSet&quot;, updateEnv = TRUE)
 pathToConda</code></pre>
+<pre><code>## $pathToConda
+## [1] &quot;/tmp//r-miniconda/bin/conda&quot;
+## 
+## $environment
+## [1] &quot;myCondaToolSet&quot;
+## 
+## $pathToEnvBin
+## [1] &quot;/tmp//r-miniconda/envs/myCondaToolSet/bin&quot;</code></pre>
 </div>
 <div id="export-of-conda-environments-to-yaml-files-using-export_condaenv." class="section level2">
 <h2>Export of Conda environments to YAML files using <strong>export_CondaEnv</strong>.</h2>
@@ -473,6 +473,10 @@ Salmon_help</code></pre>
 ## [11] &quot;     alevin     : single cell analysis&quot;                             
 ## [12] &quot;     swim       : perform super-secret operation&quot;                   
 ## [13] &quot;     quantmerge : merge multiple quantifications into a single file&quot;</code></pre>
+</div>
+<div id="acknowledgements" class="section level2">
+<h2>Acknowledgements</h2>
+<p>The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.</p>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session Information</h2>

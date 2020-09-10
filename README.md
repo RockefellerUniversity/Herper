@@ -64,23 +64,11 @@ The **install_CondaTools()** function allows the user to specify required Conda 
 Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location). If you already have Miniconda installed you specify the path with the *pathToMiniConda* parameter.
 
 
-```
-## $pathToConda
-## [1] "/tmp//r-miniconda/bin/conda"
-## 
-## $environment
-## [1] "myCondaToolSet"
-## 
-## $pathToEnvBin
-## [1] "/tmp//r-miniconda/envs/myCondaToolSet/bin"
-```
 
 ```r
 install_CondaTools("salmon", "myCondaToolSet")
 ```
 
-We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
-
 ```
 ## $pathToConda
 ## [1] "/tmp//r-miniconda/bin/conda"
@@ -91,12 +79,25 @@ We can add additional tools to our Conda environment by specifying *updateEnv = 
 ## $pathToEnvBin
 ## [1] "/tmp//r-miniconda/envs/myCondaToolSet/bin"
 ```
+
+We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
+
 
 ```r
 pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE)
 pathToConda
 ```
 
+```
+## $pathToConda
+## [1] "/tmp//r-miniconda/bin/conda"
+## 
+## $environment
+## [1] "myCondaToolSet"
+## 
+## $pathToEnvBin
+## [1] "/tmp//r-miniconda/envs/myCondaToolSet/bin"
+```
 
 
 ---
@@ -185,6 +186,9 @@ Salmon_help
 ## [12] "     swim       : perform super-secret operation"                   
 ## [13] "     quantmerge : merge multiple quantifications into a single file"
 ```
+
+## Acknowledgements
+The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
 
 ## Session Information
 

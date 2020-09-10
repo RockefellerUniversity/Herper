@@ -31,7 +31,7 @@ BiocManager::install("https://github.com/RockefellerUniversity/CondaSysReqs")
 
 Once installed, load it into your R session:
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(CondaSysReqs)
 ```
 
@@ -42,13 +42,14 @@ The **install_CondaTools()** function allows the user to specify required Conda 
 
 Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location). If you already have Miniconda installed you specify the path with the *pathToMiniConda* parameter.
 
-```{r, echo=F, eval=T}
-install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/")
-```
+
 ```{r, echo=T, eval=F}
 install_CondaTools("salmon", "myCondaToolSet")
 ```
 
+```{r, echo=F, eval=T, warning=FALSE, message=FALSE}
+install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/")
+```
 
 ## Install R package dependencies **install_CondaTools**. 
 
@@ -57,6 +58,8 @@ install_CondaTools("salmon", "myCondaToolSet")
 #install_CondaTools("salmon", "myCondaToolSet")
 ```
 
+## Acknowledgements
+The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
 
 ## Session Information
 

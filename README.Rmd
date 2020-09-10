@@ -64,23 +64,24 @@ The **install_CondaTools()** function allows the user to specify required Conda 
 
 Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location). If you already have Miniconda installed you specify the path with the *pathToMiniConda* parameter.
 
-```{r, echo=F, eval=T}
-install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/")
-```
+
 ```{r, echo=T, eval=F}
 install_CondaTools("salmon", "myCondaToolSet")
 ```
+```{r, echo=F, eval=T,warning=F,message=F}
+install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/")
+```
 
 We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
-```{r, echo=F, eval=T}
-pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE, pathToMiniConda="/tmp/")
-pathToConda
-```
+
 ```{r, echo=T, eval=F}
 pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE)
 pathToConda
 ```
-
+```{r, echo=F, eval=T}
+pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE, pathToMiniConda="/tmp/")
+pathToConda
+```
 
 
 ---
@@ -135,6 +136,9 @@ pathToSalmon
 Salmon_help <- system(paste(pathToSalmon,"-h"), intern = TRUE)
 Salmon_help
 ```
+
+## Acknowledgements
+The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
 
 ## Session Information
 
