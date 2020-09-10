@@ -1,0 +1,66 @@
+---
+title: "Herper QuickStart"
+author: 
+- Matt Paul
+- Bioinformatics Resource Center - Rockefeller University
+- "mpaul@rockefeller.edu"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### The Herper package is a simple toolset to install and manage Conda packages and environments from R.
+ 
+ ______
+ 
+ 
+## Installation
+
+Use the `BiocManager` package to download and install the package from our Github repository:
+
+```{r getPackage, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("https://github.com/RockefellerUniversity/CondaSysReqs")
+```
+
+Once installed, load it into your R session:
+
+```{r}
+library(CondaSysReqs)
+```
+
+
+## Install Conda packages with **install_CondaTools**. 
+
+The **install_CondaTools()** function allows the user to specify required Conda software and the desired environment to install into.
+
+Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location). If you already have Miniconda installed you specify the path with the *pathToMiniConda* parameter.
+
+```{r, echo=F, eval=T}
+install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/")
+```
+```{r, echo=T, eval=F}
+install_CondaTools("salmon", "myCondaToolSet")
+```
+
+
+## Install R package dependencies **install_CondaTools**. 
+
+
+```{r}
+#install_CondaTools("salmon", "myCondaToolSet")
+```
+
+
+## Session Information
+
+```{r}
+devtools::session_info()
+```
+
