@@ -32,6 +32,7 @@ miniconda_conda <- function (path = miniconda_path())
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param updateEnv Update existing package's conda environment if already installed.
 #' @param SysReqsAsJSON Parse the SystemRequirements in JSON format (see Details). Default is TRUE.
+#' @param SysReqsSep Separator used in SystemRequirement field.
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
