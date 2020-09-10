@@ -32,6 +32,7 @@ miniconda_conda <- function (path = miniconda_path())
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param updateEnv Update existing package's conda environment if already installed.
 #' @param SysReqsAsJSON Parse the SystemRequirements in JSON format (see Details). Default is TRUE.
+#' @param SysReqsSep Separator used in SystemRequirement field.
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
@@ -40,7 +41,7 @@ miniconda_conda <- function (path = miniconda_path())
 #' condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=tempdir(),SysReqsAsJSON=FALSE)
 #' system2(file.path(condaPaths$pathToEnvBin,"samtools"),args = "--help")
 #' @export
-install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL,updateEnv=FALSE,SysReqsAsJSON=TRUE){
+install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL,updateEnv=FALSE,SysReqsAsJSON=TRUE,SysReqsSep=","){
   # pathToMiniConda <- "~/Desktop/testConda"
 
   if(is.null(pathToMiniConda)){
@@ -56,15 +57,9 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   }else{
     CondaSysReq <- list()
     CondaSysReq$main <- list()
-    if(any(grepl(",",packageDesciptions))){
-      sysreqs <- unlist(strsplit(packageDesciptions,","))
+      sysreqs <- unlist(strsplit(packageDesciptions,SysReqsSep))
       CondaSysReq$main$packages <-unlist(lapply(sysreqs,function(x)gsub("^\\s+|\\s+$","",x)))
       CondaSysReq$main$channels <- NULL     
-    }else{
-      sysreqs <- unlist(strsplit(packageDesciptions,"\\s+"))
-      CondaSysReq$main$packages <-unlist(lapply(sysreqs,function(x)gsub("^\\s+|\\s+$","",x)))
-      CondaSysReq$main$channels <- list()     
-    }
   }
   
   pathToCondaInstall <- pathToMiniConda
