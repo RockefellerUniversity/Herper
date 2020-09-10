@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Install Conda requirements listed in the System Requirement field of description — install_CondaSysReqs • CondaSysReqs</title>
+<title>Export Conda environment. — export_CondaEnv • CondaSysReqs</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Install Conda requirements listed in the System Requirement field of description — install_CondaSysReqs" />
-<meta property="og:description" content="Install Conda requirements" />
+<meta property="og:title" content="Export Conda environment. — export_CondaEnv" />
+<meta property="og:description" content="Export Conda environment
+Import Conda environment" />
 
 
 
@@ -106,67 +107,69 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Install Conda requirements listed in the System Requirement field of description</h1>
+    <h1>Export Conda environment.</h1>
     
-    <div class="hidden name"><code>install_CondaSysReqs.Rd</code></div>
+    <div class="hidden name"><code>SaveEnvironments.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Install Conda requirements</p>
+    <p>Export Conda environment</p>
+<p>Import Conda environment</p>
     </div>
 
-    <pre class="usage"><span class='fu'>install_CondaSysReqs</span>(
-  <span class='kw'>pkg</span>,
-  channels = <span class='kw'>NULL</span>,
-  env = <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>export_CondaEnv</span>(
+  <span class='kw'>env_name</span>,
+  yml_export = <span class='kw'>NULL</span>,
   pathToMiniConda = <span class='kw'>NULL</span>,
-  updateEnv = <span class='fl'>FALSE</span>,
-  SysReqsAsJSON = <span class='fl'>TRUE</span>
-)</pre>
+  depends = <span class='fl'>TRUE</span>
+)
+
+<span class='fu'>import_CondaEnv</span>(<span class='kw'>yml_import</span>, name = <span class='kw'>NULL</span>, pathToMiniConda = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pkg</th>
-      <td><p>Package to install Conda System Requirements from.</p></td>
+      <th>env_name</th>
+      <td><p>Name of environment you want to save</p></td>
     </tr>
     <tr>
-      <th>channels</th>
-      <td><p>Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)</p></td>
-    </tr>
-    <tr>
-      <th>env</th>
-      <td><p>Name of Conda environment to install tools into.</p></td>
+      <th>yml_export</th>
+      <td><p>Destination for exported environment yml file</p></td>
     </tr>
     <tr>
       <th>pathToMiniConda</th>
       <td><p>NULL Path to miniconda installation</p></td>
     </tr>
     <tr>
-      <th>updateEnv</th>
-      <td><p>Update existing package's conda environment if already installed.</p></td>
+      <th>depends</th>
+      <td><p>if FALSE will only include packages explicitly installed and not dependencies</p></td>
     </tr>
     <tr>
-      <th>SysReqsAsJSON</th>
-      <td><p>Parse the SystemRequirements in JSON format (see Details). Default is TRUE.</p></td>
+      <th>yml_import</th>
+      <td><p>conda environment yml file</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>Name of the environment to create.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Nothing returned. Output written to file.</p>
+<p>Nothing returned. Output written to file.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Thomas Carroll</p>
+    <p>Matt Paul</p>
+<p>Matt Paul</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>testPkg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/HerperTestPkg"</span>,package=<span class='st'>"CondaSysReqs"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span>(<span class='kw'>testPkg</span>,type = <span class='st'>"source"</span>,repos = <span class='kw'>NULL</span>)
-</div><div class='output co'>#&gt; <span class='message'>Installing package into ‘/Users/runner/work/_temp/Library’</span>
-#&gt; <span class='message'>(as ‘lib’ is unspecified)</span></div><div class='input'><span class='kw'>condaPaths</span> <span class='op'>&lt;-</span> <span class='fu'>install_CondaSysReqs</span>(<span class='st'>"HerperTestPkg"</span>,pathToMiniConda=<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),SysReqsAsJSON=<span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>condaPaths</span><span class='op'>$</span><span class='kw'>pathToEnvBin</span>,<span class='st'>"samtools"</span>),args = <span class='st'>"--help"</span>)
-</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>testYML</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/HerperTestPkg_0.1.0.yml"</span>,package=<span class='st'>"CondaSysReqs"</span>)
+<span class='kw'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>()
+<span class='fu'>import_CondaEnv</span>(<span class='kw'>testYML</span>,<span class='st'>"HerperTest"</span>,pathToMiniConda=<span class='kw'>condaDir</span>)
+</div><div class='output co'>#&gt; <span class='message'>* Downloading 'https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh' ...</span></div><div class='output co'>#&gt; <span class='message'>* Installing Miniconda -- please wait a moment ...</span></div><div class='output co'>#&gt; <span class='message'>* Miniconda has been successfully installed at '/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp5Uwmo1/r-miniconda'.</span></div><div class='input'><span class='fu'>export_CondaEnv</span>(<span class='st'>"HerperTest"</span>,yml_export=<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(),pathToMiniConda=<span class='kw'>condaDir</span>)
+</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp5Uwmo1/file1a112ba2db3d"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

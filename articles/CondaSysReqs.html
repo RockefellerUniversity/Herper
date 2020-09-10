@@ -66,7 +66,7 @@
       <h1 data-toc-skip>Installing and managing Conda environments with the CondaSysReqs package</h1>
                         <h4 class="author">Tom Carroll, Doug Barrows and Matt Paul</h4>
             
-            <h4 class="date">08/31/2020</h4>
+            <h4 class="date">09/10/2020</h4>
       
       
       <div class="hidden name"><code>CondaSysReqs.Rmd</code></div>
@@ -84,18 +84,24 @@
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
 <p>Use the <code>BiocManager</code> package to download and install the package from our Github repository:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co">if</span> (<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, quietly = <span class="fl">TRUE</span>))
     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)
-<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"https://github.com/RockefellerUniversity/CondaSysReqs"</span>)</pre></body></html></div>
+<span class="kw">BiocManager</span>::<span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"https://github.com/RockefellerUniversity/CondaSysReqs"</span>)
+</pre></div>
 <p>Once installed, load it into your R session:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">CondaSysReqs</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">CondaSysReqs</span>)
+</pre></div>
 </div>
 <div id="simple-install-conda-environment-from-r-console-using-install_condatools-" class="section level1">
 <h1 class="hasAnchor">
 <a href="#simple-install-conda-environment-from-r-console-using-install_condatools-" class="anchor"></a>Simple install Conda Environment from R console using <strong>install_CondaTools</strong>.</h1>
 <p>The <strong>install_CondaTools()</strong> function allows the user to specify required Conda software and the desired environment to install into.</p>
 <p>Miniconda is installed as part of the process (by default into the r-reticulate’s default Conda location).</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>,<span class="st">"myCondaToolSet"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>,<span class="st">"myCondaToolSet"</span>)
+</pre></div>
 <pre><code>## $pathToConda
 ## [1] "/Users/runner/Library/r-miniconda/bin/conda"
 ## 
@@ -105,8 +111,10 @@
 ## $pathToEnvBin
 ## [1] "/Users/runner/Library/r-miniconda/envs/myCondaToolSet/bin"</code></pre>
 <p>We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">pathToConda</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"macs2"</span>,<span class="st">"myCondaToolSet"</span>,<span class="kw">updateEnv</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">pathToConda</span></pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"macs2"</span>,<span class="st">"myCondaToolSet"</span>,updateEnv = <span class="fl">TRUE</span>)
+<span class="kw">pathToConda</span>
+</pre></div>
 <pre><code>## $pathToConda
 ## [1] "/Users/runner/Library/r-miniconda/bin/conda"
 ## 
@@ -116,11 +124,15 @@
 ## $pathToEnvBin
 ## [1] "/Users/runner/Library/r-miniconda/envs/myCondaToolSet/bin"</code></pre>
 <p>Although we will not activate the environment, many tools can be used straight from the Conda environment’s bin directory.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">pathToMacs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">pathToConda</span>$<span class="no">pathToEnvBin</span>,<span class="st">"macs2"</span>)
-<span class="no">pathToMacs</span></pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">pathToMacs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">pathToConda</span><span class="op">$</span><span class="kw">pathToEnvBin</span>,<span class="st">"macs2"</span>)
+<span class="kw">pathToMacs</span>
+</pre></div>
 <pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/myCondaToolSet/bin/macs2"</code></pre>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">Macs_help</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="no">pathToMacs</span>,<span class="st">"-h"</span>),<span class="kw">intern</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">Macs_help</span></pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">Macs_help</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">pathToMacs</span>,<span class="st">"-h"</span>),intern = <span class="fl">TRUE</span>)
+<span class="kw">Macs_help</span>
+</pre></div>
 <pre><code>##  [1] "usage: macs2 [-h] [--version]"                                                                                                 
 ##  [2] "             {callpeak,bdgpeakcall,bdgbroadcall,bdgcmp,bdgopt,cmbreps,bdgdiff,filterdup,predictd,pileup,randsample,refinepeak}"
 ##  [3] "             ..."                                                                                                              
@@ -177,11 +189,15 @@
 ## [54] "  --version             show program's version number and exit"                                                                
 ## [55] ""                                                                                                                              
 ## [56] "For command line options of each command, type: macs2 COMMAND -h"</code></pre>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">pathToSalmon</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">pathToConda</span>$<span class="no">pathToEnvBin</span>,<span class="st">"salmon"</span>)
-<span class="no">pathToSalmon</span></pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="kw">pathToSalmon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">pathToConda</span><span class="op">$</span><span class="kw">pathToEnvBin</span>,<span class="st">"salmon"</span>)
+<span class="kw">pathToSalmon</span>
+</pre></div>
 <pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/myCondaToolSet/bin/salmon"</code></pre>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">Salmon_help</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="no">pathToSalmon</span>,<span class="st">"-h"</span>),<span class="kw">intern</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">Salmon_help</span></pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="kw">Salmon_help</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">pathToSalmon</span>,<span class="st">"-h"</span>),intern = <span class="fl">TRUE</span>)
+<span class="kw">Salmon_help</span>
+</pre></div>
 <pre><code>##  [1] "salmon v1.3.0"                                                      
 ##  [2] ""                                                                   
 ##  [3] "Usage:  salmon -h|--help or "                                       
@@ -204,7 +220,9 @@
 <div id="session-info" class="section level1">
 <h1 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session info</h1>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()
+</pre></div>
 <pre><code>## R version 4.0.2 (2020-06-22)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
 ## Running under: macOS Catalina 10.15.6
@@ -223,14 +241,15 @@
 ## [1] CondaSysReqs_0.9.8 reticulate_1.16    BiocStyle_2.16.0  
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.5          knitr_1.29          magrittr_1.5        MASS_7.3-51.6      
-##  [5] lattice_0.20-41     rjson_0.2.20        R6_2.4.1            rlang_0.4.7        
-##  [9] stringr_1.4.0       tools_4.0.2         grid_4.0.2          xfun_0.16          
-## [13] htmltools_0.5.0     yaml_2.2.1          assertthat_0.2.1    digest_0.6.25      
-## [17] rprojroot_1.3-2     pkgdown_1.5.1       crayon_1.3.4        bookdown_0.20      
-## [21] Matrix_1.2-18       BiocManager_1.30.10 fs_1.5.0            memoise_1.1.0      
-## [25] evaluate_0.14       rmarkdown_2.3       stringi_1.4.6       compiler_4.0.2     
-## [29] desc_1.2.0          backports_1.1.9     jsonlite_1.7.0</code></pre>
+##  [1] Rcpp_1.0.5          cpp11_0.2.1         knitr_1.29          magrittr_1.5       
+##  [5] lattice_0.20-41     rjson_0.2.20        R6_2.4.1            ragg_0.3.1         
+##  [9] rlang_0.4.7         stringr_1.4.0       tools_4.0.2         grid_4.0.2         
+## [13] xfun_0.17           htmltools_0.5.0     systemfonts_0.3.1   yaml_2.2.1         
+## [17] assertthat_0.2.1    rprojroot_1.3-2     digest_0.6.25       pkgdown_1.6.0      
+## [21] crayon_1.3.4        bookdown_0.20       Matrix_1.2-18       BiocManager_1.30.10
+## [25] fs_1.5.0            memoise_1.1.0       evaluate_0.14       rmarkdown_2.3      
+## [29] stringi_1.5.3       compiler_4.0.2      desc_1.2.0          backports_1.1.9    
+## [33] jsonlite_1.7.1</code></pre>
 </div>
 <div id="references" class="section level1">
 <h1 class="hasAnchor">
@@ -253,7 +272,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
