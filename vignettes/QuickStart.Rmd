@@ -1,13 +1,12 @@
 ---
-title: "Herper QuickStart"
-author: 
-- Matt Paul
-- Bioinformatics Resource Center - Rockefeller University
-- "mpaul@rockefeller.edu"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-  BiocStyle::html_document:
-     number_sections: yes
-     toc: true
+title: "Herper Quick Start Guide"
+author: "Matt Paul - mpaul@rockefeller.edu"
+date: "`r format(Sys.Date(), '%m/%d/%Y')`"
+package: CondaSysReqs
+output:
+ BiocStyle::html_document:
+  number_sections: yes
+  toc: true
 vignette: >
   %\VignetteIndexEntry{CondaSysReqs}
   %\VignetteEngine{knitr::rmarkdown}
@@ -22,9 +21,13 @@ knitr::opts_chunk$set(tidy=FALSE, cache=FALSE,
 options(width=100)
 ```
 
-#### The Herper package is a simple toolset to install and manage Conda packages and environments from R.
+<br>
+
+
+
+The Herper package is a simple toolset to install and manage Conda packages and environments from R.
  
- ______
+______
  
  
 ## Installation
@@ -48,26 +51,28 @@ library(CondaSysReqs)
 
 The **install_CondaTools()** function allows the user to specify required Conda software and the desired environment to install into.
 
-Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location). If you already have Miniconda installed you specify the path with the *pathToMiniConda* parameter.
+Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location). If you already have Miniconda installed (or want to control the location of miniconda installation), you can specify the path with the *pathToMiniConda* parameter.
 
 
-```{r, echo=T, eval=F}
+```{r install_Condatools, echo=T, eval=F}
 install_CondaTools("salmon", "myCondaToolSet")
 ```
 
 ```{r, echo=F, eval=T}
-install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/")
+# We are installing in our tmp directory
+install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp")
 ```
 
-## Install R package dependencies **install_CondaTools**. 
+## Install R package dependencies with **install_CondaSysReqs**. 
+The **install_CondaSysReqs** checks the System Requirements for the specified R package, and uses Conda to install this software.
 
+```{r install_CondaSysReqs, eval=F}
+install_CondaSysReqs("basecallQC")
 
-```{r}
-#install_CondaTools("salmon", "myCondaToolSet")
 ```
 
 ## Acknowledgements
-The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
+The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows in the Bioinformatics Resource Center at Rockefeller University. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
 
 ## Session Information
 
