@@ -21,7 +21,6 @@ knitr::opts_chunk$set(tidy=FALSE, cache=FALSE,
 options(width=100)
 ```
 
-
 <br>
 
 ---
@@ -59,15 +58,12 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("https://github.com/RockefellerUniversity/CondaSysReqs")
 ```
 
-
 <br>
-
 Once installed, load it into your R session:
 
 ```{r}
 library(CondaSysReqs)
 ```
-
 
 
 <br>
@@ -174,47 +170,3 @@ The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Tha
 ```{r}
 sessionInfo()
 ```
-=======
-# Simple install Conda Environment from R console using **install_CondaTools**. 
-
-The  **install_CondaTools()** function allows the user to specify required Conda software and the desired environment to install into.
-
-Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location).
-
-```{r}
-install_CondaTools("salmon","myCondaToolSet")
-```
-
-We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
-
-```{r}
-pathToConda <- install_CondaTools("macs2","myCondaToolSet",updateEnv = TRUE)
-pathToConda
-```
-
-Although we will not activate the environment, many tools can be used straight from the Conda environment's bin directory.
-
-```{r}
-pathToMacs <- file.path(pathToConda$pathToEnvBin,"macs2")
-pathToMacs
-Macs_help <- system(paste(pathToMacs,"-h"),intern = TRUE)
-Macs_help
-
-pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
-pathToSalmon
-Salmon_help <- system(paste(pathToSalmon,"-h"),intern = TRUE)
-Salmon_help
-```
-
-# Acknowledgements
-Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
-
-# Session info
-
-```{r sessionInfo}
-sessionInfo()
-```
-
-# References
-
-
