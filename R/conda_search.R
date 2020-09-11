@@ -1,4 +1,3 @@
-library(magrittr)
 
 conda_search <- function(package, package_version = NULL, channel = NULL, print_out=TRUE){
   
@@ -29,8 +28,8 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
       condaSearch_list[[i]] <- strsplit(condaSearch[i], "\\s+")[[1]] 
     }
     
-    condaSearch_df <- do.call(rbind, condaSearch_list[2:length(condaSearch_list)]) %>%
-      as.data.frame()
+    condaSearch_df <- do.call(rbind, condaSearch_list[2:length(condaSearch_list)])
+    condaSearch_df <-  as.data.frame(condaSearch_df)
     colnames(condaSearch_df) <- condaSearch_list[1][[1]][2:5]
     
     if (!is.null(package_version)){
@@ -75,4 +74,4 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
   
 }
 
-conda_search("salmon", package_version = "0.7.2")
+#conda_search("salmon", package_version = "0.7.2")
