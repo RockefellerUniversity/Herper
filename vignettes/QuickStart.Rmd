@@ -8,7 +8,7 @@ output:
   number_sections: yes
   toc: true
 vignette: >
-  %\VignetteIndexEntry{CondaSysReqs}
+  %\VignetteIndexEntry{Quick Start}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\usepackage[utf8]{inputenc}

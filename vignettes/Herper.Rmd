@@ -1,3 +1,4 @@
+---
 title: "Herper Guide"
 author: "Matt Paul - mpaul@rockefeller.edu"
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
@@ -7,7 +8,7 @@ output:
   number_sections: yes
   toc: true
 vignette: >
-  %\VignetteIndexEntry{CondaSysReqs}
+  %\VignetteIndexEntry{Herper}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\usepackage[utf8]{inputenc}
