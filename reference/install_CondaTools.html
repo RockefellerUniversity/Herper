@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CondaSysReqs</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
       </span>
     </div>
 
@@ -85,10 +85,22 @@
   </a>
 </li>
 <li>
-  <a href="../articles/CondaSysReqs.html">Get started</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Herper.html">Herper Guide</a>
+    </li>
+    <li>
+      <a href="../articles/QuickStart.html">Herper Quick Start Guide</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -118,6 +130,7 @@
     <pre class="usage"><span class='fu'>install_CondaTools</span>(
   <span class='kw'>tools</span>,
   <span class='kw'>env</span>,
+  vers = <span class='kw'>NULL</span>,
   channels = <span class='kw'>NULL</span>,
   pathToMiniConda = <span class='kw'>NULL</span>,
   updateEnv = <span class='fl'>FALSE</span>
@@ -128,11 +141,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tools</th>
-      <td><p>software to install using conda.</p></td>
+      <td><p>Vector of software to install using conda.</p></td>
     </tr>
     <tr>
       <th>env</th>
       <td><p>Name of Conda environment to install tools into.</p></td>
+    </tr>
+    <tr>
+      <th>vers</th>
+      <td><p>Vector of software version numbers to install using conda</p></td>
     </tr>
     <tr>
       <th>channels</th>

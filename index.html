@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">CondaSysReqs</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
       </span>
     </div>
 
@@ -44,10 +44,22 @@
   </a>
 </li>
 <li>
-  <a href="articles/CondaSysReqs.html">Get started</a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/Herper.html">Herper Guide</a>
+    </li>
+    <li>
+      <a href="articles/QuickStart.html">Herper Quick Start Guide</a>
+    </li>
+  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -63,28 +75,14 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<hr>
-<p>title: “Introduction to Herper” author:</p>
-<ul>
-<li>Matt Paul</li>
-<li>Bioinformatics Resource Center - Rockefeller University</li>
-<li>“<a href="mailto:mpaul@rockefeller.edu" class="email">mpaul@rockefeller.edu</a>” date: “10 September, 2020” output: html_document: keep_md: yes theme: cosmo —</li>
-</ul>
-<hr>
-<div id="what-is-herper" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-is-herper" class="anchor"></a>What is Herper?</h2>
-<p>The Herper package is a simple toolset to install and manage Conda packages and environments from R.</p>
-<p>Many R packages require the use of external dependencies. Often these dependencies can be installed and managed with the Conda package repository. For example 169 Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) [03 September, 2020].</p>
-<hr>
-<p><img src="imgs/pkg_deps_bar_mask-1.png"><!-- --></p>
-<hr>
-<p>The Herper package includes functions that allow the easy management of these external dependencies from within the R console.</p>
-<hr>
+<div id="introduction" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h1></div>
+<p>The CondaSysReqs package offers a simple toolset to install and manage Conda environments from R using the the <strong>install_CondaTools</strong> and <strong>install_CondaSysReqs</strong> functions.</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div id="installation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h1>
 <p>Use the <code>BiocManager</code> package to download and install the package from our Github repository:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="co">if</span> (<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, quietly = <span class="fl">TRUE</span>))
@@ -95,185 +93,162 @@
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">CondaSysReqs</span>)
 </pre></div>
-<pre><code>## Loading required package: reticulate</code></pre>
-<hr>
 </div>
-<div id="simple-install-of-conda-packages-from-r-console-using-install_condatools" class="section level2">
-<h2 class="hasAnchor">
-<a href="#simple-install-of-conda-packages-from-r-console-using-install_condatools" class="anchor"></a>Simple install of Conda packages from R console using <strong>install_CondaTools</strong>.</h2>
+<div id="simple-install-conda-environment-from-r-console-using-install_condatools" class="section level1">
+<h1 class="hasAnchor">
+<a href="#simple-install-conda-environment-from-r-console-using-install_condatools" class="anchor"></a>Simple install Conda Environment from R console using <strong>install_CondaTools</strong>.</h1>
 <p>The <strong>install_CondaTools()</strong> function allows the user to specify required Conda software and the desired environment to install into.</p>
-<p>Miniconda is installed as part of the process (by default into the r-reticulate’s default Conda location). If you already have Miniconda installed you specify the path with the <em>pathToMiniConda</em> parameter.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>, <span class="st">"myCondaToolSet"</span>)
+<p>Miniconda is installed as part of the process (by default into the r-reticulate’s default Conda location).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>,<span class="st">"myCondaToolSet"</span>)
 </pre></div>
-<pre><code>## $pathToConda
-## [1] "/tmp//r-miniconda/bin/conda"
-## 
-## $environment
-## [1] "myCondaToolSet"
-## 
-## $pathToEnvBin
-## [1] "/tmp//r-miniconda/envs/myCondaToolSet/bin"</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## $pathToConda</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">## [1] "/Users/runner/Library/r-miniconda/bin/conda"</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">## </span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co">## $environment</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">## [1] "myCondaToolSet"</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">## </span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">## $pathToEnvBin</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">## [1] "/Users/runner/Library/r-miniconda/envs/myCondaToolSet/bin"</span></span></code></pre></div>
 <p>We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"macs2"</span>, <span class="st">"myCondaToolSet"</span>, updateEnv = <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"macs2"</span>,<span class="st">"myCondaToolSet"</span>,updateEnv = <span class="fl">TRUE</span>)
 <span class="kw">pathToConda</span>
 </pre></div>
-<pre><code>## $pathToConda
-## [1] "/tmp//r-miniconda/bin/conda"
-## 
-## $environment
-## [1] "myCondaToolSet"
-## 
-## $pathToEnvBin
-## [1] "/tmp//r-miniconda/envs/myCondaToolSet/bin"</code></pre>
-<hr>
-</div>
-<div id="simple-install-of-r-package-dependencies-using-install_condasysreqs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#simple-install-of-r-package-dependencies-using-install_condasysreqs" class="anchor"></a>Simple install of R package dependencies using <strong>install_CondaSysReqs</strong>.</h2>
-<hr>
-</div>
-<div id="export-of-conda-environments-to-yaml-files-using-export_condaenv" class="section level2">
-<h2 class="hasAnchor">
-<a href="#export-of-conda-environments-to-yaml-files-using-export_condaenv" class="anchor"></a>Export of Conda environments to YAML files using <strong>export_CondaEnv</strong>.</h2>
-<p>The <strong>export_CondaEnv</strong> function allows the user to export the environment information to a <em>.yml</em> file. These environment YAML files contain all essential information about the package, allowing for reproducibilty and easy distribution of Conda system configuration for collaboration.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"myCondaToolSet_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
-<span class="fu"><a href="reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"myCondaToolSet"</span>, <span class="kw">yml_name</span>)
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## $pathToConda</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">## [1] "/Users/runner/Library/r-miniconda/bin/conda"</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">## </span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">## $environment</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">## [1] "myCondaToolSet"</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">## </span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">## $pathToEnvBin</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">## [1] "/Users/runner/Library/r-miniconda/envs/myCondaToolSet/bin"</span></span></code></pre></div>
+<p>Although we will not activate the environment, many tools can be used straight from the Conda environment’s bin directory.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">pathToMacs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">pathToConda</span><span class="op">$</span><span class="kw">pathToEnvBin</span>,<span class="st">"macs2"</span>)
+<span class="kw">pathToMacs</span>
 </pre></div>
-<pre><code>## Warning in system(paste(pathToConda, "env export -n", env_name, "&gt;",
-## export_path)): error in running command</code></pre>
-<pre><code>## [1] "myCondaToolSet_20200910.yml"</code></pre>
-<hr>
-<p>The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the <em>depends</em> paramter.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## [1] "/Users/runner/Library/r-miniconda/envs/myCondaToolSet/bin/macs2"</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">Macs_help</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">pathToMacs</span>,<span class="st">"-h"</span>),intern = <span class="fl">TRUE</span>)
+<span class="kw">Macs_help</span>
+</pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">##  [1] "usage: macs2 [-h] [--version]"                                                                                                 </span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">##  [2] "             {callpeak,bdgpeakcall,bdgbroadcall,bdgcmp,bdgopt,cmbreps,bdgdiff,filterdup,predictd,pileup,randsample,refinepeak}"</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">##  [3] "             ..."                                                                                                              </span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">##  [4] ""                                                                                                                              </span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">##  [5] "macs2 -- Model-based Analysis for ChIP-Sequencing"                                                                             </span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">##  [6] ""                                                                                                                              </span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">##  [7] "positional arguments:"                                                                                                         </span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">##  [8] "  {callpeak,bdgpeakcall,bdgbroadcall,bdgcmp,bdgopt,cmbreps,bdgdiff,filterdup,predictd,pileup,randsample,refinepeak}"           </span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">##  [9] "    callpeak            Main MACS2 Function: Call peaks from alignment"                                                        </span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">## [10] "                        results."                                                                                              </span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">## [11] "    bdgpeakcall         Call peaks from bedGraph output. Note: All regions on"                                                 </span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co">## [12] "                        the same chromosome in the bedGraph file should be"                                                    </span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co">## [13] "                        continuous so only bedGraph files from MACS2 are"                                                      </span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co">## [14] "                        accpetable."                                                                                           </span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co">## [15] "    bdgbroadcall        Call broad peaks from bedGraph output. Note: All"                                                      </span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="co">## [16] "                        regions on the same chromosome in the bedGraph file"                                                   </span></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="co">## [17] "                        should be continuous so only bedGraph files from MACS2"                                                </span></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="co">## [18] "                        are accpetable."                                                                                       </span></span>
+<span id="cb10-19"><a href="#cb10-19"></a><span class="co">## [19] "    bdgcmp              Deduct noise by comparing two signal tracks in"                                                        </span></span>
+<span id="cb10-20"><a href="#cb10-20"></a><span class="co">## [20] "                        bedGraph. Note: All regions on the same chromosome in"                                                 </span></span>
+<span id="cb10-21"><a href="#cb10-21"></a><span class="co">## [21] "                        the bedGraph file should be continuous so only"                                                        </span></span>
+<span id="cb10-22"><a href="#cb10-22"></a><span class="co">## [22] "                        bedGraph files from MACS2 are accpetable."                                                             </span></span>
+<span id="cb10-23"><a href="#cb10-23"></a><span class="co">## [23] "    bdgopt              Operations on score column of bedGraph file. Note: All"                                                </span></span>
+<span id="cb10-24"><a href="#cb10-24"></a><span class="co">## [24] "                        regions on the same chromosome in the bedGraph file"                                                   </span></span>
+<span id="cb10-25"><a href="#cb10-25"></a><span class="co">## [25] "                        should be continuous so only bedGraph files from MACS2"                                                </span></span>
+<span id="cb10-26"><a href="#cb10-26"></a><span class="co">## [26] "                        are accpetable."                                                                                       </span></span>
+<span id="cb10-27"><a href="#cb10-27"></a><span class="co">## [27] "    cmbreps             Combine BEDGraphs of scores from replicates. Note: All"                                                </span></span>
+<span id="cb10-28"><a href="#cb10-28"></a><span class="co">## [28] "                        regions on the same chromosome in the bedGraph file"                                                   </span></span>
+<span id="cb10-29"><a href="#cb10-29"></a><span class="co">## [29] "                        should be continuous so only bedGraph files from MACS2"                                                </span></span>
+<span id="cb10-30"><a href="#cb10-30"></a><span class="co">## [30] "                        are accpetable."                                                                                       </span></span>
+<span id="cb10-31"><a href="#cb10-31"></a><span class="co">## [31] "    bdgdiff             Differential peak detection based on paired four"                                                      </span></span>
+<span id="cb10-32"><a href="#cb10-32"></a><span class="co">## [32] "                        bedgraph files. Note: All regions on the same"                                                         </span></span>
+<span id="cb10-33"><a href="#cb10-33"></a><span class="co">## [33] "                        chromosome in the bedGraph file should be continuous"                                                  </span></span>
+<span id="cb10-34"><a href="#cb10-34"></a><span class="co">## [34] "                        so only bedGraph files from MACS2 are accpetable."                                                     </span></span>
+<span id="cb10-35"><a href="#cb10-35"></a><span class="co">## [35] "    filterdup           Remove duplicate reads at the same position, then save"                                                </span></span>
+<span id="cb10-36"><a href="#cb10-36"></a><span class="co">## [36] "                        the rest alignments to BED or BEDPE file. If you use '"                                                </span></span>
+<span id="cb10-37"><a href="#cb10-37"></a><span class="co">## [37] "                        --keep-dup all option', this script can be utilized to"                                                </span></span>
+<span id="cb10-38"><a href="#cb10-38"></a><span class="co">## [38] "                        convert any acceptable format into BED or BEDPE"                                                       </span></span>
+<span id="cb10-39"><a href="#cb10-39"></a><span class="co">## [39] "                        format."                                                                                               </span></span>
+<span id="cb10-40"><a href="#cb10-40"></a><span class="co">## [40] "    predictd            Predict d or fragment size from alignment results."                                                    </span></span>
+<span id="cb10-41"><a href="#cb10-41"></a><span class="co">## [41] "                        *Will NOT filter duplicates*"                                                                          </span></span>
+<span id="cb10-42"><a href="#cb10-42"></a><span class="co">## [42] "    pileup              Pileup aligned reads with a given extension size"                                                      </span></span>
+<span id="cb10-43"><a href="#cb10-43"></a><span class="co">## [43] "                        (fragment size or d in MACS language). Note there will"                                                </span></span>
+<span id="cb10-44"><a href="#cb10-44"></a><span class="co">## [44] "                        be no step for duplicate reads filtering or sequencing"                                                </span></span>
+<span id="cb10-45"><a href="#cb10-45"></a><span class="co">## [45] "                        depth scaling, so you may need to do certain pre/post-"                                                </span></span>
+<span id="cb10-46"><a href="#cb10-46"></a><span class="co">## [46] "                        processing."                                                                                           </span></span>
+<span id="cb10-47"><a href="#cb10-47"></a><span class="co">## [47] "    randsample          Randomly sample number/percentage of total reads."                                                     </span></span>
+<span id="cb10-48"><a href="#cb10-48"></a><span class="co">## [48] "    refinepeak          (Experimental) Take raw reads alignment, refine peak"                                                  </span></span>
+<span id="cb10-49"><a href="#cb10-49"></a><span class="co">## [49] "                        summits and give scores measuring balance of"                                                          </span></span>
+<span id="cb10-50"><a href="#cb10-50"></a><span class="co">## [50] "                        waston/crick tags. Inspired by SPP."                                                                   </span></span>
+<span id="cb10-51"><a href="#cb10-51"></a><span class="co">## [51] ""                                                                                                                              </span></span>
+<span id="cb10-52"><a href="#cb10-52"></a><span class="co">## [52] "optional arguments:"                                                                                                           </span></span>
+<span id="cb10-53"><a href="#cb10-53"></a><span class="co">## [53] "  -h, --help            show this help message and exit"                                                                       </span></span>
+<span id="cb10-54"><a href="#cb10-54"></a><span class="co">## [54] "  --version             show program's version number and exit"                                                                </span></span>
+<span id="cb10-55"><a href="#cb10-55"></a><span class="co">## [55] ""                                                                                                                              </span></span>
+<span id="cb10-56"><a href="#cb10-56"></a><span class="co">## [56] "For command line options of each command, type: macs2 COMMAND -h"</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"myCondaToolSet_nodeps_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
-<span class="fu"><a href="reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"myCondaToolSet"</span>, <span class="kw">yml_name</span>, depends=<span class="fl">FALSE</span>)
-</pre></div>
-<pre><code>## Warning in system(paste(pathToConda, "env export --from-history -n", env_name, :
-## error in running command</code></pre>
-<pre><code>## [1] "myCondaToolSet_nodeps_20200910.yml"</code></pre>
-<hr>
-</div>
-<div id="import-of-conda-environments-from-yaml-files-using-import_condaenv" class="section level2">
-<h2 class="hasAnchor">
-<a href="#import-of-conda-environments-from-yaml-files-using-import_condaenv" class="anchor"></a>Import of Conda environments from YAML files using <strong>import_CondaEnv</strong>.</h2>
-<p>The <strong>import_CondaEnv</strong> function allows the user to create a new conda environment from a <em>.yml</em> file. These can be previously exported from <strong>export_CondaEnv</strong>, conda, renv or manually created.</p>
-<p>Users can simply provide a path to the YAML file for import. They can also specify the environment name, but by default the name will be taken from the YAML.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu"><a href="reference/export_CondaEnv.html">import_CondaEnv</a></span>(<span class="kw">yml_name</span>, <span class="st">"myCondaToolSet2"</span>)
-</pre></div>
-<pre><code>## * Downloading 'https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh' ...</code></pre>
-<pre><code>## * Installing Miniconda -- please wait a moment ...</code></pre>
-<pre><code>## * Miniconda has been successfully installed at '/Users/runner/Library/r-miniconda'.</code></pre>
-<hr>
-</div>
-<div id="using-r-packages-with-system-dependencies" class="section level2">
-<h2 class="hasAnchor">
-<a href="#using-r-packages-with-system-dependencies" class="anchor"></a>Using R packages with System Dependencies</h2>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="co">#use_condaenv() </span>
-</pre></div>
-<hr>
-</div>
-<div id="running-conda-packages-from-r-console" class="section level2">
-<h2 class="hasAnchor">
-<a href="#running-conda-packages-from-r-console" class="anchor"></a>Running Conda packages from R console.</h2>
-<p>Although we will not activate the environment, many tools can be used straight from the Conda environment’s bin directory. When the result of <strong>install_CondaTools()</strong> is assigned to a variable, it will contain the path to the bin directory for that environment. Users can then run these tools with <strong>System()</strong> commands</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="kw">pathToSalmon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">pathToConda</span><span class="op">$</span><span class="kw">pathToEnvBin</span>, <span class="st">"salmon"</span>)
+<span class="kw">pathToSalmon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">pathToConda</span><span class="op">$</span><span class="kw">pathToEnvBin</span>,<span class="st">"salmon"</span>)
 <span class="kw">pathToSalmon</span>
 </pre></div>
-<pre><code>## [1] "/tmp//r-miniconda/envs/myCondaToolSet/bin/salmon"</code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="kw">Salmon_help</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">pathToSalmon</span>,<span class="st">"-h"</span>), intern = <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co">## [1] "/Users/runner/Library/r-miniconda/envs/myCondaToolSet/bin/salmon"</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="kw">Salmon_help</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">pathToSalmon</span>,<span class="st">"-h"</span>),intern = <span class="fl">TRUE</span>)
 <span class="kw">Salmon_help</span>
 </pre></div>
-<pre><code>##  [1] "salmon v1.3.0"                                                      
-##  [2] ""                                                                   
-##  [3] "Usage:  salmon -h|--help or "                                       
-##  [4] "        salmon -v|--version or "                                    
-##  [5] "        salmon -c|--cite or "                                       
-##  [6] "        salmon [--no-version-check] &lt;COMMAND&gt; [-h | options]"       
-##  [7] ""                                                                   
-##  [8] "Commands:"                                                          
-##  [9] "     index      : create a salmon index"                            
-## [10] "     quant      : quantify a sample"                                
-## [11] "     alevin     : single cell analysis"                             
-## [12] "     swim       : perform super-secret operation"                   
-## [13] "     quantmerge : merge multiple quantifications into a single file"</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">##  [1] "salmon v1.3.0"                                                      </span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co">##  [2] ""                                                                   </span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="co">##  [3] "Usage:  salmon -h|--help or "                                       </span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co">##  [4] "        salmon -v|--version or "                                    </span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="co">##  [5] "        salmon -c|--cite or "                                       </span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="co">##  [6] "        salmon [--no-version-check] &lt;COMMAND&gt; [-h | options]"       </span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="co">##  [7] ""                                                                   </span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="co">##  [8] "Commands:"                                                          </span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="co">##  [9] "     index      : create a salmon index"                            </span></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="co">## [10] "     quant      : quantify a sample"                                </span></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co">## [11] "     alevin     : single cell analysis"                             </span></span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="co">## [12] "     swim       : perform super-secret operation"                   </span></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="co">## [13] "     quantmerge : merge multiple quantifications into a single file"</span></span></code></pre></div>
 </div>
-<div id="acknowledgements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
-<p>The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.</p>
+<div id="acknowledgements" class="section level1">
+<h1 class="hasAnchor">
+<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h1>
+<p>Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.</p>
 </div>
-<div id="session-information" class="section level2">
-<h2 class="hasAnchor">
-<a href="#session-information" class="anchor"></a>Session Information</h2>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="kw">devtools</span>::<span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span>()
+<div id="session-info" class="section level1">
+<h1 class="hasAnchor">
+<a href="#session-info" class="anchor"></a>Session info</h1>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()
 </pre></div>
-<pre><code>## ─ Session info ───────────────────────────────────────────────────────────────
-##  setting  value                       
-##  version  R version 4.0.2 (2020-06-22)
-##  os       macOS Catalina 10.15.6      
-##  system   x86_64, darwin17.0          
-##  ui       X11                         
-##  language (EN)                        
-##  collate  en_US.UTF-8                 
-##  ctype    en_US.UTF-8                 
-##  tz       UTC                         
-##  date     2020-09-10                  
-## 
-## ─ Packages ───────────────────────────────────────────────────────────────────
-##  package      * version date       lib source        
-##  assertthat     0.2.1   2019-03-21 [1] CRAN (R 4.0.2)
-##  backports      1.1.9   2020-08-24 [1] CRAN (R 4.0.2)
-##  callr          3.4.4   2020-09-07 [1] CRAN (R 4.0.2)
-##  cli            2.0.2   2020-02-28 [1] CRAN (R 4.0.2)
-##  CondaSysReqs * 0.9.8   2020-09-10 [1] local         
-##  crayon         1.3.4   2017-09-16 [1] CRAN (R 4.0.2)
-##  desc           1.2.0   2018-05-01 [1] CRAN (R 4.0.2)
-##  devtools       2.3.1   2020-07-21 [1] CRAN (R 4.0.2)
-##  digest         0.6.25  2020-02-23 [1] CRAN (R 4.0.2)
-##  ellipsis       0.3.1   2020-05-15 [1] CRAN (R 4.0.2)
-##  evaluate       0.14    2019-05-28 [1] CRAN (R 4.0.1)
-##  fansi          0.4.1   2020-01-08 [1] CRAN (R 4.0.2)
-##  fs             1.5.0   2020-07-31 [1] CRAN (R 4.0.2)
-##  glue           1.4.2   2020-08-27 [1] CRAN (R 4.0.2)
-##  htmltools      0.5.0   2020-06-16 [1] CRAN (R 4.0.2)
-##  jsonlite       1.7.1   2020-09-07 [1] CRAN (R 4.0.2)
-##  knitr          1.29    2020-06-23 [1] CRAN (R 4.0.2)
-##  lattice        0.20-41 2020-04-02 [2] CRAN (R 4.0.2)
-##  magrittr       1.5     2014-11-22 [1] CRAN (R 4.0.2)
-##  Matrix         1.2-18  2019-11-27 [2] CRAN (R 4.0.2)
-##  memoise        1.1.0   2017-04-21 [1] CRAN (R 4.0.2)
-##  pkgbuild       1.1.0   2020-07-13 [1] CRAN (R 4.0.2)
-##  pkgload        1.1.0   2020-05-29 [1] CRAN (R 4.0.2)
-##  prettyunits    1.1.1   2020-01-24 [1] CRAN (R 4.0.2)
-##  processx       3.4.4   2020-09-03 [1] CRAN (R 4.0.2)
-##  ps             1.3.4   2020-08-11 [1] CRAN (R 4.0.2)
-##  R6             2.4.1   2019-11-12 [1] CRAN (R 4.0.2)
-##  Rcpp           1.0.5   2020-07-06 [1] CRAN (R 4.0.2)
-##  remotes        2.2.0   2020-07-21 [1] CRAN (R 4.0.2)
-##  reticulate   * 1.16    2020-05-27 [1] CRAN (R 4.0.2)
-##  rjson          0.2.20  2018-06-08 [1] CRAN (R 4.0.2)
-##  rlang          0.4.7   2020-07-09 [1] CRAN (R 4.0.2)
-##  rmarkdown      2.3     2020-06-18 [1] CRAN (R 4.0.2)
-##  rprojroot      1.3-2   2018-01-03 [1] CRAN (R 4.0.2)
-##  sessioninfo    1.1.1   2018-11-05 [1] CRAN (R 4.0.2)
-##  stringi        1.5.3   2020-09-09 [1] CRAN (R 4.0.2)
-##  stringr        1.4.0   2019-02-10 [1] CRAN (R 4.0.2)
-##  testthat       2.3.2   2020-03-02 [1] CRAN (R 4.0.2)
-##  usethis        1.6.1   2020-04-29 [1] CRAN (R 4.0.2)
-##  withr          2.2.0   2020-04-20 [1] CRAN (R 4.0.2)
-##  xfun           0.17    2020-09-09 [1] CRAN (R 4.0.2)
-##  yaml           2.2.1   2020-02-01 [1] CRAN (R 4.0.2)
-## 
-## [1] /Users/runner/work/_temp/Library
-## [2] /Library/Frameworks/R.framework/Versions/4.0/Resources/library</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">## R version 4.0.2 (2020-06-22)</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="co">## Platform: x86_64-apple-darwin17.0 (64-bit)</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="co">## Running under: macOS Catalina 10.15.6</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="co">## </span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="co">## Matrix products: default</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="co">## </span></span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="co">## locale:</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="co">## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="co">## </span></span>
+<span id="cb16-12"><a href="#cb16-12"></a><span class="co">## attached base packages:</span></span>
+<span id="cb16-13"><a href="#cb16-13"></a><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span id="cb16-14"><a href="#cb16-14"></a><span class="co">## </span></span>
+<span id="cb16-15"><a href="#cb16-15"></a><span class="co">## other attached packages:</span></span>
+<span id="cb16-16"><a href="#cb16-16"></a><span class="co">## [1] CondaSysReqs_0.9.9 reticulate_1.16   </span></span>
+<span id="cb16-17"><a href="#cb16-17"></a><span class="co">## </span></span>
+<span id="cb16-18"><a href="#cb16-18"></a><span class="co">## loaded via a namespace (and not attached):</span></span>
+<span id="cb16-19"><a href="#cb16-19"></a><span class="co">##  [1] Rcpp_1.0.5      lattice_0.20-41 digest_0.6.25   grid_4.0.2      jsonlite_1.7.1  magrittr_1.5   </span></span>
+<span id="cb16-20"><a href="#cb16-20"></a><span class="co">##  [7] evaluate_0.14   rlang_0.4.7     stringi_1.5.3   Matrix_1.2-18   rmarkdown_2.3   rjson_0.2.20   </span></span>
+<span id="cb16-21"><a href="#cb16-21"></a><span class="co">## [13] tools_4.0.2     stringr_1.4.0   xfun_0.17       yaml_2.2.1      compiler_4.0.2  htmltools_0.5.0</span></span>
+<span id="cb16-22"><a href="#cb16-22"></a><span class="co">## [19] knitr_1.29</span></span></code></pre></div>
+</div>
+<div id="references" class="section level1">
+<h1 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h1>
 </div>
 
   </div>
