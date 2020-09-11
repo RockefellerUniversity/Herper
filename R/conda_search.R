@@ -19,8 +19,8 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
                                          ignore.stderr = TRUE)) # if we want to include the output for 'conda search', which is a pretty informative error message, set this to FALSE
   
   if (grepl("No match found for", condaSearch[2])){
-    message(paste0("package ",package, " not found"))
     if(print_out){
+      message(paste0("package ",package, " not found"))
       return(FALSE)
     }else{
       return(list(exact_match=F, version_matches=NULL))  
@@ -40,18 +40,18 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
     if (!is.null(package_version)){
       package_version <- as.character(package_version)
       if (any(grepl(package_version, condaSearch_df$Version))){
-        message(paste(package, "version", package_version, "is available from the following builds and channels:"))
         sub_df <- condaSearch_df[grepl(package_version, condaSearch_df$Version), ]
         rownames(sub_df) <- NULL
         if(print_out){
+          message(paste(package, "version", package_version, "is available from the following builds and channels:"))
           print(sub_df)
           return(TRUE)
         }else{
           return(list(exact_match=T, version_matches=sub_df))  
         }
       } else{
-        message(paste(package, "is available, but version", package_version, "is not. The following builds and channels are currently available:"))
         if(print_out){
+          message(paste(package, "is available, but version", package_version, "is not. The following builds and channels are currently available:"))
           print(condaSearch_df)
           return(FALSE)
         }else{
@@ -59,8 +59,8 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
         }
       }
     } else{
-      message(paste(package, "is available from the following builds and channels:"))
       if(print_out){
+        message(paste(package, "is available from the following builds and channels:"))
         print(condaSearch_df)
         return(TRUE)
       }else{
@@ -69,8 +69,8 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
     }
     
   } else {
-    message("conda command failed, but not sure why. We didn't get the normal eror mesage we look for when a package isn't found")
     if(print_out){
+      message("conda command failed, but not sure why. We didn't get the normal eror mesage we look for when a package isn't found")
       return(FALSE)
     }else{
       return(list(exact_match=F, version_matches=NULL))  

@@ -125,7 +125,7 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   if(sum(checks[1,]==F)>0){
     idx<-which(checks[1,]==F)
     sapply(idx, function(x){
-    message(paste0("The package ",tools[x], ", and version ",vers[x], " has no matches. There are these versions available: \n"))
+    message(paste0("The package ",tools[x], " has no matches. There are these versions available: \n"))
     print(checks[2,x])})
     stop("The package and/or version are not available in conda. Check above for details.")
     }
