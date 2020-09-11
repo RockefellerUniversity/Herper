@@ -1,6 +1,6 @@
 library(magrittr)
 
-conda_search <- function(package, package_version = NULL, channel = NULL){
+conda_search <- function(package, package_version = NULL, channel = NULL, print_out=TRUE){
   
   pathToMiniConda <- reticulate::miniconda_path()
   pathToCondaInstall <- pathToMiniConda
@@ -13,7 +13,7 @@ conda_search <- function(package, package_version = NULL, channel = NULL){
   condaSearch <- suppressWarnings(system(paste(pathToConda,"search", package, channel), 
                                          intern = TRUE, 
                                          ignore.stderr = TRUE)) # if we want to include the output for 'conda search', which is a pretty informative error message, set this to FALSE
-
+  
   if (grepl("No match found for", condaSearch[2])){
     message(paste0("package ",package, " not found"))
     return(FALSE)
@@ -35,24 +35,36 @@ conda_search <- function(package, package_version = NULL, channel = NULL){
         message(paste(package, "version", package_version, "is available from the following builds and channels:"))
         sub_df <- condaSearch_df[grepl(package_version, condaSearch_df$Version), ]
         rownames(sub_df) <- NULL
-        print(sub_df)
-        return(TRUE)
+        if(print_out){
+          print(sub_df)
+          return(TRUE)
+        }else{
+          return(list(exact_match=T, version_matches=sub_df))  
+        }
       } else{
         message(paste(package, "is available, but version", package_version, "is not. The following builds and channels are currently available:"))
-        print(condaSearch_df)
-        return(FALSE)
+        if(print_out){
+          print(condaSearch_df)
+          return(FALSE)
+        }else{
+          return(list(exact_match=F, version_matches=condaSearch_df))  
+        }
       }
     } else{
       message(paste(package, "is available from the following builds and channels:"))
-      print(condaSearch_df)
-      return(TRUE)
+      if(verbose){
+        print(condaSearch_df)
+        return(TRUE)
+      }else{
+        return(list(exact_match=T, version_matches=condaSearch_df))  
+      }
     }
     
   } else {
     message("conda command failed, but not sure why. We didn't get the normal eror mesage we look for when a package isn't found")
     return(FALSE)
   }
-
+  
 }
 
 conda_search("salmon", package_version = "0.7.2")
