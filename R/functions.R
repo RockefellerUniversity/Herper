@@ -115,20 +115,20 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   # pathToMiniConda <- "~/Desktop/testConda"
   
   if(is.null(vers)){
-    #checks<-sapply(tools, conda_search, print_out=F)
+    checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda)
   }else{
-    #checks<-sapply(1:length(tools), function(x) conda_search(tools[x], package_version=vers[x], print_out=F))
+    checks<-sapply(1:length(tools), function(x) conda_search(tools[x], package_version=vers[x], print_out=F, pathToMiniConda=pathToMiniConda))
     tools<-paste(tools,vers,sep="=")
   }
   
   
-  # if(sum(checks[1,]==F)>0){
-  #   idx<-which(checks[1,]==F)
-  #   sapply(idx, function(x){
-  #   message(paste0("The package ",tools[x], ", and version ",vers[x], " has no matches. There are these versions available: \n"))
-  #   print(checks[2,x])})
-  #   stop("The package and/or version are not available in conda. Check above for details.")
-  #   }
+  if(sum(checks[1,]==F)>0){
+    idx<-which(checks[1,]==F)
+    sapply(idx, function(x){
+    message(paste0("The package ",tools[x], ", and version ",vers[x], " has no matches. There are these versions available: \n"))
+    print(checks[2,x])})
+    stop("The package and/or version are not available in conda. Check above for details.")
+    }
   
   if(is.null(pathToMiniConda)){
     pathToMiniConda <- reticulate::miniconda_path()

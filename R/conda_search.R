@@ -1,7 +1,12 @@
 
-conda_search <- function(package, package_version = NULL, channel = NULL, print_out=TRUE){
+conda_search <- function(package, package_version = NULL, channel = NULL, print_out=TRUE,pathToMiniConda=NULL){
   
-  pathToMiniConda <- reticulate::miniconda_path()
+  if(is.null(pathToMiniConda)){
+    pathToMiniConda <- reticulate::miniconda_path()
+  }else{
+    pathToMiniConda <- file.path(pathToMiniConda,"r-miniconda")
+  }
+  
   pathToCondaInstall <- pathToMiniConda
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
   
