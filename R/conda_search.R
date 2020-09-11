@@ -16,7 +16,11 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
   
   if (grepl("No match found for", condaSearch[2])){
     message(paste0("package ",package, " not found"))
-    return(FALSE)
+    if(print_out){
+      return(FALSE)
+    }else{
+      return(list(exact_match=F, version_matches=NULL))  
+    }
   } else if (any(grepl(package, condaSearch))) { # this can probably be an 'else' but made another else below in case for some reason condas error message changes and we not longer pick up the line in the output we search for above to preent a silent error
     condaSearch <- condaSearch[-1]
     
@@ -52,7 +56,7 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
       }
     } else{
       message(paste(package, "is available from the following builds and channels:"))
-      if(verbose){
+      if(print_out){
         print(condaSearch_df)
         return(TRUE)
       }else{
@@ -62,7 +66,11 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
     
   } else {
     message("conda command failed, but not sure why. We didn't get the normal eror mesage we look for when a package isn't found")
-    return(FALSE)
+    if(print_out){
+      return(FALSE)
+    }else{
+      return(list(exact_match=F, version_matches=NULL))  
+    }
   }
   
 }
