@@ -100,7 +100,7 @@ jobs:
       - name: Make homepage
         run: |
           file.copy("vignettes/Herper.Rmd","README.Rmd")
-          rmarkdown::render("README.Rmd", md_document(variant="markdown_github"))
+          rmarkdown::render("README.Rmd", rmarkdown::md_document(variant="markdown_github"))
           rmarkdown::render("README.Rmd")
         shell: Rscript {0}
       - name: Deploy package
