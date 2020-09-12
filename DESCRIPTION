@@ -17,7 +17,7 @@ Authors@R: c(
 Maintainer: Thomas Carroll <tc.infomatics@gmail.com>
 Description: Install Conda packages from System Requirements section of package Description file.
 Depends: reticulate
-Imports: utils, rjson
+Imports: utils, rjson, withr
 Suggests: BiocStyle, testthat, knitr, rmarkdown
 License: GPL-3
 Encoding: UTF-8
