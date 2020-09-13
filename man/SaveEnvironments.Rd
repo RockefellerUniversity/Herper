@@ -39,7 +39,7 @@ Import Conda environment
 }
 \examples{
 testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
-condaDir <- tempdir()
+condaDir <- file.path(tempdir(),"r-miniconda")
 import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
 export_CondaEnv("HerperTest",yml_export=tempfile(),pathToMiniConda=condaDir)
 }
