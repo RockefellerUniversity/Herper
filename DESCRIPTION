@@ -1,7 +1,7 @@
 Package: CondaSysReqs
 Type: Package
 Title: Install Conda packages from System Requirements section of package Description file
-Version: 0.9.8
+Version: 0.9.9
 Author: Matt Paul and Thomas Carroll
 Authors@R: c(
     person("Thomas", "Carroll", , "tcarroll@rockefeller.edu", role = c("aut", "cre"),
@@ -17,7 +17,7 @@ Authors@R: c(
 Maintainer: Thomas Carroll <tc.infomatics@gmail.com>
 Description: Install Conda packages from System Requirements section of package Description file.
 Depends: reticulate
-Imports: utils, rjson
+Imports: utils, rjson, withr
 Suggests: BiocStyle, testthat, knitr, rmarkdown
 License: GPL-3
 Encoding: UTF-8
