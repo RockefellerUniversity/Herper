@@ -49,22 +49,23 @@ set_condapaths <- function(env,
   
   path <- strsplit(Sys.getenv("PATH"), .Platform$path.sep)[[1]]
   path <- normalizePath(path, mustWork = FALSE)
+  
   old <- list()
   old$PATH <- path
-  old$JAVA_HOME <- Sys.getenv("JAVA_HOME")
-  old$PYTHONPATH <- Sys.getenv("PYTHONPATH")
-  old$PERL5LIB <- Sys.getenv("PERL5LIB")
-  
-  
+  old$JAVA_HOME <- Sys.getenv("JAVA_HOME",unset = NA)
+  old$PYTHONPATH <- Sys.getenv("PYTHONPATH",unset = NA)
+  old$PERL5LIB <- Sys.getenv("PERL5LIB",unset = NA)
+  old <- old[c(TRUE,!sapply(old[-1],is.na))]
   ###
   ##
   if(file.exists(file.path(condaPaths$pathToEnvBin,"java"))){
     JAVA_HOME=c(dirname(condaPaths$pathToEnvBin))
     JAVA_HOME=c(JAVA_HOME,javahome_additional)
+    old_JAVA_HOME <- old$JAVA_HOME
     if (javahome_action == "suffix") {
-      JAVA_HOME <- c(old$JAVA_HOME, JAVA_HOME)
+      JAVA_HOME <- c(old_JAVA_HOME, JAVA_HOME)
     } else if (javahome_action == "prefix") {
-      JAVA_HOME <- c(JAVA_HOME, old$JAVA_HOME)
+      JAVA_HOME <- c(JAVA_HOME, old_JAVA_HOME)
     }
     JAVA_HOME <- paste(JAVA_HOME, collapse = .Platform$path.sep)
     Sys.setenv(JAVA_HOME=JAVA_HOME)
@@ -81,10 +82,11 @@ set_condapaths <- function(env,
                       full.names = TRUE,
                       include.dirs=TRUE)
     PYTHONPATH=c(PYTHONPATH,pythonpath_additional)
+    old_PYTHONPATH <- old$PYTHONPATH
     if (pythonpath_action == "suffix") {
-      PYTHONPATH <- c(old$PYTHONPATH, PYTHONPATH)
+      PYTHONPATH <- c(old_PYTHONPATH, PYTHONPATH)
     } else if (pythonpath_action == "prefix") {
-      PYTHONPATH <- c(PYTHONPATH, old$PYTHONPATH)
+      PYTHONPATH <- c(PYTHONPATH, old_PYTHONPATH)
     }
     PYTHONPATH <- paste(PYTHONPATH, collapse = .Platform$path.sep)
     Sys.setenv(PYTHONPATH=PYTHONPATH)
@@ -100,10 +102,11 @@ set_condapaths <- function(env,
                 recursive=TRUE,
                 full.names = TRUE))
     PERL5LIB <- c(PERL5LIB,perl5lib_additional)
+    old_PERL5LIB <- old$PERL5LIB
     if (perl5lib_action == "suffix") {
-      PERL5LIB <- c(old$PERL5LIB, PERL5LIB)
+      PERL5LIB <- c(old_PERL5LIB, PERL5LIB)
     } else if (perl5lib_action == "prefix") {
-      PERL5LIB <- c(PERL5LIB, old$PERL5LIB)
+      PERL5LIB <- c(PERL5LIB, old_PERL5LIB)
     }
     PERL5LIB <- paste(PERL5LIB, collapse = .Platform$path.sep)
     Sys.setenv(PERL5LIB=PERL5LIB)
@@ -155,13 +158,24 @@ unset_condapaths <- function(old) {
   Sys.setenv(PATH = path)
   
   JAVA_HOME <- old$JAVA_HOME
-  Sys.setenv(JAVA_HOME = old$JAVA_HOME)
-  
+  if(!is.null(JAVA_HOME)){
+    Sys.setenv(JAVA_HOME = old$JAVA_HOME)
+  }else{
+    Sys.unsetenv("JAVA_HOME")
+  }
   PERL5LIB <- old$PERL5LIB
-  Sys.setenv(PERL5LIB = PERL5LIB)
+  if(!is.null(PERL5LIB)){  
+    Sys.setenv(PERL5LIB = PERL5LIB)
+  }else{
+    Sys.unsetenv("PERL5LIB")
+  }
   
   PYTHONPATH <- old$PYTHONPATH
-  Sys.setenv(PYTHONPATH = PYTHONPATH)
+  if(!is.null(PYTHONPATH)){  
+    Sys.setenv(PYTHONPATH = PYTHONPATH)
+  }else{
+    Sys.unsetenv("PERL5LIB")
+  }
 }
 
 #' Use Conda environments.
