@@ -82,7 +82,7 @@ install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
 We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
 
 ```{r ,updateCondaTools, echo=T, eval=T}
-pathToConda <- install_CondaTools("macs2", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
+pathToConda <- install_CondaTools("samtools", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
 pathToConda
 ```
 
