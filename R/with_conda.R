@@ -149,11 +149,13 @@ unset_condapaths <- function(old) {
   # PYTHONPATH <- paste(PYTHONPATH, collapse = .Platform$path.sep)    
   # Sys.setenv(PYTHONPATH = PYTHONPATH)
   
+  
+  path <- old$PATH
   path <- paste(path, collapse = .Platform$path.sep)
   Sys.setenv(PATH = path)
   
   JAVA_HOME <- old$JAVA_HOME
-  Sys.setenv(JAVA_HOME = JAVA_HOME)
+  Sys.setenv(JAVA_HOME = old$JAVA_HOME)
   
   PERL5LIB <- old$PERL5LIB
   Sys.setenv(PERL5LIB = PERL5LIB)
@@ -172,7 +174,8 @@ unset_condapaths <- function(old) {
 #'
 #'
 #' @author Thomas Carroll
-#' @param env conda environment
+#' @param new The name of conda environment to include in the temporary R environment.
+#' @param code Code to execute in the temporary R environment
 #' @param pathToMiniConda Path to miniconda.
 #' @param path_action 	Should new values "replace", "prefix" or "suffix" existing PATH variable.
 #' @param pythonpath_action Should new values "replace", "prefix" or "suffix" existing PYTHONPATH variable.
@@ -182,6 +185,7 @@ unset_condapaths <- function(old) {
 #' @param pythonpath_additional Additional paths to suffix to existing PYTHONPATH variable.
 #' @param javahome_additional Additional paths to suffix to existing JAVA_HOME variable.
 #' @param perl5lib_additional Additional paths to suffix to existing PERL5LIB variable.
+#' @param .local_envir The environment to use for scoping.
 #' @import withr
 #' @examples
 #' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
