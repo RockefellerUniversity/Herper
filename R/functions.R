@@ -38,7 +38,8 @@ miniconda_conda <- function (path = miniconda_path())
 #' @examples
 #' testPkg <- system.file("extdata/HerperTestPkg",package="CondaSysReqs")
 #' install.packages(testPkg,type = "source",repos = NULL)
-#' condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=tempdir(),SysReqsAsJSON=FALSE)
+#' condaDir <- file.path(tempdir(),"r-miniconda")
+#' condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=condaDir,SysReqsAsJSON=FALSE)
 #' system2(file.path(condaPaths$pathToEnvBin,"samtools"),args = "--help")
 #' @export
 install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL,updateEnv=FALSE,SysReqsAsJSON=TRUE,SysReqsSep=","){
@@ -47,7 +48,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   if(is.null(pathToMiniConda)){
     pathToMiniConda <- reticulate::miniconda_path()
   }else{
-    pathToMiniConda <- file.path(pathToMiniConda,"r-miniconda")
+    pathToMiniConda <- file.path(pathToMiniConda)
   }
 
   packageDesciptions <- utils::packageDescription(pkg,fields = "SystemRequirements")
@@ -108,7 +109,8 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples 
-#' condaPaths <- install_CondaTools("salmon","salmon",pathToMiniConda=tempdir())
+#' condaDir <- file.path(tempdir(),"r-miniconda")
+#' condaPaths <- install_CondaTools("salmon","salmon",pathToMiniConda=condaDir)
 #' system2(file.path(condaPaths$pathToEnvBin,"salmon"),args = "--help")
 #' @export
 install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda=NULL,updateEnv=FALSE){
@@ -133,7 +135,7 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   if(is.null(pathToMiniConda)){
     pathToMiniConda <- reticulate::miniconda_path()
   }else{
-    pathToMiniConda <- file.path(pathToMiniConda,"r-miniconda")
+    pathToMiniConda <- file.path(pathToMiniConda)
   }
  
   pathToCondaInstall <- pathToMiniConda
@@ -183,7 +185,7 @@ export_CondaEnv <- function(env_name,yml_export=NULL,pathToMiniConda=NULL,depend
   if(is.null(pathToMiniConda)){
     pathToMiniConda <- reticulate::miniconda_path()
   }else{
-    pathToMiniConda <- file.path(pathToMiniConda,"r-miniconda")
+    pathToMiniConda <- file.path(pathToMiniConda)
   }
   
   pathToCondaInstall <- pathToMiniConda
@@ -221,7 +223,7 @@ export_CondaEnv <- function(env_name,yml_export=NULL,pathToMiniConda=NULL,depend
 #' @import reticulate
 #' @examples 
 #' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
-#' condaDir <- tempdir()
+#' condaDir <- file.path(tempdir(),"r-miniconda")
 #' import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
 #' export_CondaEnv("HerperTest",yml_export=tempfile(),pathToMiniConda=condaDir)
 #' @export
@@ -231,7 +233,7 @@ import_CondaEnv <- function(yml_import, name=NULL, pathToMiniConda=NULL){
   if(is.null(pathToMiniConda)){
     pathToMiniConda <- reticulate::miniconda_path()
   }else{
-    pathToMiniConda <- file.path(pathToMiniConda,"r-miniconda")
+    pathToMiniConda <- file.path(pathToMiniConda)
   }
   
   if(!is.null(name)){
