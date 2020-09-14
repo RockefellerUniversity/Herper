@@ -27,7 +27,11 @@ options(width=100)
 
 
 ```{r, echo=F}
+if(basename(getwd())=="vignettes"){
 load("../Bioc_Pkg_Details.RData")
+}else{
+load("Bioc_Pkg_Details.RData")
+}
 ```
 
 
@@ -39,7 +43,14 @@ Many R packages require the use of external dependencies. Often these dependenci
 <br>
 
 ```{r, echo=F, out.width = "1000px", fig.align="center"}
+
+if(basename(getwd())=="vignettes"){
 knitr::include_graphics("../imgs/pkg_deps_bar_mask-1.png")
+}else{
+knitr::include_graphics("imgs/pkg_deps_bar_mask-1.png")
+}
+
+
 
 ```
 
