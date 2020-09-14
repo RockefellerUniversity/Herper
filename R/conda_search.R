@@ -1,10 +1,11 @@
 
 conda_search <- function(package, package_version = NULL, channel = NULL, print_out=TRUE,pathToMiniConda=NULL){
+ #pathToMiniConda="/tmp"
   
   if(is.null(pathToMiniConda)){
     pathToMiniConda <- reticulate::miniconda_path()
   }else{
-    pathToMiniConda <- file.path(pathToMiniConda,"r-miniconda")
+    pathToMiniConda <- file.path(pathToMiniConda)
   }
   
   pathToCondaInstall <- pathToMiniConda
@@ -14,8 +15,9 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
     channel <- paste0("-c ", channel)
   }
   
-  condaSearch <- suppressWarnings(system(paste(pathToConda,"search", package, channel), 
-                                         intern = TRUE, 
+  #message(paste0('Using conda at: ', pathToConda))
+  condaSearch <- suppressWarnings(system(paste(pathToConda,"search", package, channel),
+                                         intern = TRUE,
                                          ignore.stderr = TRUE)) # if we want to include the output for 'conda search', which is a pretty informative error message, set this to FALSE
   
   if (grepl("No match found for", condaSearch[2])){

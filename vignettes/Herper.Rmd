@@ -79,7 +79,7 @@ Miniconda is installed as part of the process (by default into the r-reticulate'
 install_CondaTools("salmon", "myCondaToolSet")
 ```
 ```{r, echo=F, eval=T,warning=F,message=F}
-install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/")
+install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/r-miniconda")
 ```
 <br>
 We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
@@ -89,7 +89,7 @@ pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE)
 pathToConda
 ```
 ```{r, echo=F, eval=T}
-pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE, pathToMiniConda="/tmp/")
+pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE, pathToMiniConda="/tmp/r-miniconda")
 pathToConda
 ```
 
