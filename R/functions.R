@@ -115,7 +115,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
 #' @export
 install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda=NULL,updateEnv=FALSE){
   # pathToMiniConda <- "~/Desktop/testConda"
- 
+  
   #Setup miniconda 
   if(is.null(pathToMiniConda)){
     pathToMiniConda <- reticulate::miniconda_path()
@@ -125,6 +125,13 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   pathToCondaInstall <- pathToMiniConda
   condaPathExists <- miniconda_exists(pathToCondaInstall)
   if(!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
+  
+  #Set Channels
+  defaultChannels <- c("bioconda","defaults","conda-forge")
+  channels <- unique(c(channels,defaultChannels))
+  pathToConda <- file.path(pathToCondaInstall,"bin","conda")
+  set<-suppressWarnings(sapply(channels, function(x) system(paste(pathToConda, "config --add channels", x),intern = TRUE,
+                                                       ignore.stderr = TRUE)))
   
   #Check package exists
   if(is.null(vers)){
@@ -142,10 +149,9 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
     stop("The package and/or version are not available in conda. Check above for details.")
     }
   
-  pathToConda <- file.path(pathToCondaInstall,"bin","conda")
+
   
-  defaultChannels <- c("bioconda","defaults","conda-forge")
-  channels <- unique(c(channels,defaultChannels))
+  
   environment <- env
   pathToCondaPkgEnv <- file.path(pathToMiniConda,"envs",environment)
 
