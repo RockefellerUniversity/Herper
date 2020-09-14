@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Herper Guide • CondaSysReqs</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -79,7 +79,7 @@
                         <h4 class="author">Matt Paul - <a href="mailto:mpaul@rockefeller.edu" class="email">mpaul@rockefeller.edu</a>
 </h4>
             
-            <h4 class="date">09/12/2020</h4>
+            <h4 class="date">09/14/2020</h4>
       
       
       <div class="hidden name"><code>Herper.Rmd</code></div>
@@ -124,26 +124,26 @@
 <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>, <span class="st">"myCondaToolSet"</span>)
 </pre></div>
 <pre><code>## $pathToConda
-## [1] "/tmp//r-miniconda/bin/conda"
+## [1] "/tmp/r-miniconda/bin/conda"
 ## 
 ## $environment
 ## [1] "myCondaToolSet"
 ## 
 ## $pathToEnvBin
-## [1] "/tmp//r-miniconda/envs/myCondaToolSet/bin"</code></pre>
+## [1] "/tmp/r-miniconda/envs/myCondaToolSet/bin"</code></pre>
 <p><br> We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"macs2"</span>, <span class="st">"myCondaToolSet"</span>, updateEnv = <span class="fl">TRUE</span>)
 <span class="kw">pathToConda</span>
 </pre></div>
 <pre><code>## $pathToConda
-## [1] "/tmp//r-miniconda/bin/conda"
+## [1] "/tmp/r-miniconda/bin/conda"
 ## 
 ## $environment
 ## [1] "myCondaToolSet"
 ## 
 ## $pathToEnvBin
-## [1] "/tmp//r-miniconda/envs/myCondaToolSet/bin"</code></pre>
+## [1] "/tmp/r-miniconda/envs/myCondaToolSet/bin"</code></pre>
 <p><br></p>
 </div>
 <div id="install-r-package-dependencies-with-install_condasysreqs-" class="section level2">
@@ -164,14 +164,14 @@
 <span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"myCondaToolSet_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
 <span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"myCondaToolSet"</span>, <span class="kw">yml_name</span>)
 </pre></div>
-<pre><code>## [1] "myCondaToolSet_20200912.yml"</code></pre>
+<pre><code>## [1] "myCondaToolSet_20200914.yml"</code></pre>
 <p><br></p>
 <p>The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the <em>depends</em> paramter.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"myCondaToolSet_nodeps_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
 <span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"myCondaToolSet"</span>, <span class="kw">yml_name</span>, depends=<span class="fl">FALSE</span>)
 </pre></div>
-<pre><code>## [1] "myCondaToolSet_nodeps_20200912.yml"</code></pre>
+<pre><code>## [1] "myCondaToolSet_nodeps_20200914.yml"</code></pre>
 <p><br></p>
 </div>
 <div id="import-of-conda-environments-from-yaml-files-using-import_condaenv-" class="section level2">
@@ -197,7 +197,7 @@
 <span class="kw">pathToSalmon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">pathToConda</span><span class="op">$</span><span class="kw">pathToEnvBin</span>, <span class="st">"salmon"</span>)
 <span class="kw">pathToSalmon</span>
 </pre></div>
-<pre><code>## [1] "/tmp//r-miniconda/envs/myCondaToolSet/bin/salmon"</code></pre>
+<pre><code>## [1] "/tmp/r-miniconda/envs/myCondaToolSet/bin/salmon"</code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="kw">Salmon_help</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">pathToSalmon</span>,<span class="st">"-h"</span>), intern = <span class="fl">TRUE</span>)
 <span class="kw">Salmon_help</span>
@@ -246,12 +246,12 @@
 ##  [1] Rcpp_1.0.5          cpp11_0.2.1         knitr_1.29          magrittr_1.5       
 ##  [5] lattice_0.20-41     rjson_0.2.20        R6_2.4.1            ragg_0.3.1         
 ##  [9] rlang_0.4.7         stringr_1.4.0       tools_4.0.2         grid_4.0.2         
-## [13] xfun_0.17           htmltools_0.5.0     systemfonts_0.3.1   yaml_2.2.1         
-## [17] assertthat_0.2.1    rprojroot_1.3-2     digest_0.6.25       pkgdown_1.6.1      
-## [21] crayon_1.3.4        bookdown_0.20       Matrix_1.2-18       BiocManager_1.30.10
-## [25] fs_1.5.0            memoise_1.1.0       evaluate_0.14       rmarkdown_2.3      
-## [29] stringi_1.5.3       compiler_4.0.2      desc_1.2.0          backports_1.1.9    
-## [33] jsonlite_1.7.1</code></pre>
+## [13] xfun_0.17           withr_2.2.0         htmltools_0.5.0     systemfonts_0.3.1  
+## [17] yaml_2.2.1          assertthat_0.2.1    rprojroot_1.3-2     digest_0.6.25      
+## [21] pkgdown_1.6.1       crayon_1.3.4        bookdown_0.20       Matrix_1.2-18      
+## [25] BiocManager_1.30.10 fs_1.5.0            memoise_1.1.0       evaluate_0.14      
+## [29] rmarkdown_2.3       stringi_1.5.3       compiler_4.0.2      desc_1.2.0         
+## [33] backports_1.1.9     jsonlite_1.7.1</code></pre>
 </div>
   </div>
 
