@@ -55,7 +55,6 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   if(is.na(packageDesciptions)){
     stop(paste(pkg, "has no external System Dependencies to install"))
   }
-  #add message if no dependencies
   
   #packageDesciptions<-"samtools==1.10, rmats>=v4.1.0, salmon"
   if(SysReqsAsJSON){
@@ -70,8 +69,9 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
     version_sep<-c("[>)(=]")
     
     pkg_and_vers<-lapply(sysreqs, function(x) {
+      x<-gsub("version|versions|Version|Versions","",x)
       nm<-trimws(unlist(strsplit(x, version_sep, perl = T)))
-      nm<-nm[!(grepl('version',nm)|nchar(nm)==0)]
+      nm<-nm[!(nchar(nm)==0)]
     })
     parsed_count<-sapply(pkg_and_vers, length)
   if(sum(parsed_count>2)>0){
@@ -89,11 +89,11 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   
   # Mask GNU and C++
   idx <- grepl("GNU|C++",CondaSysReq$main$packages,perl=T)
-  if(length(idx>0)){
+  if(sum(idx)>0){
     CondaSysReq$main$packages<-CondaSysReq$main$packages[!idx]
-    message('C++ and/or GNU make will not been installed, to avoid conflicts. If you do want these installed in your conda, please use the install_CondaTools function.')
+    message('C++ and/or GNU Make will not been installed, to avoid conflicts. If you do want these installed in your conda, please use the install_CondaTools function.')
     if(!length(CondaSysReq$main$packages)>0){
-      stop("There are no pacakges to install beyond C++ and/or GNU")}}
+      stop("There are no pacakges to install beyond C++ and/or GNU Make.")}}
   
   pathToCondaInstall <- pathToMiniConda
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
