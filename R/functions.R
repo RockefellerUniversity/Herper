@@ -52,6 +52,9 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   }
 
   packageDesciptions <- utils::packageDescription(pkg,fields = "SystemRequirements")
+  
+  #add message if no dependencies
+  
   #packageDesciptions<-"samtools==1.10, rmats>=v4.1.0, salmon"
   if(SysReqsAsJSON){
     CondaSysReqJson <- gsub("CondaSysReq:","",packageDesciptions[grepl("^CondaSysReq",packageDesciptions)])
@@ -68,19 +71,22 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
       nm<-trimws(unlist(strsplit(x, version_sep, perl = T)))
       nm<-nm[!(grepl('version',nm)|nchar(nm)==0)]
     })
-    parsed_count<-sapply(pkg_and_vers, length)}
+    parsed_count<-sapply(pkg_and_vers, length)
   if(sum(parsed_count>2)>0){
     stop(paste("System requirements not parsed succesfully. Issues with:",sysreqs[parsed_count>2]))
   }
   
   idx1<-grep(">=",sysreqs, fixed = T)
   idx2<-setdiff(grep("=",sysreqs, fixed = T), idx1)
-  pkg_and_vers[[idx1]] <- paste0(pkg_and_vers[[idx1]], collapse=">=")
-  pkg_and_vers[[idx2]] <- paste0(pkg_and_vers[[idx2]], collapse="==")
+  if(length(idx1)>0){pkg_and_vers[[idx1]] <- paste0(pkg_and_vers[[idx1]], collapse=">=")}
+  if(length(idx2)>0){pkg_and_vers[[idx2]] <- paste0(pkg_and_vers[[idx2]], collapse="==")}
   
   CondaSysReq$main$packages <- unlist(pkg_and_vers)
   CondaSysReq$main$channels <- NULL     
-}
+  }
+  
+  #Mask GNU 
+  
   
   pathToCondaInstall <- pathToMiniConda
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
