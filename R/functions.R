@@ -52,7 +52,9 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   }
 
   packageDesciptions <- utils::packageDescription(pkg,fields = "SystemRequirements")
-  
+  if(is.na(packageDesciptions)){
+    stop(paste(pkg, "has no external System Dependencies to install"))
+  }
   #add message if no dependencies
   
   #packageDesciptions<-"samtools==1.10, rmats>=v4.1.0, salmon"
