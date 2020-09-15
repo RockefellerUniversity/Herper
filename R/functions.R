@@ -181,7 +181,7 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   if(is.null(vers)){
     checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda)
   }else{
-    checks<-sapply(1:length(tools), function(x) conda_search(tools[x], package_version=vers[x], print_out=F, pathToMiniConda=OGpathToMiniConda))
+    checks<-sapply(1:length(tools), function(x) conda_search(tools[x], package_version=vers[x], print_out=F, pathToMiniConda=pathToMiniConda))
     tools<-paste(tools,vers,sep="=")
   }
   
