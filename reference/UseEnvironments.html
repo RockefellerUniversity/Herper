@@ -12,8 +12,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -73,7 +73,7 @@ Use Conda environments" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CondaSysReqs</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -161,6 +161,14 @@ Use Conda environments" />
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>new</th>
+      <td><p>The name of conda environment to include in the temporary R environment.</p></td>
+    </tr>
+    <tr>
+      <th>code</th>
+      <td><p>Code to execute in the temporary R environment</p></td>
+    </tr>
+    <tr>
       <th>pathToMiniConda</th>
       <td><p>Path to miniconda.</p></td>
     </tr>
@@ -197,8 +205,8 @@ Use Conda environments" />
       <td><p>Additional paths to suffix to existing JAVA_HOME variable.</p></td>
     </tr>
     <tr>
-      <th>env</th>
-      <td><p>conda environment</p></td>
+      <th>.local_envir</th>
+      <td><p>The environment to use for scoping.</p></td>
     </tr>
     </table>
 
@@ -211,7 +219,7 @@ Use Conda environments" />
 <span class='kw'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),<span class='st'>"r-miniconda"</span>)
 <span class='fu'><a href='export_CondaEnv.html'>import_CondaEnv</a></span>(<span class='kw'>testYML</span>,<span class='st'>"HerperTest"</span>,pathToMiniConda=<span class='kw'>condaDir</span>)
 <span class='fu'>with_CondaEnv</span>(<span class='st'>"HerperTest"</span>,<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span>(command = <span class='st'>"rmats.py"</span>,args = <span class='st'>"-h"</span>),pathToMiniConda = <span class='kw'>condaDir</span>)
-</div><div class='output co'>#&gt; <span class='message'>/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpx0OYB0/r-miniconda/envs/HerperTest/lib/python3.7/site-packages</span></div><div class='output co'>#&gt; <span class='error'>Error in paste(path, collapse = .Platform$path.sep): object 'path' not found</span></div><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+</div><div class='output co'>#&gt; <span class='message'>/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpP5iidg/r-miniconda/envs/HerperTest/lib/python3.7/site-packages</span></div><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
   <span class='fu'><a href='install_CondaTools.html'>install_CondaTools</a></span>(<span class='st'>"cytoscape"</span>,<span class='st'>"cytoscape"</span>,updateEnv = <span class='fl'>TRUE</span>,pathToMiniConda = <span class='kw'>condaDir</span>)
   <span class='fu'>with_CondaEnv</span>(<span class='st'>"cytoscape"</span>,<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span>(command = <span class='st'>"cytoscape.sh"</span>),pathToMiniConda = <span class='kw'>condaDir</span>)
 }

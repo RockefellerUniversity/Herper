@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Herper Guide • CondaSysReqs</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CondaSysReqs</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
                         <h4 class="author">Matt Paul - <a href="mailto:mpaul@rockefeller.edu" class="email">mpaul@rockefeller.edu</a>
 </h4>
             
-            <h4 class="date">09/14/2020</h4>
+            <h4 class="date">09/15/2020</h4>
       
       
       <div class="hidden name"><code>Herper.Rmd</code></div>
@@ -96,7 +96,7 @@
 <p>The Herper package is a simple toolset to install and manage Conda packages and environments from R.</p>
 <p>Many R packages require the use of external dependencies. Often these dependencies can be installed and managed with the Conda package repository. For example 169 Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) [03 September, 2020].</p>
 <p><br></p>
-<p><img src="../imgs/pkg_deps_bar_mask-1.png" width="1000px" style="display: block; margin: auto;"></p>
+<p><img src="../../../_temp/Library/CondaSysReqs/extdata/pkg_deps_bar_mask-1.png" width="1000px" style="display: block; margin: auto;"></p>
 <p>The Herper package includes functions that allow the easy management of these external dependencies from within the R console.</p>
 <p><br></p>
 </div>
@@ -119,31 +119,33 @@
 <h2 class="hasAnchor">
 <a href="#simple-install-of-conda-packages-from-r-console-using-install_condatools-" class="anchor"></a>Simple install of Conda packages from R console using <strong>install_CondaTools</strong>.</h2>
 <p>The <strong>install_CondaTools()</strong> function allows the user to specify required Conda software and the desired environment to install into.</p>
-<p>Miniconda is installed as part of the process (by default into the r-reticulate’s default Conda location). If you already have Miniconda installed you specify the path with the <em>pathToMiniConda</em> parameter.</p>
+<p>Miniconda is installed as part of the process (by default into the r-reticulate’s default Conda location - /Users/runner/Library/r-miniconda) and the user’s requested conda environment built within the same directory (by default /Users/runner/Library/r-miniconda/envs/USERS_ENVIRONMENT_HERE).</p>
+<p>If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the <em>pathToMiniConda</em> parameter.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>, <span class="st">"myCondaToolSet"</span>)
+<span class="kw">myMiniconda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(),<span class="st">"Test"</span>)
+<span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>, <span class="st">"herper"</span>, pathToMiniConda = <span class="kw">myMiniconda</span>)
 </pre></div>
 <pre><code>## $pathToConda
-## [1] "/tmp/r-miniconda/bin/conda"
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnILtSa/Test/bin/conda"
 ## 
 ## $environment
-## [1] "myCondaToolSet"
+## [1] "herper"
 ## 
 ## $pathToEnvBin
-## [1] "/tmp/r-miniconda/envs/myCondaToolSet/bin"</code></pre>
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnILtSa/Test/envs/herper/bin"</code></pre>
 <p><br> We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"macs2"</span>, <span class="st">"myCondaToolSet"</span>, updateEnv = <span class="fl">TRUE</span>)
+<span class="kw">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"samtools"</span>, <span class="st">"herper"</span>, updateEnv = <span class="fl">TRUE</span>, pathToMiniConda = <span class="kw">myMiniconda</span>)
 <span class="kw">pathToConda</span>
 </pre></div>
 <pre><code>## $pathToConda
-## [1] "/tmp/r-miniconda/bin/conda"
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnILtSa/Test/bin/conda"
 ## 
 ## $environment
-## [1] "myCondaToolSet"
+## [1] "herper"
 ## 
 ## $pathToEnvBin
-## [1] "/tmp/r-miniconda/envs/myCondaToolSet/bin"</code></pre>
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnILtSa/Test/envs/herper/bin"</code></pre>
 <p><br></p>
 </div>
 <div id="install-r-package-dependencies-with-install_condasysreqs-" class="section level2">
@@ -151,7 +153,7 @@
 <a href="#install-r-package-dependencies-with-install_condasysreqs-" class="anchor"></a>Install R package dependencies with <strong>install_CondaSysReqs</strong>.</h2>
 <p>The <strong>install_CondaSysReqs</strong> checks the System Requirements for the specified R package, and uses Conda to install this software.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="../reference/install_CondaSysReqs.html">install_CondaSysReqs</a></span>(<span class="st">"basecallQC"</span>)
+<span class="fu"><a href="../reference/install_CondaSysReqs.html">install_CondaSysReqs</a></span>(<span class="st">"basecallQC"</span>, pathToMiniConda = <span class="kw">myMiniconda</span>)
 </pre></div>
 <p>By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the <em>env</em> parameter. As with <strong>install_CondaTools()</strong>, user can control which version of Miniconda with the parameter <em>pathToMiniConda</em>, and whether they want to amend an existing environment with the parameter <em>updateEnv</em>.</p>
 <p><br></p>
@@ -161,17 +163,17 @@
 <a href="#export-of-conda-environments-to-yaml-files-using-export_condaenv-" class="anchor"></a>Export of Conda environments to YAML files using <strong>export_CondaEnv</strong>.</h2>
 <p>The <strong>export_CondaEnv</strong> function allows the user to export the environment information to a <em>.yml</em> file. These environment YAML files contain all essential information about the package, allowing for reproducibilty and easy distribution of Conda system configuration for collaboration.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"myCondaToolSet_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
-<span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"myCondaToolSet"</span>, <span class="kw">yml_name</span>)
+<span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"herper_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
+<span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"herper"</span>, <span class="kw">yml_name</span>,pathToMiniConda = <span class="kw">myMiniconda</span>)
 </pre></div>
-<pre><code>## [1] "myCondaToolSet_20200914.yml"</code></pre>
+<pre><code>## [1] "herper_20200915.yml"</code></pre>
 <p><br></p>
 <p>The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the <em>depends</em> paramter.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"myCondaToolSet_nodeps_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
-<span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"myCondaToolSet"</span>, <span class="kw">yml_name</span>, depends=<span class="fl">FALSE</span>)
+<span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"herper_nodeps_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
+<span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"herper"</span>, <span class="kw">yml_name</span>, depends=<span class="fl">FALSE</span>, pathToMiniConda = <span class="kw">myMiniconda</span>)
 </pre></div>
-<pre><code>## [1] "myCondaToolSet_nodeps_20200914.yml"</code></pre>
+<pre><code>## [1] "herper_nodeps_20200915.yml"</code></pre>
 <p><br></p>
 </div>
 <div id="import-of-conda-environments-from-yaml-files-using-import_condaenv-" class="section level2">
@@ -180,7 +182,7 @@
 <p>The <strong>import_CondaEnv</strong> function allows the user to create a new conda environment from a <em>.yml</em> file. These can be previously exported from <strong>export_CondaEnv</strong>, conda, renv or manually created.</p>
 <p>Users can simply provide a path to the YAML file for import. They can also specify the environment name, but by default the name will be taken from the YAML.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="../reference/export_CondaEnv.html">import_CondaEnv</a></span>(<span class="kw">yml_name</span>, <span class="st">"myCondaToolSet2"</span>)
+<span class="fu"><a href="../reference/export_CondaEnv.html">import_CondaEnv</a></span>(<span class="kw">yml_name</span>, <span class="st">"herper2"</span>,<span class="kw">myMiniconda</span>)
 </pre></div>
 <p><br></p>
 </div>
@@ -197,7 +199,7 @@
 <span class="kw">pathToSalmon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">pathToConda</span><span class="op">$</span><span class="kw">pathToEnvBin</span>, <span class="st">"salmon"</span>)
 <span class="kw">pathToSalmon</span>
 </pre></div>
-<pre><code>## [1] "/tmp/r-miniconda/envs/myCondaToolSet/bin/salmon"</code></pre>
+<pre><code>## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpnILtSa/Test/envs/herper/bin/salmon"</code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="kw">Salmon_help</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">pathToSalmon</span>,<span class="st">"-h"</span>), intern = <span class="fl">TRUE</span>)
 <span class="kw">Salmon_help</span>
@@ -240,7 +242,7 @@
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] CondaSysReqs_0.9.9 reticulate_1.16    BiocStyle_2.16.0  
+## [1] CondaSysReqs_0.99.0 reticulate_1.16     BiocStyle_2.16.0   
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.5          cpp11_0.2.1         knitr_1.29          magrittr_1.5       

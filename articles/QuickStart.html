@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Herper Quick Start Guide • CondaSysReqs</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CondaSysReqs</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
                         <h4 class="author">Matt Paul - <a href="mailto:mpaul@rockefeller.edu" class="email">mpaul@rockefeller.edu</a>
 </h4>
             
-            <h4 class="date">09/14/2020</h4>
+            <h4 class="date">09/15/2020</h4>
       
       
       <div class="hidden name"><code>QuickStart.Rmd</code></div>
@@ -113,20 +113,12 @@
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>, <span class="st">"myCondaToolSet"</span>)
 </pre></div>
-<pre><code>## $pathToConda
-## [1] "/tmp/r-miniconda/bin/conda"
-## 
-## $environment
-## [1] "myCondaToolSet"
-## 
-## $pathToEnvBin
-## [1] "/tmp/r-miniconda/envs/myCondaToolSet/bin"</code></pre>
 </div>
 <div id="install-r-package-dependencies-with-install_condasysreqs-" class="section level2">
 <h2 class="hasAnchor">
 <a href="#install-r-package-dependencies-with-install_condasysreqs-" class="anchor"></a>Install R package dependencies with <strong>install_CondaSysReqs</strong>.</h2>
 <p>The <strong>install_CondaSysReqs</strong> checks the System Requirements for the specified R package, and uses Conda to install this software.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="../reference/install_CondaSysReqs.html">install_CondaSysReqs</a></span>(<span class="st">"basecallQC"</span>)
 </pre></div>
 </div>
@@ -138,7 +130,7 @@
 <div id="session-information" class="section level2">
 <h2 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session Information</h2>
-<div class="sourceCode" id="cb6"><pre class="downlit">
+<div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()
 </pre></div>
 <pre><code>## R version 4.0.2 (2020-06-22)
@@ -156,7 +148,7 @@
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] CondaSysReqs_0.9.9 reticulate_1.16    BiocStyle_2.16.0  
+## [1] CondaSysReqs_0.99.0 reticulate_1.16     BiocStyle_2.16.0   
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.5          cpp11_0.2.1         knitr_1.29          magrittr_1.5       
