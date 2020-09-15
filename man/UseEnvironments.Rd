@@ -34,6 +34,10 @@ local_CondaEnv(
 )
 }
 \arguments{
+\item{new}{The name of conda environment to include in the temporary R environment.}
+
+\item{code}{Code to execute in the temporary R environment}
+
 \item{pathToMiniConda}{Path to miniconda.}
 
 \item{path_action}{Should new values "replace", "prefix" or "suffix" existing PATH variable.}
@@ -52,7 +56,7 @@ local_CondaEnv(
 
 \item{javahome_additional}{Additional paths to suffix to existing JAVA_HOME variable.}
 
-\item{env}{conda environment}
+\item{.local_envir}{The environment to use for scoping.}
 }
 \description{
 Use Conda environments

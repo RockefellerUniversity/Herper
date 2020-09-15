@@ -58,7 +58,7 @@ Miniconda is installed as part of the process (by default into the r-reticulate'
 install_CondaTools("salmon", "myCondaToolSet")
 ```
 
-```{r, echo=F, eval=T}
+```{r, echo=F, eval=F}
 # We are installing in our tmp directory
 install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/r-miniconda")
 ```
