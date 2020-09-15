@@ -113,26 +113,26 @@
 <span class="fu"><a href="reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>, <span class="st">"herper"</span>, pathToMiniConda = <span class="kw">myMiniconda</span>)
 </pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## $pathToConda</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpDlcJNA/Test/bin/conda"</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvQdDto/Test/bin/conda"</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co">## </span></span>
 <span id="cb4-4"><a href="#cb4-4"></a><span class="co">## $environment</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a><span class="co">## [1] "herper"</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a><span class="co">## </span></span>
 <span id="cb4-7"><a href="#cb4-7"></a><span class="co">## $pathToEnvBin</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpDlcJNA/Test/envs/herper/bin"</span></span></code></pre></div>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvQdDto/Test/envs/herper/bin"</span></span></code></pre></div>
 <p><br> We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"samtools"</span>, <span class="st">"herper"</span>, updateEnv = <span class="fl">TRUE</span>, pathToMiniConda = <span class="kw">myMiniconda</span>)
 <span class="kw">pathToConda</span>
 </pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## $pathToConda</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpDlcJNA/Test/bin/conda"</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvQdDto/Test/bin/conda"</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="co">## </span></span>
 <span id="cb6-4"><a href="#cb6-4"></a><span class="co">## $environment</span></span>
 <span id="cb6-5"><a href="#cb6-5"></a><span class="co">## [1] "herper"</span></span>
 <span id="cb6-6"><a href="#cb6-6"></a><span class="co">## </span></span>
 <span id="cb6-7"><a href="#cb6-7"></a><span class="co">## $pathToEnvBin</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpDlcJNA/Test/envs/herper/bin"</span></span></code></pre></div>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvQdDto/Test/envs/herper/bin"</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div id="install-r-package-dependencies-with-install_condasysreqs" class="section level2">
@@ -186,7 +186,7 @@
 <span class="kw">pathToSalmon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">pathToConda</span><span class="op">$</span><span class="kw">pathToEnvBin</span>, <span class="st">"salmon"</span>)
 <span class="kw">pathToSalmon</span>
 </pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpDlcJNA/Test/envs/herper/bin/salmon"</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvQdDto/Test/envs/herper/bin/salmon"</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="kw">Salmon_help</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">pathToSalmon</span>,<span class="st">"-h"</span>), intern = <span class="fl">TRUE</span>)
 <span class="kw">Salmon_help</span>
