@@ -52,16 +52,48 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   }
 
   packageDesciptions <- utils::packageDescription(pkg,fields = "SystemRequirements")
+  if(is.na(packageDesciptions)){
+    stop(paste(pkg, "has no external System Dependencies to install"))
+  }
+  
+  #packageDesciptions<-"samtools==1.10, rmats>=v4.1.0, salmon"
   if(SysReqsAsJSON){
     CondaSysReqJson <- gsub("CondaSysReq:","",packageDesciptions[grepl("^CondaSysReq",packageDesciptions)])
     CondaSysReq <- rjson::fromJSON(json_str=CondaSysReqJson)
   }else{
     CondaSysReq <- list()
     CondaSysReq$main <- list()
-      sysreqs <- unlist(strsplit(packageDesciptions,SysReqsSep))
-      CondaSysReq$main$packages <-unlist(lapply(sysreqs,function(x)gsub("^\\s+|\\s+$","",x)))
-      CondaSysReq$main$channels <- NULL     
+    #Parse Reqs
+    sysreqs <- unlist(strsplit(packageDesciptions,SysReqsSep))
+    
+    version_sep<-c("[>)(=]")
+    
+    pkg_and_vers<-lapply(sysreqs, function(x) {
+      x<-gsub("version|versions|Version|Versions","",x)
+      nm<-trimws(unlist(strsplit(x, version_sep, perl = T)))
+      nm<-nm[!(nchar(nm)==0)]
+    })
+    parsed_count<-sapply(pkg_and_vers, length)
+  if(sum(parsed_count>2)>0){
+    stop(paste("System requirements not parsed succesfully. Issues with:",sysreqs[parsed_count>2]))
   }
+  
+  idx1<-grep(">=",sysreqs, fixed = T)
+  idx2<-setdiff(grep("=",sysreqs, fixed = T), idx1)
+  if(length(idx1)>0){pkg_and_vers[[idx1]] <- paste0(pkg_and_vers[[idx1]], collapse=">=")}
+  if(length(idx2)>0){pkg_and_vers[[idx2]] <- paste0(pkg_and_vers[[idx2]], collapse="==")}
+  
+  CondaSysReq$main$packages <- unlist(pkg_and_vers)
+  CondaSysReq$main$channels <- NULL     
+  }
+  
+  # Mask GNU and C++
+  idx <- grepl("GNU|C++",CondaSysReq$main$packages,perl=T)
+  if(sum(idx)>0){
+    CondaSysReq$main$packages<-CondaSysReq$main$packages[!idx]
+    message('C++ and/or GNU Make will not been installed, to avoid conflicts. If you do want these installed in your conda, please use the install_CondaTools function.')
+    if(!length(CondaSysReq$main$packages)>0){
+      stop("There are no pacakges to install beyond C++ and/or GNU Make.")}}
   
   pathToCondaInstall <- pathToMiniConda
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
@@ -126,6 +158,18 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   condaPathExists <- miniconda_exists(pathToCondaInstall)
   if(!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
   
+  #Backup conda config file. Updates will be made to config for search, but want to undo these changes. 
+  if(file.exists("~/.condarc")){
+    cp_pass<-file.copy("~/.condarc", "~/tmp_condarc")
+    if(cp_pass){
+      unlink("~/.condarc")
+    }else{stop("Backup of your .condarc file failed.")}
+    on.exit(file.copy("~/tmp_condarc", "~/.condarc", overwrite = T))
+    on.exit(unlink("~/tmp_condarc"))
+  }else{
+    on.exit(unlink("~/.condarc"))
+  }
+  
   #Set Channels
   defaultChannels <- c("bioconda","defaults","conda-forge")
   channels <- unique(c(channels,defaultChannels))
@@ -137,7 +181,7 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   if(is.null(vers)){
     checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda)
   }else{
-    checks<-sapply(1:length(tools), function(x) conda_search(tools[x], package_version=vers[x], print_out=F, pathToMiniConda=OGpathToMiniConda))
+    checks<-sapply(1:length(tools), function(x) conda_search(tools[x], package_version=vers[x], print_out=F, pathToMiniConda=pathToMiniConda))
     tools<-paste(tools,vers,sep="=")
   }
   
