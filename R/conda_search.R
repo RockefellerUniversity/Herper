@@ -24,7 +24,7 @@
 #' 
 
 conda_search <- function(package, package_version = NULL, channel = NULL, print_out=TRUE, pathToMiniConda=NULL){
- #pathToMiniConda="/tmp"
+  #pathToMiniConda="/tmp"
   
   if(is.null(pathToMiniConda)){
     pathToMiniConda <- reticulate::miniconda_path()
@@ -36,11 +36,13 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
   
   if (!is.null(channel)){
-    channel <- paste0("-c ", channel)
+    channel_command <- paste0("-c ", channel)
+  }else{
+    channel_command <- NULL
   }
   
   #message(paste0('Using conda at: ', pathToConda))
-  condaSearch <- suppressWarnings(system(paste(pathToConda,"search --quiet --json", package, channel),
+  condaSearch <- suppressWarnings(system(paste(pathToConda,"search --quiet --json", package, channel_command),
                                          intern = TRUE,
                                          ignore.stderr = TRUE) # if we want to include the output for 'conda search', which is a pretty informative error message, set this to FALSE
   ) %>%
@@ -49,16 +51,23 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
   
   if ("exception_name" %in% names(condaSearch)){
     if(condaSearch$exception_name == "PackagesNotFoundError"){
-
-        if(print_out){
-          message(paste0("package ",package, " not found"))
-          return(FALSE)
-        }else{
-          return(list(exact_match=F, version_matches=NULL))  
-        }
-      }else{
+      
       if(print_out){
-        message("conda command failed, but not sure why. We didn't get the normal error message we look for when a package isn't found")
+        message(paste0("package ",package, " not found"))
+        return(FALSE)
+      }else{
+        return(list(exact_match=F, version_matches=NULL))  
+      }
+    }else if (condaSearch$exception_name == "UnavailableInvalidChannel"){
+      if(print_out){
+        message(paste0("channel ",channel, " not found"))
+        return(FALSE)
+      }else{
+        return(list(exact_match=F, version_matches=NULL))  
+      }
+    }else{
+      if(print_out){
+        message("conda command failed, but not sure why. We didn't get the normal error messages we look for when a package or channel isn't found")
         return(FALSE)
       }else{
         return(list(exact_match=F, version_matches=NULL))  
@@ -67,9 +76,9 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
   }else if (package %in% names(condaSearch)){
     condaSearch_df <- do.call(rbind, lapply(condaSearch[[1]], function(x) c(name = x$name, 
                                                                             version = x$version, 
-                                                                            build = x$build, 
                                                                             channel = x$channel))) %>%
       as.data.frame()
+    condaSearch_df <- condaSearch_df[!duplicated(condaSearch_df$version, fromLast = TRUE), ]
     
     if (!is.null(package_version)){
       package_version <- as.character(package_version)
@@ -77,7 +86,7 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
         sub_df <- condaSearch_df[grepl(package_version, condaSearch_df$version), ]
         rownames(sub_df) <- NULL
         if(print_out){
-          message(paste(package, "version", package_version, "is available."))
+          message(paste(package, "version", package_version, "is available from the following channels:"))
           print(sub_df)
           return(TRUE)
         }else{
@@ -85,16 +94,16 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
         }
       } else{
         if(print_out){
-          message(paste(package, "is available, but version", package_version, "is not. The following builds and channels are currently available:"))
+          message(paste(package, "is available, but version", package_version, "is not. The following versions are currently available:"))
           print(condaSearch_df)
           return(FALSE)
         }else{
           return(list(exact_match=F, version_matches=condaSearch_df))  
         }
       }
-    } else{
+    }else{
       if(print_out){
-        message(paste(package, "is available from the following builds and channels:"))
+        message(paste(package, "is available in the following versions and channels:"))
         print(condaSearch_df)
         return(TRUE)
       }else{
@@ -109,7 +118,7 @@ conda_search <- function(package, package_version = NULL, channel = NULL, print_
                      "', but mutliple packages contain this text, they are: ",
                      paste(names(condaSearch), 
                            collapse = ", ")
-                     ))
+      ))
       return(FALSE)
     }else{
       return(list(exact_match=F, version_matches=condaSearch_df))  
