@@ -66,7 +66,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
     #Parse Reqs
     sysreqs <- unlist(strsplit(packageDesciptions,SysReqsSep))
     
-    version_sep<-c("[>)(=]")
+    version_sep<-c("[<>)(=]")
     
     pkg_and_vers<-lapply(sysreqs, function(x) {
       x<-gsub("version|versions|Version|Versions","",x)
@@ -79,9 +79,11 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   }
   
   idx1<-grep(">=",sysreqs, fixed = T)
-  idx2<-setdiff(grep("=",sysreqs, fixed = T), idx1)
+  idx2<-grep("<=",sysreqs, fixed = T)
+  idx3<-setdiff(setdiff(grep("=",sysreqs, fixed = T), idx1), idx2)
   if(length(idx1)>0){pkg_and_vers[[idx1]] <- paste0(pkg_and_vers[[idx1]], collapse=">=")}
-  if(length(idx2)>0){pkg_and_vers[[idx2]] <- paste0(pkg_and_vers[[idx2]], collapse="==")}
+  if(length(idx2)>0){pkg_and_vers[[idx2]] <- paste0(pkg_and_vers[[idx2]], collapse=">=")}
+  if(length(idx3)>0){pkg_and_vers[[idx3]] <- paste0(pkg_and_vers[[idx3]], collapse="==")}
   
   CondaSysReq$main$packages <- unlist(pkg_and_vers)
   CondaSysReq$main$channels <- NULL     
@@ -145,7 +147,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
 #' condaPaths <- install_CondaTools("salmon","salmon",pathToMiniConda=condaDir)
 #' system2(file.path(condaPaths$pathToEnvBin,"salmon"),args = "--help")
 #' @export
-install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda=NULL,updateEnv=FALSE){
+install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,updateEnv=FALSE){
   # pathToMiniConda <- "~/Desktop/testConda"
   
   #Setup miniconda 
@@ -159,23 +161,26 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   if(!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
   
   #Backup conda config file. Updates will be made to config for search, but want to undo these changes. 
-  if(file.exists("~/.condarc")){
-    cp_pass<-file.copy("~/.condarc", "~/tmp_condarc")
-    if(cp_pass){
-      unlink("~/.condarc")
-    }else{stop("Backup of your .condarc file failed.")}
-    on.exit(file.copy("~/tmp_condarc", "~/.condarc", overwrite = T))
-    on.exit(unlink("~/tmp_condarc"))
-  }else{
-    on.exit(unlink("~/.condarc"))
-  }
+  # if(file.exists("~/.condarc")){
+  #   cp_pass<-file.copy("~/.condarc", "~/tmp_condarc")
+  #   if(cp_pass){
+  #     unlink("~/.condarc")
+  #   }else{stop("Backup of your .condarc file failed.")}
+  #   on.exit(file.copy("~/tmp_condarc", "~/.condarc", overwrite = T))
+  #   on.exit(unlink("~/tmp_condarc"))
+  # }else{
+  #   on.exit(unlink("~/.condarc"))
+  # }
   
-  #Set Channels
-  defaultChannels <- c("bioconda","defaults","conda-forge")
-  channels <- unique(c(channels,defaultChannels))
-  pathToConda <- file.path(pathToCondaInstall,"bin","conda")
-  set<-suppressWarnings(sapply(channels, function(x) system(paste(pathToConda, "config --add channels", x),intern = TRUE,
-                                                       ignore.stderr = TRUE)))
+  # #Set Channels
+  # defaultChannels <- c("bioconda","defaults","conda-forge")
+  # channels <- unique(c(channels,defaultChannels))
+  # pathToConda <- file.path(pathToCondaInstall,"bin","conda")
+  # set<-suppressWarnings(sapply(channels, function(x) system(paste(pathToConda, "config --add channels", x),intern = TRUE,
+  #                                                      ignore.stderr = TRUE)))
+  
+  vers
+  
   
   #Check package exists
   if(is.null(vers)){
