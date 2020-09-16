@@ -26,7 +26,6 @@ load(system.file("extdata/Bioc_Pkg_Details.RData",package="CondaSysReqs"))
 
 ---
 
-
 ## What is Herper?
 The Herper package is a simple toolset to install and manage Conda packages and environments from R.
 
