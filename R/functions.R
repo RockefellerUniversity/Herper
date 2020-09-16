@@ -52,7 +52,8 @@ conda_create_silent <- function(envname = NULL,
   for (ch in channels)
     args <- c(args, "-c", ch)
   
-  result <- system2(conda, shQuote(args), stdout = FALSE, stderr = FALSE)
+  result <- system2(conda, shQuote(args), stderr = FALSE, stdout = paste0("/Users/douglasbarrows/Desktop/", envname, "_environment_create_stdOut.txt"))
+  
   if (result != 0L) {
     stop("Error ", result, " occurred creating conda environment ", envname,
          call. = FALSE)
@@ -115,18 +116,17 @@ conda_install_silent <- function(envname = NULL,
   python <- tryCatch(conda_python(envname = envname, conda = conda), error = identity)  
   
   if (inherits(python, "error") || !file.exists(python)) {
-    conda_create_silent(envname, packages = python_package, conda = conda)
+    conda_create_silent(envname, packages = python_package, conda = conda) # create environment if doesn't exist
     python <- conda_python(envname = envname, conda = conda)
   } else if (!is.null(python_package)) {
     args <- reticulate:::conda_args("install", envname, python_package)
-    status <- system2(conda, shQuote(args), stdout = FALSE, stderr = FALSE)
+    status <- system2(conda, shQuote(args), stderr = FALSE, stdout = paste0("/Users/douglasbarrows/Desktop/", envname, "_python_install_stdOut.txt")) # install python into the environment if its not there
     if (status != 0L) {
       fmt <- "installation of '%s' into environment '%s' failed [error code %i]"
       msg <- sprintf(fmt, python_package, envname, status)
       stop(msg, call. = FALSE)
     }
   }
-  
   # delegate to pip if requested
   if (pip)
     return(pip_install(python, packages, pip_options = pip_options))
@@ -144,13 +144,14 @@ conda_install_silent <- function(envname = NULL,
     args <- c(args, "-c", ch)
   
   args <- c(args, python_package, packages)
-  result <- system2(conda, shQuote(args), stdout = FALSE, stderr = FALSE)
+  
+  result <- system2(conda, shQuote(args), stderr = FALSE, stdout = paste0("/Users/douglasbarrows/Desktop/",envname, "_",paste(packages, collapse = "_") ,"_package_install_stdOut.txt"))
   
   # check for errors
   if (result != 0L) {
     fmt <- "one or more Python packages failed to install [error code %i]"
     stopf(fmt, result)
-  }
+  } 
   
   
   invisible(packages)
