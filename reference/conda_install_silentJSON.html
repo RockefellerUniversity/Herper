@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Use Conda environments. — with_CondaEnv • CondaSysReqs</title>
+<title>Silent/json version of reticulate's conda_install — conda_install_silentJSON • CondaSysReqs</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Use Conda environments. — with_CondaEnv" />
-<meta property="og:description" content="Use Conda environments
-Use Conda environments" />
+<meta property="og:title" content="Silent/json version of reticulate's conda_install — conda_install_silentJSON" />
+<meta property="og:description" content="Reticulate's conda_install with silent output and json output capability" />
 
 
 
@@ -119,111 +118,60 @@ Use Conda environments" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Use Conda environments.</h1>
+    <h1>Silent/json version of reticulate's conda_install</h1>
     
-    <div class="hidden name"><code>UseEnvironments.Rd</code></div>
+    <div class="hidden name"><code>conda_install_silentJSON.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use Conda environments</p>
-<p>Use Conda environments</p>
+    <p>Reticulate's conda_install with silent output and json output capability</p>
     </div>
 
-    <pre class="usage"><span class='fu'>with_CondaEnv</span>(
-  <span class='kw'>new</span>,
-  <span class='kw'>code</span>,
-  pathToMiniConda = <span class='kw'>NULL</span>,
-  path_action = <span class='st'>"prefix"</span>,
-  pythonpath_action = <span class='st'>"replace"</span>,
-  perl5lib_action = <span class='st'>"replace"</span>,
-  javahome_action = <span class='st'>"replace"</span>,
-  path_additional = <span class='kw'>NULL</span>,
-  pythonpath_additional = <span class='kw'>NULL</span>,
-  perl5lib_additional = <span class='kw'>NULL</span>,
-  javahome_additional = <span class='kw'>NULL</span>
-)
-
-<span class='fu'>local_CondaEnv</span>(
-  <span class='kw'>new</span>,
-  pathToMiniConda = <span class='kw'>NULL</span>,
-  path_action = <span class='st'>"prefix"</span>,
-  pythonpath_action = <span class='st'>"replace"</span>,
-  perl5lib_action = <span class='st'>"replace"</span>,
-  javahome_action = <span class='st'>"replace"</span>,
-  path_additional = <span class='kw'>NULL</span>,
-  pythonpath_additional = <span class='kw'>NULL</span>,
-  perl5lib_additional = <span class='kw'>NULL</span>,
-  javahome_additional = <span class='kw'>NULL</span>,
-  .local_envir = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>()
+    <pre class="usage"><span class='fu'>conda_install_silentJSON</span>(
+  envname = <span class='kw'>NULL</span>,
+  <span class='kw'>packages</span>,
+  forge = <span class='fl'>TRUE</span>,
+  channel = <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  pip = <span class='fl'>FALSE</span>,
+  pip_options = <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(),
+  pip_ignore_installed = <span class='fl'>FALSE</span>,
+  conda = <span class='st'>"auto"</span>,
+  python_version = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>new</th>
-      <td><p>The name of conda environment to include in the temporary R environment.</p></td>
+      <th>forge</th>
+      <td><p>Boolean; include the [Conda Forge](https://conda-forge.org/)
+repository?</p></td>
     </tr>
     <tr>
-      <th>code</th>
-      <td><p>Code to execute in the temporary R environment</p></td>
+      <th>channel</th>
+      <td><p>An optional character vector of Conda channels to include.
+When specified, the `forge` argument is ignored. If you need to
+specify multiple channels, including the Conda Forge, you can use
+`c("conda-forge", &lt;other channels&gt;)`.</p></td>
     </tr>
     <tr>
-      <th>pathToMiniConda</th>
-      <td><p>Path to miniconda.</p></td>
+      <th>pip_options</th>
+      <td><p>An optional character vector of additional command line
+arguments to be passed to `pip` if `pip` is used.</p></td>
     </tr>
     <tr>
-      <th>path_action</th>
-      <td><p>Should new values "replace", "prefix" or "suffix" existing PATH variable.</p></td>
-    </tr>
-    <tr>
-      <th>pythonpath_action</th>
-      <td><p>Should new values "replace", "prefix" or "suffix" existing PYTHONPATH variable.</p></td>
-    </tr>
-    <tr>
-      <th>perl5lib_action</th>
-      <td><p>Should new values "replace", "prefix" or "suffix" existing PERL5LIB variable.</p></td>
-    </tr>
-    <tr>
-      <th>javahome_action</th>
-      <td><p>Should new values "replace", "prefix" or "suffix" existing JAVA_HOME variable.</p></td>
-    </tr>
-    <tr>
-      <th>path_additional</th>
-      <td><p>Additional paths to suffix to existing PATH variable.</p></td>
-    </tr>
-    <tr>
-      <th>pythonpath_additional</th>
-      <td><p>Additional paths to suffix to existing PYTHONPATH variable.</p></td>
-    </tr>
-    <tr>
-      <th>perl5lib_additional</th>
-      <td><p>Additional paths to suffix to existing PERL5LIB variable.</p></td>
-    </tr>
-    <tr>
-      <th>javahome_additional</th>
-      <td><p>Additional paths to suffix to existing JAVA_HOME variable.</p></td>
-    </tr>
-    <tr>
-      <th>.local_envir</th>
-      <td><p>The environment to use for scoping.</p></td>
+      <th>pip_ignore_installed</th>
+      <td><p>Ignore installed versions when using pip. This is
+`TRUE` by default so that specific package versions can be installed even
+if they are downgrades. The `FALSE` option is useful for situations where
+you don't want a pip install to attempt an overwrite of a conda binary
+package (e.g. SciPy on Windows which is very difficult to install via pip
+due to compilation requirements).</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Thomas Carroll</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>testYML</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/HerperTestPkg_0.1.0.yml"</span>,package=<span class='st'>"CondaSysReqs"</span>)
-<span class='kw'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),<span class='st'>"r-miniconda"</span>)
-<span class='fu'><a href='export_CondaEnv.html'>import_CondaEnv</a></span>(<span class='kw'>testYML</span>,<span class='st'>"HerperTest"</span>,pathToMiniConda=<span class='kw'>condaDir</span>)
-<span class='fu'>with_CondaEnv</span>(<span class='st'>"HerperTest"</span>,<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span>(command = <span class='st'>"rmats.py"</span>,args = <span class='st'>"-h"</span>),pathToMiniConda = <span class='kw'>condaDir</span>)
-</div><div class='output co'>#&gt; <span class='message'>/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmptX82GX/r-miniconda/envs/HerperTest/lib/python3.7/site-packages</span></div><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='fu'><a href='install_CondaTools.html'>install_CondaTools</a></span>(<span class='st'>"cytoscape"</span>,<span class='st'>"cytoscape"</span>,updateEnv = <span class='fl'>TRUE</span>,pathToMiniConda = <span class='kw'>condaDir</span>)
-  <span class='fu'>with_CondaEnv</span>(<span class='st'>"cytoscape"</span>,<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span>(command = <span class='st'>"cytoscape.sh"</span>),pathToMiniConda = <span class='kw'>condaDir</span>)
-}
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
