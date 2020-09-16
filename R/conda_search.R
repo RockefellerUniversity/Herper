@@ -35,7 +35,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
   
   if (!is.null(channel)){
-    channel_command <- paste0("-c ", channel)
+    channel_command <- paste(sapply(channel, function(x){paste0(" -c ",x)}), collapse="")
   }else{
     channel_command <- NULL
   }

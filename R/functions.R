@@ -400,15 +400,15 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
   #   on.exit(unlink("~/.condarc"))
   # }
   
-  # #Set Channels
-  # defaultChannels <- c("bioconda","defaults","conda-forge")
-  # channels <- unique(c(channels,defaultChannels))
-  # pathToConda <- file.path(pathToCondaInstall,"bin","conda")
+  #Set Channels
+  defaultChannels <- c("bioconda","defaults","conda-forge")
+  channels <- unique(c(channels,defaultChannels))
+  pathToConda <- file.path(pathToCondaInstall,"bin","conda")
   # set<-suppressWarnings(sapply(channels, function(x) system(paste(pathToConda, "config --add channels", x),intern = TRUE,
   #                                                      ignore.stderr = TRUE)))
   
   
-  checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda)
+  checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda, channel=channels)
   
   if(sum(checks[1,]==F)>0){
     idx<-which(checks[1,]==F)
