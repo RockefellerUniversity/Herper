@@ -7,15 +7,18 @@
 install_CondaTools(
   tools,
   env,
+  vers = NULL,
   channels = NULL,
   pathToMiniConda = NULL,
   updateEnv = FALSE
 )
 }
 \arguments{
-\item{tools}{software to install using conda.}
+\item{tools}{Vector of software to install using conda.}
 
 \item{env}{Name of Conda environment to install tools into.}
+
+\item{vers}{Vector of software version numbers to install using conda}
 
 \item{channels}{Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)}
 
@@ -30,7 +33,8 @@ Nothing returned. Output written to file.
 Install Conda requirements
 }
 \examples{
-condaPaths <- install_CondaTools("salmon","salmon",pathToMiniConda=tempdir())
+condaDir <- file.path(tempdir(),"r-miniconda")
+condaPaths <- install_CondaTools("salmon","salmon",pathToMiniConda=condaDir)
 system2(file.path(condaPaths$pathToEnvBin,"salmon"),args = "--help")
 }
 \author{

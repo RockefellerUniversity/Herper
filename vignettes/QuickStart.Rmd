@@ -8,7 +8,7 @@ output:
   number_sections: yes
   toc: true
 vignette: >
-  %\VignetteIndexEntry{CondaSysReqs}
+  %\VignetteIndexEntry{Quick Start}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   %\usepackage[utf8]{inputenc}
@@ -58,9 +58,9 @@ Miniconda is installed as part of the process (by default into the r-reticulate'
 install_CondaTools("salmon", "myCondaToolSet")
 ```
 
-```{r, echo=F, eval=T}
+```{r, echo=F, eval=F}
 # We are installing in our tmp directory
-install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp")
+install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/r-miniconda")
 ```
 
 ## Install R package dependencies with **install_CondaSysReqs**. 
