@@ -36,7 +36,6 @@ Many R packages require the use of external dependencies. Often these dependenci
 
 ```{r, echo=F, out.width = "1000px", fig.align="center"}
 knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png",package="CondaSysReqs"))
-
 ```
 
 The Herper package includes functions that allow the easy management of these external dependencies from within the R console.
@@ -73,6 +72,7 @@ Miniconda is installed as part of the process (by default into the r-reticulate'
 If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the *pathToMiniConda* parameter.
 
 
+
 ```{r installCondaTools, echo=T, eval=T}
 myMiniconda <- file.path(tempdir(),"Test")
 install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
@@ -80,6 +80,7 @@ install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
 
 <br>
 We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
+
 
 ```{r ,updateCondaTools, echo=T, eval=T}
 pathToConda <- install_CondaTools("samtools", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)

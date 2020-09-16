@@ -60,7 +60,7 @@ install_CondaTools("salmon", "myCondaToolSet")
 
 ```{r, echo=F, eval=F}
 # We are installing in our tmp directory
-install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp")
+install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/r-miniconda")
 ```
 
 ## Install R package dependencies with **install_CondaSysReqs**. 
