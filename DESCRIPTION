@@ -1,23 +1,23 @@
 Package: CondaSysReqs
 Type: Package
 Title: Install Conda packages from System Requirements section of package Description file
-Version: 0.9.9
+Version: 0.99.0
 Author: Matt Paul and Thomas Carroll
 Authors@R: c(
-    person("Thomas", "Carroll", , "tcarroll@rockefeller.edu", role = c("aut", "cre"),
+    person("Thomas", "Carroll", , "tc.infomatics@gmail.com", role = c("aut", "cre"),
       comment = c(ORCID = "??")
     ),
-    person("Matt", "Paul", , "mpaul@rockefeller.edu", role = c("aut", "cre"),
+    person("Matt", "Paul", , "mpaul@rockefeller.edu", role = c("aut"),
       comment = c(ORCID = "0000-0002-3020-7729")
     ),
-    person("Doug", "Barrows", , "dbarrows@rockefeller.edu", role = c("aut", "cre"),
+    person("Doug", "Barrows", , "dbarrows@rockefeller.edu", role = c("aut"),
       comment = c(ORCID = "??")
     )
   )
 Maintainer: Thomas Carroll <tc.infomatics@gmail.com>
 Description: Install Conda packages from System Requirements section of package Description file.
-Depends: reticulate
-Imports: utils, rjson
+Depends: R (>= 3.5.0), reticulate
+Imports: utils, rjson, withr, magrittr
 Suggests: BiocStyle, testthat, knitr, rmarkdown
 License: GPL-3
 Encoding: UTF-8

@@ -19,21 +19,12 @@ knitr::opts_chunk$set(tidy=FALSE, cache=FALSE,
                       #dev="png",
                       message=FALSE, error=FALSE, warning=TRUE)
 options(width=100)
+load(system.file("extdata/Bioc_Pkg_Details.RData",package="CondaSysReqs"))
 ```
 
 <br>
 
 ---
-
-
-```{r, echo=F}
-if(basename(getwd())=="vignettes"){
-load("../Bioc_Pkg_Details.RData")
-}else{
-load("Bioc_Pkg_Details.RData")
-}
-```
-
 
 ## What is Herper?
 The Herper package is a simple toolset to install and manage Conda packages and environments from R.
@@ -43,15 +34,7 @@ Many R packages require the use of external dependencies. Often these dependenci
 <br>
 
 ```{r, echo=F, out.width = "1000px", fig.align="center"}
-
-if(basename(getwd())=="vignettes"){
-knitr::include_graphics("../imgs/pkg_deps_bar_mask-1.png")
-}else{
-knitr::include_graphics("imgs/pkg_deps_bar_mask-1.png")
-}
-
-
-
+knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png",package="CondaSysReqs"))
 ```
 
 The Herper package includes functions that allow the easy management of these external dependencies from within the R console.
@@ -83,24 +66,23 @@ library(CondaSysReqs)
 
 The **install_CondaTools()** function allows the user to specify required Conda software and the desired environment to install into.
 
-Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location). If you already have Miniconda installed you specify the path with the *pathToMiniConda* parameter.
+Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location - `r reticulate::miniconda_path()`) and the user's requested conda environment built within the same directory (by default `r file.path(reticulate::miniconda_path(),"envs","USERS_ENVIRONMENT_HERE")`). 
+
+If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the *pathToMiniConda* parameter.
 
 
-```{r, echo=T, eval=F}
-install_CondaTools("salmon", "myCondaToolSet")
+
+```{r installCondaTools, echo=T, eval=T}
+myMiniconda <- file.path(tempdir(),"Test")
+install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
 ```
-```{r, echo=F, eval=T,warning=F,message=F}
-install_CondaTools("salmon", "myCondaToolSet", pathToMiniConda="/tmp/")
-```
+
 <br>
 We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
 
-```{r, echo=T, eval=F}
-pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE)
-pathToConda
-```
-```{r, echo=F, eval=T}
-pathToConda <- install_CondaTools("macs2", "myCondaToolSet", updateEnv = TRUE, pathToMiniConda="/tmp/")
+
+```{r ,updateCondaTools, echo=T, eval=T}
+pathToConda <- install_CondaTools("samtools", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
 pathToConda
 ```
 
@@ -111,7 +93,7 @@ pathToConda
 The **install_CondaSysReqs** checks the System Requirements for the specified R package, and uses Conda to install this software.
 
 ```{r install_CondaSysReqs, eval=F}
-install_CondaSysReqs("basecallQC")
+install_CondaSysReqs("basecallQC", pathToMiniConda = myMiniconda)
 
 ```
 
@@ -124,16 +106,16 @@ By default these packages are installed in a new environment, which has the name
 The **export_CondaEnv** function allows the user to export the environment information to a *.yml* file. These environment YAML files contain all essential information about the package, allowing for reproducibilty and easy distribution of Conda system configuration for collaboration. 
 
 ```{r}
-yml_name <- paste0("myCondaToolSet_", format(Sys.Date(), "%Y%m%d"),".yml")
-export_CondaEnv("myCondaToolSet", yml_name)
+yml_name <- paste0("herper_", format(Sys.Date(), "%Y%m%d"),".yml")
+export_CondaEnv("herper", yml_name,pathToMiniConda = myMiniconda)
 ```
 
 <br>
 
 The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the *depends* paramter. 
 ```{r}
-yml_name <- paste0("myCondaToolSet_nodeps_", format(Sys.Date(), "%Y%m%d"),".yml")
-export_CondaEnv("myCondaToolSet", yml_name, depends=FALSE)
+yml_name <- paste0("herper_nodeps_", format(Sys.Date(), "%Y%m%d"),".yml")
+export_CondaEnv("herper", yml_name, depends=FALSE, pathToMiniConda = myMiniconda)
 ```
 
 <br>
@@ -145,7 +127,7 @@ The **import_CondaEnv** function allows the user to create a new conda environme
 Users can simply provide a path to the YAML file for import. They can also specify the environment name, but by default the name will be taken from the YAML. 
 
 ```{r}
-import_CondaEnv(yml_name, "myCondaToolSet2")
+import_CondaEnv(yml_name, "herper2",myMiniconda)
 ```
 
 <br>
@@ -168,7 +150,7 @@ Salmon_help
 
 <br>
 
-```{r, echo=F, eval=T, message=F, warning=F}
+```{r, echo=F, eval=FALSE, message=F, warning=F}
 unlink(dir(".",pattern=".yml"))
 ```
 
