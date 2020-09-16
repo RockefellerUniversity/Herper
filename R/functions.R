@@ -136,7 +136,6 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
 #' @author Thomas Carroll
 #' @param tools Vector of software to install using conda.
 #' @param env Name of Conda environment to install tools into.
-#' @param vers Vector of software version numbers to install using conda
 #' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param updateEnv Update existing package's conda environment if already installed.
@@ -179,27 +178,20 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
   # set<-suppressWarnings(sapply(channels, function(x) system(paste(pathToConda, "config --add channels", x),intern = TRUE,
   #                                                      ignore.stderr = TRUE)))
   
-  vers
   
-  
-  #Check package exists
-  if(is.null(vers)){
-    checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda)
-  }else{
-    checks<-sapply(1:length(tools), function(x) conda_search(tools[x], package_version=vers[x], print_out=F, pathToMiniConda=pathToMiniConda))
-    tools<-paste(tools,vers,sep="=")
-  }
+  checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda)
   
   if(sum(checks[1,]==F)>0){
     idx<-which(checks[1,]==F)
     sapply(idx, function(x){
-    message(paste0("The package ",tools[x], " has no matches. There are these versions available: \n"))
-    print(checks[2,x])})
+      message(paste0('The package "',tools[x], '" has no matches.\nThere are these packages and versions available: \n'))
+    if(is.null(dim(checks[2,x][[1]]))){
+    message(paste0(checks[2,x],"\n"))
+    }else{
+    print(checks[2,x])
+    }})
     stop("The package and/or version are not available in conda. Check above for details.")
-    }
-  
-
-  
+  }
   
   environment <- env
   pathToCondaPkgEnv <- file.path(pathToMiniConda,"envs",environment)
