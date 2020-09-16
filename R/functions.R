@@ -16,6 +16,86 @@ miniconda_conda <- function (path = miniconda_path())
   file.path(path, exe)
 }
 
+#####
+# following are internal functions from reticulate used in the conda_create_silentJSON() and conda_install_silentJSON() functions
+
+`%||%` <- function(x, y) if (is.null(x)) y else x
+
+python_environment_resolve <- function(envname = NULL, resolve = identity) {
+  
+  # use RETICULATE_PYTHON_ENV as default
+  envname <- envname %||% Sys.getenv("RETICULATE_PYTHON_ENV", unset = "r-reticulate")
+  
+  # treat environment 'names' containing slashes as full paths
+  if (grepl("[/\\]", envname)) {
+    envname <- normalizePath(envname, winslash = "/", mustWork = FALSE)
+    return(envname)
+  }
+  
+  # otherwise, resolve the environment name as necessary
+  resolve(envname)
+  
+}
+
+conda_args <- function(action, envname = NULL, ...) {
+  
+  envname <- condaenv_resolve(envname)
+  
+  # use '--prefix' as opposed to '--name' if envname looks like a path
+  args <- c(action, "--yes")
+  if (grepl("[/\\]", envname))
+    args <- c(args, "--prefix", envname, ...)
+  else
+    args <- c(args, "--name", envname, ...)
+  
+  args
+  
+}
+
+condaenv_resolve <- function(envname = NULL) {
+  
+  python_environment_resolve(
+    envname = envname,
+    resolve = identity
+  )
+  
+}
+
+pip_install <- function(python, packages, pip_options = character(), ignore_installed = FALSE) {
+  
+  # construct command line arguments
+  args <- c("-m", "pip", "install", "--upgrade")
+  if (ignore_installed)
+    args <- c(args, "--ignore-installed")
+  args <- c(args, pip_options)
+  args <- c(args, packages)
+  
+  # run it
+  result <- system2(python, args)
+  if (result != 0L) {
+    pkglist <- paste(shQuote(packages), collapse = ", ")
+    msg <- paste("Error installing package(s):", pkglist)
+    stop(msg, call. = FALSE)
+  }
+  
+  invisible(packages)
+  
+}
+
+stopf <- function(fmt, ..., call. = FALSE) {
+  stop(sprintf(fmt, ...), call. = call.)
+}
+
+###
+
+#' Silent/json version of reticulate's conda_create
+#'
+#' Reticulate's conda_create with silent output and json output capability
+#'
+#'
+#' @name conda_create_silentJSON
+#' @rdname conda_create_silentJSON
+#' 
 #' @param forge Boolean; include the [Conda Forge](https://conda-forge.org/)
 #'   repository?
 #'
@@ -28,7 +108,7 @@ miniconda_conda <- function (path = miniconda_path())
 #' @keywords internal
 #'
 #' @import reticulate
-conda_create_silent <- function(envname = NULL,
+conda_create_silentJSON <- function(envname = NULL,
                          packages = "python",
                          forge = TRUE,
                          channel = character(),
@@ -38,10 +118,10 @@ conda_create_silent <- function(envname = NULL,
   conda <- conda_binary(conda)
   
   # resolve environment name
-  envname <- reticulate:::condaenv_resolve(envname)
+  envname <- condaenv_resolve(envname)
   
   # create the environment
-  args <- reticulate:::conda_args("create", envname, packages)
+  args <- conda_args("create", envname, packages)
   
   # add user-requested channels
   channels <- if (length(channel))
@@ -52,7 +132,7 @@ conda_create_silent <- function(envname = NULL,
   for (ch in channels)
     args <- c(args, "-c", ch)
   
-  result <- system2(conda, shQuote(args), stderr = FALSE, stdout = paste0("/Users/douglasbarrows/Desktop/", envname, "_environment_create_stdOut.txt"))
+  result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
   
   if (result != 0L) {
     stop("Error ", result, " occurred creating conda environment ", envname,
@@ -65,6 +145,14 @@ conda_create_silent <- function(envname = NULL,
 }
 
 
+#' Silent/json version of reticulate's conda_install
+#'
+#' Reticulate's conda_install with silent output and json output capability
+#'
+#'
+#' @name conda_install_silentJSON
+#' @rdname conda_install_silentJSON
+#' 
 #' @param forge Boolean; include the [Conda Forge](https://conda-forge.org/)
 #'   repository?
 #'   
@@ -87,7 +175,7 @@ conda_create_silent <- function(envname = NULL,
 #' @keywords internal
 #'
 #'
-conda_install_silent <- function(envname = NULL,
+conda_install_silentJSON <- function(envname = NULL,
                           packages,
                           forge = TRUE,
                           channel = character(),
@@ -102,7 +190,7 @@ conda_install_silent <- function(envname = NULL,
   conda <- conda_binary(conda)
   
   # resolve environment name
-  envname <- reticulate:::condaenv_resolve(envname)
+  envname <- condaenv_resolve(envname)
   
   # honor request for specific Python
   python_package <- "python"
@@ -116,11 +204,11 @@ conda_install_silent <- function(envname = NULL,
   python <- tryCatch(conda_python(envname = envname, conda = conda), error = identity)  
   
   if (inherits(python, "error") || !file.exists(python)) {
-    conda_create_silent(envname, packages = python_package, conda = conda) # create environment if doesn't exist
+    conda_create_silentJSON(envname, packages = python_package, conda = conda) # create environment if doesn't exist
     python <- conda_python(envname = envname, conda = conda)
   } else if (!is.null(python_package)) {
-    args <- reticulate:::conda_args("install", envname, python_package)
-    status <- system2(conda, shQuote(args), stderr = FALSE, stdout = paste0("/Users/douglasbarrows/Desktop/", envname, "_python_install_stdOut.txt")) # install python into the environment if its not there
+    args <- conda_args("install", envname, python_package)
+    status <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE) # install python into the environment if its not there
     if (status != 0L) {
       fmt <- "installation of '%s' into environment '%s' failed [error code %i]"
       msg <- sprintf(fmt, python_package, envname, status)
@@ -132,7 +220,7 @@ conda_install_silent <- function(envname = NULL,
     return(pip_install(python, packages, pip_options = pip_options))
   
   # otherwise, use conda
-  args <- reticulate:::conda_args("install", envname)
+  args <- conda_args("install", envname)
   
   # add user-requested channels
   channels <- if (length(channel))
@@ -145,7 +233,7 @@ conda_install_silent <- function(envname = NULL,
   
   args <- c(args, python_package, packages)
   
-  result <- system2(conda, shQuote(args), stderr = FALSE, stdout = paste0("/Users/douglasbarrows/Desktop/",envname, "_",paste(packages, collapse = "_") ,"_package_install_stdOut.txt"))
+  result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
   
   # check for errors
   if (result != 0L) {
@@ -219,9 +307,9 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   condaPkgEnvPathExists <- dir.exists(pathToCondaPkgEnv)
   
   if(!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
-  if(!condaPkgEnvPathExists) conda_create_silent(envname=environment,conda=pathToConda)
+  if(!condaPkgEnvPathExists) conda_create_silentJSON(envname=environment,conda=pathToConda)
   if(!condaPkgEnvPathExists | (condaPkgEnvPathExists & updateEnv)){
-    conda_install_silent(envname = environment,packages = CondaSysReq$main$packages,
+    conda_install_silentJSON(envname = environment,packages = CondaSysReq$main$packages,
                               conda=pathToConda,
                               channel = channels)
   }
@@ -291,9 +379,9 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   
   
   if(!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
-  if(!condaPkgEnvPathExists) conda_create_silent(envname=environment,conda=pathToConda)
+  if(!condaPkgEnvPathExists) conda_create_silentJSON(envname=environment,conda=pathToConda)
   if(!condaPkgEnvPathExists | (condaPkgEnvPathExists & updateEnv)){
-    conda_install_silent(envname = environment,packages = tools,
+    conda_install_silentJSON(envname = environment,packages = tools,
                               conda=pathToConda,
                               channel = channels)
   }
