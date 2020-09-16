@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Export Conda environment. — export_CondaEnv • CondaSysReqs</title>
+<title>Search package availabilty — conda_search • CondaSysReqs</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Export Conda environment. — export_CondaEnv" />
-<meta property="og:description" content="Export Conda environment
-Import Conda environment" />
+<meta property="og:title" content="Search package availabilty — conda_search" />
+<meta property="og:description" content="Search package availabilty" />
 
 
 
@@ -119,69 +118,60 @@ Import Conda environment" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Export Conda environment.</h1>
+    <h1>Search package availabilty</h1>
     
-    <div class="hidden name"><code>SaveEnvironments.Rd</code></div>
+    <div class="hidden name"><code>conda_search.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Export Conda environment</p>
-<p>Import Conda environment</p>
+    <p>Search package availabilty</p>
     </div>
 
-    <pre class="usage"><span class='fu'>export_CondaEnv</span>(
-  <span class='kw'>env_name</span>,
-  yml_export = <span class='kw'>NULL</span>,
-  pathToMiniConda = <span class='kw'>NULL</span>,
-  depends = <span class='fl'>TRUE</span>
-)
-
-<span class='fu'>import_CondaEnv</span>(<span class='kw'>yml_import</span>, name = <span class='kw'>NULL</span>, pathToMiniConda = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>conda_search</span>(
+  <span class='kw'>package</span>,
+  package_version = <span class='kw'>NULL</span>,
+  channel = <span class='kw'>NULL</span>,
+  print_out = <span class='fl'>TRUE</span>,
+  pathToMiniConda = <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>env_name</th>
-      <td><p>Name of environment you want to save</p></td>
+      <th>package</th>
+      <td><p>Package to search for. If an exact match is found, the funtion will return true (assuming 'package_version' is left NULL or is a valid entry). If there is not an exact match and other packages contain this text, the function will return FALSE but the alternative options will be printed if print_out = TRUE.</p></td>
     </tr>
     <tr>
-      <th>yml_export</th>
-      <td><p>Destination for exported environment yml file</p></td>
+      <th>package_version</th>
+      <td><p>A specific package version to search for. This must be a character vector with a single version entry.</p></td>
+    </tr>
+    <tr>
+      <th>channel</th>
+      <td><p>A specific to search in addition to defaults (bioconda defaults and conda-forge are the default channels)</p></td>
+    </tr>
+    <tr>
+      <th>print_out</th>
+      <td><p>Either True or FALSE indicating whether to print out information about available builds and channels for the search entry.</p></td>
     </tr>
     <tr>
       <th>pathToMiniConda</th>
-      <td><p>NULL Path to miniconda installation</p></td>
-    </tr>
-    <tr>
-      <th>depends</th>
-      <td><p>if FALSE will only include packages explicitly installed and not dependencies</p></td>
-    </tr>
-    <tr>
-      <th>yml_import</th>
-      <td><p>conda environment yml file</p></td>
-    </tr>
-    <tr>
-      <th>name</th>
-      <td><p>Name of the environment to create.</p></td>
+      <td><p>Path to miniconda installation. If this is set to NULL (default), then the output of 'reticulate::miniconda_path()' is used.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Nothing returned. Output written to file.</p>
-<p>Nothing returned. Output written to file.</p>
+    <p>TRUE/FALSE</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Matt Paul</p>
-<p>Matt Paul</p>
+    <p>Doug Barrows and Matt Paul</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>testYML</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/HerperTestPkg_0.1.0.yml"</span>,package=<span class='st'>"CondaSysReqs"</span>)
-<span class='kw'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),<span class='st'>"r-miniconda"</span>)
-<span class='fu'>import_CondaEnv</span>(<span class='kw'>testYML</span>,<span class='st'>"HerperTest"</span>,pathToMiniConda=<span class='kw'>condaDir</span>)
-</div><div class='output co'>#&gt; <span class='message'>* Downloading 'https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh' ...</span></div><div class='output co'>#&gt; <span class='message'>* Installing Miniconda -- please wait a moment ...</span></div><div class='output co'>#&gt; <span class='message'>* Miniconda has been successfully installed at '/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpn6wplb/r-miniconda'.</span></div><div class='input'><span class='fu'>export_CondaEnv</span>(<span class='st'>"HerperTest"</span>,yml_export=<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(),pathToMiniConda=<span class='kw'>condaDir</span>)
-</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpn6wplb/filed6870377215"</div></pre>
+    <pre class="examples"><div class='input'>
+<span class='fu'>conda_search</span>(<span class='st'>"salmon"</span>)
+</div><div class='output co'>#&gt; <span class='error'>Error in system(paste(pathToConda, "search --quiet --json", package, channel_command),     intern = TRUE, ignore.stderr = TRUE): error in running command</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
