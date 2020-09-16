@@ -295,7 +295,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
     #Parse Reqs
     sysreqs <- unlist(strsplit(packageDesciptions,SysReqsSep))
     
-    version_sep<-c("[>)(=]")
+    version_sep<-c("[<>)(=]")
     
     pkg_and_vers<-lapply(sysreqs, function(x) {
       x<-gsub("version|versions|Version|Versions","",x)
@@ -308,9 +308,11 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   }
   
   idx1<-grep(">=",sysreqs, fixed = T)
-  idx2<-setdiff(grep("=",sysreqs, fixed = T), idx1)
+  idx2<-grep("<=",sysreqs, fixed = T)
+  idx3<-setdiff(setdiff(grep("=",sysreqs, fixed = T), idx1), idx2)
   if(length(idx1)>0){pkg_and_vers[[idx1]] <- paste0(pkg_and_vers[[idx1]], collapse=">=")}
-  if(length(idx2)>0){pkg_and_vers[[idx2]] <- paste0(pkg_and_vers[[idx2]], collapse="==")}
+  if(length(idx2)>0){pkg_and_vers[[idx2]] <- paste0(pkg_and_vers[[idx2]], collapse=">=")}
+  if(length(idx3)>0){pkg_and_vers[[idx3]] <- paste0(pkg_and_vers[[idx3]], collapse="==")}
   
   CondaSysReq$main$packages <- unlist(pkg_and_vers)
   CondaSysReq$main$channels <- NULL     
@@ -363,7 +365,6 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
 #' @author Thomas Carroll
 #' @param tools Vector of software to install using conda.
 #' @param env Name of Conda environment to install tools into.
-#' @param vers Vector of software version numbers to install using conda
 #' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param updateEnv Update existing package's conda environment if already installed.
@@ -374,7 +375,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
 #' condaPaths <- install_CondaTools("salmon","salmon",pathToMiniConda=condaDir)
 #' system2(file.path(condaPaths$pathToEnvBin,"salmon"),args = "--help")
 #' @export
-install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda=NULL,updateEnv=FALSE){
+install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,updateEnv=FALSE){
   # pathToMiniConda <- "~/Desktop/testConda"
   
   #Setup miniconda 
@@ -388,42 +389,38 @@ install_CondaTools <- function(tools,env,vers=NULL,channels=NULL,pathToMiniConda
   if(!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
   
   #Backup conda config file. Updates will be made to config for search, but want to undo these changes. 
-  if(file.exists("~/.condarc")){
-    cp_pass<-file.copy("~/.condarc", "~/tmp_condarc")
-    if(cp_pass){
-      unlink("~/.condarc")
-    }else{stop("Backup of your .condarc file failed.")}
-    on.exit(file.copy("~/tmp_condarc", "~/.condarc", overwrite = T))
-    on.exit(unlink("~/tmp_condarc"))
-  }else{
-    on.exit(unlink("~/.condarc"))
-  }
+  # if(file.exists("~/.condarc")){
+  #   cp_pass<-file.copy("~/.condarc", "~/tmp_condarc")
+  #   if(cp_pass){
+  #     unlink("~/.condarc")
+  #   }else{stop("Backup of your .condarc file failed.")}
+  #   on.exit(file.copy("~/tmp_condarc", "~/.condarc", overwrite = T))
+  #   on.exit(unlink("~/tmp_condarc"))
+  # }else{
+  #   on.exit(unlink("~/.condarc"))
+  # }
   
   #Set Channels
   defaultChannels <- c("bioconda","defaults","conda-forge")
   channels <- unique(c(channels,defaultChannels))
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
-  set<-suppressWarnings(sapply(channels, function(x) system(paste(pathToConda, "config --add channels", x),intern = TRUE,
-                                                       ignore.stderr = TRUE)))
+  # set<-suppressWarnings(sapply(channels, function(x) system(paste(pathToConda, "config --add channels", x),intern = TRUE,
+  #                                                      ignore.stderr = TRUE)))
   
-  #Check package exists
-  if(is.null(vers)){
-    checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda)
-  }else{
-    checks<-sapply(1:length(tools), function(x) conda_search(tools[x], package_version=vers[x], print_out=F, pathToMiniConda=pathToMiniConda))
-    tools<-paste(tools,vers,sep="=")
-  }
+  
+  checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda, channel=channels)
   
   if(sum(checks[1,]==F)>0){
     idx<-which(checks[1,]==F)
     sapply(idx, function(x){
-    message(paste0("The package ",tools[x], " has no matches. There are these versions available: \n"))
-    print(checks[2,x])})
+      message(paste0('The package "',tools[x], '" has no matches.\nThere are these packages and versions available: \n'))
+    if(is.null(dim(checks[2,x][[1]]))){
+    message(paste0(checks[2,x],"\n"))
+    }else{
+    print(checks[2,x])
+    }})
     stop("The package and/or version are not available in conda. Check above for details.")
-    }
-  
-
-  
+  }
   
   environment <- env
   pathToCondaPkgEnv <- file.path(pathToMiniConda,"envs",environment)
