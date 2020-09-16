@@ -58,7 +58,6 @@ set_condapaths <- function(env,
   old <- old[c(TRUE,!sapply(old[-1],is.na))]
   ###
   ##
-  
   if(file.exists(file.path(condaPaths$pathToEnvBin,"java"))){
     JAVA_HOME=c(dirname(condaPaths$pathToEnvBin))
     JAVA_HOME=c(JAVA_HOME,javahome_additional)
