@@ -98,17 +98,28 @@ pathToConda
 <br>
 
 ## Install R package dependencies with **install_CondaSysReqs**. 
-The **install_CondaSysReqs** checks the System Requirements for the specified R package, and uses Conda to install this software.
+The **install_CondaSysReqs** checks the System Requirements for the specified R package, and uses Conda to install this software. Here we will use a test package contained within Herper. This test package has two System Requirements:
 
 ```{r install_CondaSysReqs, eval=F}
-install_CondaSysReqs("basecallQC", pathToMiniConda = myMiniconda)
+testPkg <- system.file("extdata/HerperTestPkg",package="CondaSysReqs")
+install.packages(testPkg,type = "source",repos = NULL)
+utils::packageDescription("HerperTestPkg",fields = "SystemRequirements")
+```
+
+The user can simply supply the name of an installed R package, and **install_CondaSysReqs** will install the System Requirements through conda. 
+```{r}
+condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
 
 ```
 
 By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the *env* parameter. As with **install_CondaTools()**, user can control which version of Miniconda with the parameter *pathToMiniConda*, and whether they want to amend an existing environment with the parameter *updateEnv*.
 
+_Note: **install_CondaSysReqs** can handle standard System Requirement formats, but will not work if the package has free form text. In this case just use **install_CondaTools**_ 
+
 <br>
 
+
+<br>
 ## Export of Conda environments to YAML files using **export_CondaEnv**.
 
 The **export_CondaEnv** function allows the user to export the environment information to a *.yml* file. These environment YAML files contain all essential information about the package, allowing for reproducibilty and easy distribution of Conda system configuration for collaboration. 
