@@ -127,13 +127,7 @@
     <p>Search package availabilty</p>
     </div>
 
-    <pre class="usage"><span class='fu'>conda_search</span>(
-  <span class='kw'>package</span>,
-  package_version = <span class='kw'>NULL</span>,
-  channel = <span class='kw'>NULL</span>,
-  print_out = <span class='fl'>TRUE</span>,
-  pathToMiniConda = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>conda_search</span>(<span class='kw'>package</span>, channel = <span class='kw'>NULL</span>, print_out = <span class='fl'>TRUE</span>, pathToMiniConda = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,10 +135,6 @@
     <tr>
       <th>package</th>
       <td><p>Package to search for. If an exact match is found, the funtion will return true (assuming 'package_version' is left NULL or is a valid entry). If there is not an exact match and other packages contain this text, the function will return FALSE but the alternative options will be printed if print_out = TRUE.</p></td>
-    </tr>
-    <tr>
-      <th>package_version</th>
-      <td><p>A specific package version to search for. This must be a character vector with a single version entry.</p></td>
     </tr>
     <tr>
       <th>channel</th>

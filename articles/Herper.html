@@ -79,7 +79,7 @@
                         <h4 class="author">Matt Paul - <a href="mailto:mpaul@rockefeller.edu" class="email">mpaul@rockefeller.edu</a>
 </h4>
             
-            <h4 class="date">09/16/2020</h4>
+            <h4 class="date">09/17/2020</h4>
       
       
       <div class="hidden name"><code>Herper.Rmd</code></div>
@@ -126,26 +126,26 @@
 <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"salmon"</span>, <span class="st">"herper"</span>, pathToMiniConda = <span class="kw">myMiniconda</span>)
 </pre></div>
 <pre><code>## $pathToConda
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmplSqjxQ/Test/bin/conda"
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvXk6nO/Test/bin/conda"
 ## 
 ## $environment
 ## [1] "herper"
 ## 
 ## $pathToEnvBin
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmplSqjxQ/Test/envs/herper/bin"</code></pre>
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvXk6nO/Test/envs/herper/bin"</code></pre>
 <p><br> We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span>(<span class="st">"samtools"</span>, <span class="st">"herper"</span>, updateEnv = <span class="fl">TRUE</span>, pathToMiniConda = <span class="kw">myMiniconda</span>)
 <span class="kw">pathToConda</span>
 </pre></div>
 <pre><code>## $pathToConda
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmplSqjxQ/Test/bin/conda"
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvXk6nO/Test/bin/conda"
 ## 
 ## $environment
 ## [1] "herper"
 ## 
 ## $pathToEnvBin
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmplSqjxQ/Test/envs/herper/bin"</code></pre>
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvXk6nO/Test/envs/herper/bin"</code></pre>
 <p><br></p>
 </div>
 <div id="install-r-package-dependencies-with-install_condasysreqs-" class="section level2">
@@ -166,14 +166,14 @@
 <span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"herper_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
 <span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"herper"</span>, <span class="kw">yml_name</span>,pathToMiniConda = <span class="kw">myMiniconda</span>)
 </pre></div>
-<pre><code>## [1] "herper_20200916.yml"</code></pre>
+<pre><code>## [1] "herper_20200917.yml"</code></pre>
 <p><br></p>
 <p>The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the <em>depends</em> paramter.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="kw">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"herper_nodeps_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span>(), <span class="st">"%Y%m%d"</span>),<span class="st">".yml"</span>)
 <span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span>(<span class="st">"herper"</span>, <span class="kw">yml_name</span>, depends=<span class="fl">FALSE</span>, pathToMiniConda = <span class="kw">myMiniconda</span>)
 </pre></div>
-<pre><code>## [1] "herper_nodeps_20200916.yml"</code></pre>
+<pre><code>## [1] "herper_nodeps_20200917.yml"</code></pre>
 <p><br></p>
 </div>
 <div id="import-of-conda-environments-from-yaml-files-using-import_condaenv-" class="section level2">
@@ -199,7 +199,7 @@
 <span class="kw">pathToSalmon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw">pathToConda</span><span class="op">$</span><span class="kw">pathToEnvBin</span>, <span class="st">"salmon"</span>)
 <span class="kw">pathToSalmon</span>
 </pre></div>
-<pre><code>## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmplSqjxQ/Test/envs/herper/bin/salmon"</code></pre>
+<pre><code>## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpvXk6nO/Test/envs/herper/bin/salmon"</code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="kw">Salmon_help</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">pathToSalmon</span>,<span class="st">"-h"</span>), intern = <span class="fl">TRUE</span>)
 <span class="kw">Salmon_help</span>
