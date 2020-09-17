@@ -118,6 +118,31 @@ _Note: **install_CondaSysReqs** can handle standard System Requirement formats, 
 
 <br>
 
+## Using R packages with System Dependencies
+**with_CondaEnv** allows users to run an R command using a specific conda environment. This will give the R package access to the conda tools, Python, Perl and Java in this environment. This is done without formally activating your environment or initializing your conda. The Python/Perl/Java libraries used can also be controlled with the corresponding parameters __*_additional__.  
+
+```{r}
+
+#' \dontrun{
+#'   install_CondaTools("cytoscape","cytoscape",updateEnv = TRUE,pathToMiniConda = condaDir)
+#'   with_CondaEnv("cytoscape",system2(command = "cytoscape.sh"),pathToMiniConda = condaDir)
+#' }
+```
+<br>
+
+## Running Conda packages from R console
+
+Although we will not activate the environment, many tools can be used straight from the Conda environment's bin directory. When the result of **install_CondaTools()** is assigned to a variable, it will contain the path to the bin directory for that environment. Users ca
+then run these tools with **System()** commands
+
+```{r}
+#' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
+#' condaDir <- file.path(tempdir(),"r-miniconda")
+#' import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
+#' with_CondaEnv("HerperTest",system2(command = "rmats.py",args = "-h"),pathToMiniConda = condaDir)
+```
+
+
 
 <br>
 ## Export of Conda environments to YAML files using **export_CondaEnv**.
@@ -151,21 +176,7 @@ import_CondaEnv(yml_name, "herper2",myMiniconda)
 
 <br>
 
-## Using R packages with System Dependencies
 
-
-<br>
-
-## Running Conda packages from R console.
-
-Although we will not activate the environment, many tools can be used straight from the Conda environment's bin directory. When the result of **install_CondaTools()** is assigned to a variable, it will contain the path to the bin directory for that environment. Users can then run these tools with **System()** commands
-
-```{r}
-pathToSalmon <- file.path(pathToConda$pathToEnvBin, "salmon")
-pathToSalmon
-Salmon_help <- system(paste(pathToSalmon,"-h"), intern = TRUE)
-Salmon_help
-```
 
 <br>
 
