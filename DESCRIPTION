@@ -13,7 +13,6 @@ Authors@R: c(
       comment = c(ORCID = "??")
     )
   )
-Maintainer: Thomas Carroll <tc.infomatics@gmail.com>
 Description: Install Conda packages from System Requirements section of package Description file.
 Depends: R (>= 3.5.0), reticulate
 Imports: utils, rjson, withr
