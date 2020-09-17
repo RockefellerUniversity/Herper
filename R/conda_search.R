@@ -67,21 +67,21 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
         message(paste0("package ",package, " not found"))
         return(FALSE)
       }else{
-        return(list(exact_match=F, version_matches=NULL))  
+        return(list(exact_match=FALSE, version_matches=NULL))  
       }
     }else if (condaSearch$exception_name == "UnavailableInvalidChannel"){
       if(print_out){
         message(paste0("channel ",channel, " not found"))
         return(FALSE)
       }else{
-        return(list(exact_match=F, version_matches=NULL))  
+        return(list(exact_match=FALSE, version_matches=NULL))  
       }
     }else{
       if(print_out){
         message("conda command failed, but not sure why. We didn't get the normal error messages we look for when a package or channel isn't found")
         return(FALSE)
       }else{
-        return(list(exact_match=F, version_matches=NULL))  
+        return(list(exact_match=FALSE, version_matches=NULL))  
       }
     }
   }else if (pkg_and_vers[1] %in% names(condaSearch)){
@@ -117,7 +117,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
               print(condaSearch_df)
               return(FALSE)
             }else{
-              return(list(exact_match=F, version_matches=condaSearch_df))  
+              return(list(exact_match=FALSE, version_matches=condaSearch_df))  
             }
           }
       }else if(ver_logic=="<="){
@@ -135,7 +135,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
               print(condaSearch_df)
               return(FALSE)
             }else{
-              return(list(exact_match=F, version_matches=condaSearch_df))  
+              return(list(exact_match=FALSE, version_matches=condaSearch_df))  
             }
           }
       }else{
@@ -144,7 +144,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
           print(condaSearch_df)
           return(FALSE)
         }else{
-          return(list(exact_match=F, version_matches=condaSearch_df))  
+          return(list(exact_match=FALSE, version_matches=condaSearch_df))  
         }
       }
     }else{
@@ -167,7 +167,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
       ))
       return(FALSE)
     }else{
-      return(list(exact_match=F, version_matches=paste(names(condaSearch), 
+      return(list(exact_match=FALSE, version_matches=paste(names(condaSearch), 
                                                        collapse = "\n")))  
     }
   }
