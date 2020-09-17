@@ -63,7 +63,11 @@ install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
 The **install_CondaSysReqs** checks the System Requirements for the specified R package, and uses Conda to install this software.
 
 ```{r install_CondaSysReqs, eval=F}
-install_CondaSysReqs("basecallQC")
+testPkg <- system.file("extdata/HerperTestPkg",package="CondaSysReqs")
+install.packages(testPkg,type = "source",repos = NULL)
+condaDir <- file.path(tempdir(),"r-miniconda")
+condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=condaDir,SysReqsAsJSON=FALSE)
+#' system2(file.path(condaPaths$pathToEnvBin,"samtools"),args = "--help")
 
 ```
 
