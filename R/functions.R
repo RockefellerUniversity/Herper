@@ -319,7 +319,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
   }
   
   # Mask GNU and C++
-  idx <- grepl("GNU|C++",CondaSysReq$main$packages,perl=T)
+  idx <- grepl("GNU|C++",CondaSysReq$main$packages,perl=TRUE)
   if(sum(idx)>0){
     CondaSysReq$main$packages<-CondaSysReq$main$packages[!idx]
     message('C++ and/or GNU Make will not been installed, to avoid conflicts. If you do want these installed in your conda, please use the install_CondaTools function.')
