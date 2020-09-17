@@ -4,18 +4,10 @@
 \alias{conda_search}
 \title{Search package availabilty}
 \usage{
-conda_search(
-  package,
-  package_version = NULL,
-  channel = NULL,
-  print_out = TRUE,
-  pathToMiniConda = NULL
-)
+conda_search(package, channel = NULL, print_out = TRUE, pathToMiniConda = NULL)
 }
 \arguments{
 \item{package}{Package to search for. If an exact match is found, the funtion will return true (assuming 'package_version' is left NULL or is a valid entry). If there is not an exact match and other packages contain this text, the function will return FALSE but the alternative options will be printed if print_out = TRUE.}
-
-\item{package_version}{A specific package version to search for. This must be a character vector with a single version entry.}
 
 \item{channel}{A specific to search in addition to defaults (bioconda defaults and conda-forge are the default channels)}
 
