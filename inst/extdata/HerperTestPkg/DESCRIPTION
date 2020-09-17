@@ -5,6 +5,7 @@ Version: 0.1.0
 Author: Tom and Matt
 Maintainer: Tom <tc.infomatics@gmail.com>
 Description: Just a Test.
+Depends: R (>= 3.5.0), seqCNA
 SystemRequirements: samtools==1.10, rmats>=v4.1.0
 License: GPLv3
 Encoding: UTF-8
