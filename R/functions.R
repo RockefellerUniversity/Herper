@@ -475,7 +475,7 @@ export_CondaEnv <- function(env_name,yml_export=NULL,pathToMiniConda=NULL,depend
   
   #need to add check for existence
   
-  if(depends==T){
+  if(depends==TRUE){
   system(paste(pathToConda,"env export -n", env_name, ">", export_path))
   }else{
   system(paste(pathToConda,"env export --from-history -n", env_name, ">", export_path))
