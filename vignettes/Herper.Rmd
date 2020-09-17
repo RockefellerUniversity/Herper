@@ -126,7 +126,8 @@ To demonstrate this we will use the first command from the [seqCNA](https://www.
 library(seqCNA)
 data(seqsumm_HCC1143)
 try(rco <- readSeqsumm(tumour.data=seqsumm_HCC1143))
-with_CondaEnv("HerperTestPkg", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
+install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
+with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
  ,pathToMiniConda = myMiniconda)
 
 ``` 
