@@ -78,11 +78,19 @@ install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
 ```
 
 <br>
-We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*.
+We can add additional tools to our Conda environment by specifying *updateEnv = TRUE*. We can also pass a vector of tools to install multiple tools at once. 
 
 
 ```{r ,updateCondaTools, echo=T, eval=T}
-pathToConda <- install_CondaTools("samtools", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
+pathToConda <- install_CondaTools(c("samtools", "macs2"), "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
+pathToConda
+```
+
+<br>
+Specific package versions can be installed using conda formatted inputs into the *tools* argument i.e. "salmon==1.3", "salmon>=1.3" or "salmon<=1.3". This can also be used to specifically upgrade or downgrade existing tools in the chosen environment. 
+
+```{r ,versionCondaTools, echo=T, eval=T}
+pathToConda <- install_CondaTools("salmon<=1.3", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
 pathToConda
 ```
 
