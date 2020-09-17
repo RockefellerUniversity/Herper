@@ -100,7 +100,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
           print(sub_df)
           return(TRUE)
         }else{
-          return(list(exact_match=T, version_matches=sub_df))  
+          return(list(exact_match=TRUE, version_matches=sub_df))  
         }
       }else if(ver_logic==">="){
           if(sum(sapply(condaSearch_df$version, compareVersion, b=package_version)==1)>0){
@@ -110,7 +110,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
              print(sub_df)
             return(TRUE)
           }else{
-            return(list(exact_match=T, version_matches=sub_df))  
+            return(list(exact_match=TRUE, version_matches=sub_df))  
           }}else{
             if(print_out){
               message(paste(pkg_and_vers[1], "is available, but versions",ver_logic , package_version, "are not. The following versions are currently available:"))
@@ -128,7 +128,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
             print(sub_df)
             return(TRUE)
           }else{
-            return(list(exact_match=T, version_matches=sub_df))  
+            return(list(exact_match=TRUE, version_matches=sub_df))  
           }}else{
             if(print_out){
               message(paste(pkg_and_vers[1], "is available, but version",ver_logic , package_version, "are not. The following versions are currently available:"))
@@ -153,7 +153,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
         print(condaSearch_df)
         return(TRUE)
       }else{
-        return(list(exact_match=T, version_matches=condaSearch_df))  
+        return(list(exact_match=TRUE, version_matches=condaSearch_df))  
       }
     }
     
