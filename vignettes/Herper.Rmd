@@ -121,13 +121,15 @@ _Note: **install_CondaSysReqs** can handle standard System Requirement formats, 
 ## Using R packages with System Dependencies
 **with_CondaEnv** allows users to run an R command using a specific conda environment. This will give the R package access to the conda tools, Python, Perl and Java in this environment. This is done without formally activating your environment or initializing your conda. The Python/Perl/Java libraries used can also be controlled with the corresponding parameters __*_additional__.  
 
+To demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires access samtools. If this is not installed there is an error. But if the command is run using **with_CondaEnv**, then seqCNA can find samtools. 
 ```{r}
+library(seqCNA)
+data(seqsumm_HCC1143)
+try(rco <- readSeqsumm(tumour.data=seqsumm_HCC1143))
+with_CondaEnv("HerperTestPkg", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
+ ,pathToMiniConda = "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmpoq6zZP/r-miniconda")
 
-#' \dontrun{
-#'   install_CondaTools("cytoscape","cytoscape",updateEnv = TRUE,pathToMiniConda = condaDir)
-#'   with_CondaEnv("cytoscape",system2(command = "cytoscape.sh"),pathToMiniConda = condaDir)
-#' }
-```
+``` 
 <br>
 
 ## Running Conda packages from R console
