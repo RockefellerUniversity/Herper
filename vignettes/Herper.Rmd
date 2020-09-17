@@ -118,7 +118,7 @@ _Note: **install_CondaSysReqs** can handle standard System Requirement formats, 
 
 <br>
 
-## Using R packages with System Dependencies
+## Using R packages with System Dependencies with **with_CondaEnv**
 **with_CondaEnv** allows users to run an R command using a specific conda environment. This will give the R package access to the conda tools, Python, Perl and Java in this environment. This is done without formally activating your environment or initializing your conda. The Python/Perl/Java libraries used can also be controlled with the corresponding parameters __*_additional__.  
 
 To demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires access samtools. If this is not installed there is an error. But if the command is run using **with_CondaEnv**, then seqCNA can find samtools. 
@@ -127,23 +127,34 @@ library(seqCNA)
 data(seqsumm_HCC1143)
 try(rco <- readSeqsumm(tumour.data=seqsumm_HCC1143))
 with_CondaEnv("HerperTestPkg", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
- ,pathToMiniConda = "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmpoq6zZP/r-miniconda")
+ ,pathToMiniConda = myMiniconda)
 
 ``` 
 <br>
 
-## Running Conda packages from R console
+## Running Conda packages from R console with **with_CondaEnv**
 
-Although we will not activate the environment, many tools can be used straight from the Conda environment's bin directory. When the result of **install_CondaTools()** is assigned to a variable, it will contain the path to the bin directory for that environment. Users ca
-then run these tools with **System()** commands
+**with_CondaEnv** allows users to run an conda tools from within R. The user simply has to wrap the command in the **system()** or **system2()** fucntions. 
 
 ```{r}
-#' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
-#' condaDir <- file.path(tempdir(),"r-miniconda")
-#' import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
-#' with_CondaEnv("HerperTest",system2(command = "rmats.py",args = "-h"),pathToMiniConda = condaDir)
+with_CondaEnv("HerperTest",system2(command = "rmats.py",args = "-h"),pathToMiniConda = myMiniconda)
 ```
 
+## Finding Conda packages with **conda_search**
+
+If the user is unsure of the exact name, or version of a tool available on conda, they can use the **conda_search** function. 
+
+```{r}
+conda_search("salmon",pathToMiniConda = myMiniconda)
+```
+
+Specific package versions can be searched for using the conda format i.e. "salmon==1.3", "salmon>=1.3" or "salmon<=1.3". Searches will also find close matches for incorrect queries. Channels to search in can be controlled with *channels* parameter. 
+
+```{r}
+conda_search("salmon<=1.0",pathToMiniConda = myMiniconda)
+conda_search("salm",pathToMiniConda = myMiniconda)
+
+```
 
 
 <br>
@@ -177,9 +188,6 @@ import_CondaEnv(yml_name, "herper2",myMiniconda)
 ```
 
 <br>
-
-
-
 <br>
 
 ```{r, echo=F, eval=FALSE, message=F, warning=F}
