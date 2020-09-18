@@ -162,12 +162,12 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
       message(paste0("There are no exact matches for the query '", 
                      pkg_and_vers[1], 
                      "', but multiple packages contain this text:\n",
-                     paste(names(condaSearch), 
+                     paste("-",names(condaSearch), 
                            collapse = "\n")
       ))
       return(FALSE)
     }else{
-      return(list(exact_match=FALSE, version_matches=paste(names(condaSearch), 
+      return(list(exact_match=FALSE, version_matches=paste("-",names(condaSearch),
                                                        collapse = "\n")))  
     }
   }
