@@ -1,12 +1,30 @@
-Introduction
-============
+<br>
 
-The CondaSysReqs package offers a simple toolset to install and manage
-Conda environments from R using the the **install\_CondaTools** and
-**install\_CondaSysReqs** functions.
+------------------------------------------------------------------------
+
+What is Herper?
+---------------
+
+The Herper package is a simple toolset to install and manage Conda
+packages and environments from R.
+
+Many R packages require the use of external dependencies. Often these
+dependencies can be installed and managed with the Conda package
+repository. For example 169 Bioconductor packages have external
+dependencies listed in their System Requirements field (often with these
+packages having several requirements) \[03 September, 2020\].
+
+<br>
+
+<img src="/Library/Frameworks/R.framework/Versions/4.0/Resources/library/CondaSysReqs/extdata/pkg_deps_bar_mask-1.png" width="1000px" style="display: block; margin: auto;" />
+
+The Herper package includes functions that allow the easy management of
+these external dependencies from within the R console.
+
+<br>
 
 Installation
-============
+------------
 
 Use the `BiocManager` package to download and install the package from
 our Github repository:
@@ -17,157 +35,283 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("https://github.com/RockefellerUniversity/CondaSysReqs")
 ```
 
-Once installed, load it into your R session:
+<br> Once installed, load it into your R session:
 
 ``` r
 library(CondaSysReqs)
 ```
 
-Simple install Conda Environment from R console using **install\_CondaTools**.
-==============================================================================
+<br>
+
+Simple install of Conda packages from R console using **install\_CondaTools**.
+------------------------------------------------------------------------------
 
 The **install\_CondaTools()** function allows the user to specify
 required Conda software and the desired environment to install into.
 
 Miniconda is installed as part of the process (by default into the
-r-reticulate’s default Conda location).
+r-reticulate’s default Conda location -
+/Users/mattpaul/Library/r-miniconda) and the user’s requested conda
+environment built within the same directory (by default
+/Users/mattpaul/Library/r-miniconda/envs/USERS\_ENVIRONMENT\_HERE).
+
+If you already have Miniconda installed or you would like to install to
+a custom location, you can specify the path with the *pathToMiniConda*
+parameter.
 
 ``` r
-install_CondaTools("salmon","myCondaToolSet")
+myMiniconda <- file.path(tempdir(),"Test")
+install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
 ```
 
     ## $pathToConda
-    ## [1] "/Users/mattpaul/Library/r-miniconda/bin/conda"
+    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpSfl9gI/Test/bin/conda"
     ## 
     ## $environment
-    ## [1] "myCondaToolSet"
+    ## [1] "herper"
     ## 
     ## $pathToEnvBin
-    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/myCondaToolSet/bin"
+    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpSfl9gI/Test/envs/herper/bin"
 
-We can add additional tools to our Conda environment by specifying
-*updateEnv = TRUE*.
+<br> We can add additional tools to our Conda environment by specifying
+*updateEnv = TRUE*. A vector of tools can be used to install several at
+once.
 
 ``` r
-pathToConda <- install_CondaTools("macs2","myCondaToolSet",updateEnv = TRUE)
+pathToConda <- install_CondaTools(c("samtools", "macs2"), "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
 pathToConda
 ```
 
     ## $pathToConda
-    ## [1] "/Users/mattpaul/Library/r-miniconda/bin/conda"
+    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpSfl9gI/Test/bin/conda"
     ## 
     ## $environment
-    ## [1] "myCondaToolSet"
+    ## [1] "herper"
     ## 
     ## $pathToEnvBin
-    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/myCondaToolSet/bin"
+    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpSfl9gI/Test/envs/herper/bin"
 
-Although we will not activate the environment, many tools can be used
-straight from the Conda environment’s bin directory.
-
-``` r
-pathToMacs <- file.path(pathToConda$pathToEnvBin,"macs2")
-pathToMacs
-```
-
-    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/myCondaToolSet/bin/macs2"
+<br> Specific package versions can be installed using conda formatted
+inputs into the *tools* argument i.e. “salmon==1.3”, “salmon\>=1.3” or
+“salmon\<=1.3”. This can also be used to specifically upgrade or
+downgrade existing tools in the chosen environment.
 
 ``` r
-Macs_help <- system(paste(pathToMacs,"-h"),intern = TRUE)
-Macs_help
+pathToConda <- install_CondaTools("salmon<=1.3", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
 ```
 
-    ##  [1] "usage: macs2 [-h] [--version]"                                                                                                 
-    ##  [2] "             {callpeak,bdgpeakcall,bdgbroadcall,bdgcmp,bdgopt,cmbreps,bdgdiff,filterdup,predictd,pileup,randsample,refinepeak}"
-    ##  [3] "             ..."                                                                                                              
-    ##  [4] ""                                                                                                                              
-    ##  [5] "macs2 -- Model-based Analysis for ChIP-Sequencing"                                                                             
-    ##  [6] ""                                                                                                                              
-    ##  [7] "positional arguments:"                                                                                                         
-    ##  [8] "  {callpeak,bdgpeakcall,bdgbroadcall,bdgcmp,bdgopt,cmbreps,bdgdiff,filterdup,predictd,pileup,randsample,refinepeak}"           
-    ##  [9] "    callpeak            Main MACS2 Function: Call peaks from alignment"                                                        
-    ## [10] "                        results."                                                                                              
-    ## [11] "    bdgpeakcall         Call peaks from bedGraph output. Note: All regions on"                                                 
-    ## [12] "                        the same chromosome in the bedGraph file should be"                                                    
-    ## [13] "                        continuous so only bedGraph files from MACS2 are"                                                      
-    ## [14] "                        accpetable."                                                                                           
-    ## [15] "    bdgbroadcall        Call broad peaks from bedGraph output. Note: All"                                                      
-    ## [16] "                        regions on the same chromosome in the bedGraph file"                                                   
-    ## [17] "                        should be continuous so only bedGraph files from MACS2"                                                
-    ## [18] "                        are accpetable."                                                                                       
-    ## [19] "    bdgcmp              Deduct noise by comparing two signal tracks in"                                                        
-    ## [20] "                        bedGraph. Note: All regions on the same chromosome in"                                                 
-    ## [21] "                        the bedGraph file should be continuous so only"                                                        
-    ## [22] "                        bedGraph files from MACS2 are accpetable."                                                             
-    ## [23] "    bdgopt              Operations on score column of bedGraph file. Note: All"                                                
-    ## [24] "                        regions on the same chromosome in the bedGraph file"                                                   
-    ## [25] "                        should be continuous so only bedGraph files from MACS2"                                                
-    ## [26] "                        are accpetable."                                                                                       
-    ## [27] "    cmbreps             Combine BEDGraphs of scores from replicates. Note: All"                                                
-    ## [28] "                        regions on the same chromosome in the bedGraph file"                                                   
-    ## [29] "                        should be continuous so only bedGraph files from MACS2"                                                
-    ## [30] "                        are accpetable."                                                                                       
-    ## [31] "    bdgdiff             Differential peak detection based on paired four"                                                      
-    ## [32] "                        bedgraph files. Note: All regions on the same"                                                         
-    ## [33] "                        chromosome in the bedGraph file should be continuous"                                                  
-    ## [34] "                        so only bedGraph files from MACS2 are accpetable."                                                     
-    ## [35] "    filterdup           Remove duplicate reads at the same position, then save"                                                
-    ## [36] "                        the rest alignments to BED or BEDPE file. If you use '"                                                
-    ## [37] "                        --keep-dup all option', this script can be utilized to"                                                
-    ## [38] "                        convert any acceptable format into BED or BEDPE"                                                       
-    ## [39] "                        format."                                                                                               
-    ## [40] "    predictd            Predict d or fragment size from alignment results."                                                    
-    ## [41] "                        *Will NOT filter duplicates*"                                                                          
-    ## [42] "    pileup              Pileup aligned reads with a given extension size"                                                      
-    ## [43] "                        (fragment size or d in MACS language). Note there will"                                                
-    ## [44] "                        be no step for duplicate reads filtering or sequencing"                                                
-    ## [45] "                        depth scaling, so you may need to do certain pre/post-"                                                
-    ## [46] "                        processing."                                                                                           
-    ## [47] "    randsample          Randomly sample number/percentage of total reads."                                                     
-    ## [48] "    refinepeak          (Experimental) Take raw reads alignment, refine peak"                                                  
-    ## [49] "                        summits and give scores measuring balance of"                                                          
-    ## [50] "                        waston/crick tags. Inspired by SPP."                                                                   
-    ## [51] ""                                                                                                                              
-    ## [52] "optional arguments:"                                                                                                           
-    ## [53] "  -h, --help            show this help message and exit"                                                                       
-    ## [54] "  --version             show program's version number and exit"                                                                
-    ## [55] ""                                                                                                                              
-    ## [56] "For command line options of each command, type: macs2 COMMAND -h"
+<br>
+
+Install R package dependencies with **install\_CondaSysReqs**.
+--------------------------------------------------------------
+
+The **install\_CondaSysReqs** checks the System Requirements for the
+specified R package, and uses Conda to install this software. Here we
+will use a test package contained within Herper. This test package has
+two System Requirements:
 
 ``` r
-pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
-pathToSalmon
+testPkg <- system.file("extdata/HerperTestPkg",package="CondaSysReqs")
+install.packages(testPkg,type = "source",repos = NULL)
+utils::packageDescription("HerperTestPkg",fields = "SystemRequirements")
 ```
 
-    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/myCondaToolSet/bin/salmon"
+    ## [1] "samtools==1.10, rmats>=v4.1.0"
+
+The user can simply supply the name of an installed R package, and
+**install\_CondaSysReqs** will install the System Requirements through
+conda.
 
 ``` r
-Salmon_help <- system(paste(pathToSalmon,"-h"),intern = TRUE)
-Salmon_help
+condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
 ```
 
-    ##  [1] "salmon v1.3.0"                                                      
-    ##  [2] ""                                                                   
-    ##  [3] "Usage:  salmon -h|--help or "                                       
-    ##  [4] "        salmon -v|--version or "                                    
-    ##  [5] "        salmon -c|--cite or "                                       
-    ##  [6] "        salmon [--no-version-check] <COMMAND> [-h | options]"       
-    ##  [7] ""                                                                   
-    ##  [8] "Commands:"                                                          
-    ##  [9] "     index      : create a salmon index"                            
-    ## [10] "     quant      : quantify a sample"                                
-    ## [11] "     alevin     : single cell analysis"                             
-    ## [12] "     swim       : perform super-secret operation"                   
-    ## [13] "     quantmerge : merge multiple quantifications into a single file"
+By default these packages are installed in a new environment, which has
+the name name of the R package and its version number. Users can control
+the environment name using the *env* parameter. As with
+**install\_CondaTools()**, user can control which version of Miniconda
+with the parameter *pathToMiniConda*, and whether they want to amend an
+existing environment with the parameter *updateEnv*.
+
+*Note: **install\_CondaSysReqs** can handle standard System Requirement
+formats, but will not work if the package has free form text. In this
+case just use **install\_CondaTools***
+
+<br>
+
+Using R packages with System Dependencies with **with\_CondaEnv**
+-----------------------------------------------------------------
+
+**with\_CondaEnv** allows users to run an R command using a specific
+conda environment. This will give the R package access to the conda
+tools, Python, Perl and Java in this environment. This is done without
+formally activating your environment or initializing your conda. The
+Python/Perl/Java libraries used can also be controlled with the
+corresponding parameters \_\_\*\_additional\_\_.
+
+To demonstrate this we will use the first command from the
+[seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html)
+vignette. This step requires access samtools. If this is not installed
+there is an error. But if the command is run using **with\_CondaEnv**,
+then seqCNA can find samtools.
+
+``` r
+library(seqCNA)
+data(seqsumm_HCC1143)
+try(rco <- readSeqsumm(tumour.data=seqsumm_HCC1143),silent = F)
+install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
+```
+
+    ## $pathToConda
+    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpSfl9gI/Test/bin/conda"
+    ## 
+    ## $environment
+    ## [1] "seqCNA"
+    ## 
+    ## $pathToEnvBin
+    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpSfl9gI/Test/envs/seqCNA/bin"
+
+``` r
+with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
+ ,pathToMiniConda = myMiniconda)
+```
+
+<br>
+
+Running Conda packages from R console with **with\_CondaEnv**
+-------------------------------------------------------------
+
+**with\_CondaEnv** allows users to run an conda tools from within R. The
+user simply has to wrap the command in the **system()** or **system2()**
+fucntions.
+
+``` r
+with_CondaEnv("HerperTestPkg_0.1.0",system2(command = "rmats.py",args = "-h"),pathToMiniConda = myMiniconda)
+```
+
+Finding Conda packages with **conda\_search**
+---------------------------------------------
+
+If the user is unsure of the exact name, or version of a tool available
+on conda, they can use the **conda\_search** function.
+
+``` r
+conda_search("salmon",pathToMiniConda = myMiniconda)
+```
+
+    ##      name version                                    channel
+    ## 2  salmon   0.8.2 https://conda.anaconda.org/bioconda/osx-64
+    ## 3  salmon   0.9.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 5  salmon   0.9.1 https://conda.anaconda.org/bioconda/osx-64
+    ## 6  salmon  0.10.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 7  salmon  0.10.1 https://conda.anaconda.org/bioconda/osx-64
+    ## 9  salmon  0.10.2 https://conda.anaconda.org/bioconda/osx-64
+    ## 11 salmon  0.11.3 https://conda.anaconda.org/bioconda/osx-64
+    ## 12 salmon  0.12.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 14 salmon  0.13.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 15 salmon  0.13.1 https://conda.anaconda.org/bioconda/osx-64
+    ## 17 salmon  0.14.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 20 salmon  0.14.1 https://conda.anaconda.org/bioconda/osx-64
+    ## 22 salmon  0.14.2 https://conda.anaconda.org/bioconda/osx-64
+    ## 23 salmon  0.15.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 24 salmon   1.0.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 25 salmon   1.1.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 26 salmon   1.2.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 27 salmon   1.2.1 https://conda.anaconda.org/bioconda/osx-64
+    ## 28 salmon   1.3.0 https://conda.anaconda.org/bioconda/osx-64
+
+    ## [1] TRUE
+
+Specific package versions can be searched for using the conda format
+i.e. “salmon==1.3”, “salmon\>=1.3” or “salmon\<=1.3”. Searches will also
+find close matches for incorrect queries. Channels to search in can be
+controlled with *channels* parameter.
+
+``` r
+conda_search("salmon<=1.0",pathToMiniConda = myMiniconda)
+```
+
+    ##      name version                                    channel
+    ## 2  salmon   0.8.2 https://conda.anaconda.org/bioconda/osx-64
+    ## 3  salmon   0.9.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 5  salmon   0.9.1 https://conda.anaconda.org/bioconda/osx-64
+    ## 6  salmon  0.10.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 7  salmon  0.10.1 https://conda.anaconda.org/bioconda/osx-64
+    ## 9  salmon  0.10.2 https://conda.anaconda.org/bioconda/osx-64
+    ## 11 salmon  0.11.3 https://conda.anaconda.org/bioconda/osx-64
+    ## 12 salmon  0.12.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 14 salmon  0.13.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 15 salmon  0.13.1 https://conda.anaconda.org/bioconda/osx-64
+    ## 17 salmon  0.14.0 https://conda.anaconda.org/bioconda/osx-64
+    ## 20 salmon  0.14.1 https://conda.anaconda.org/bioconda/osx-64
+    ## 22 salmon  0.14.2 https://conda.anaconda.org/bioconda/osx-64
+    ## 23 salmon  0.15.0 https://conda.anaconda.org/bioconda/osx-64
+
+    ## [1] TRUE
+
+``` r
+conda_search("salm",pathToMiniConda = myMiniconda)
+```
+
+    ## [1] FALSE
+
+<br> \#\# Export of Conda environments to YAML files using
+**export\_CondaEnv**.
+
+The **export\_CondaEnv** function allows the user to export the
+environment information to a *.yml* file. These environment YAML files
+contain all essential information about the package, allowing for
+reproducibilty and easy distribution of Conda system configuration for
+collaboration.
+
+``` r
+yml_name <- paste0("herper_", format(Sys.Date(), "%Y%m%d"),".yml")
+export_CondaEnv("herper", yml_name,pathToMiniConda = myMiniconda)
+```
+
+    ## [1] "herper_20200918.yml"
+
+<br>
+
+The YAML export will contain all packages in the environment by default.
+If the user wants to only export the packages that were specifically
+installed and not their dependencies they can use the *depends*
+paramter.
+
+``` r
+yml_name <- paste0("herper_nodeps_", format(Sys.Date(), "%Y%m%d"),".yml")
+export_CondaEnv("herper", yml_name, depends=FALSE, pathToMiniConda = myMiniconda)
+```
+
+    ## [1] "herper_nodeps_20200918.yml"
+
+<br>
+
+Import of Conda environments from YAML files using **import\_CondaEnv**.
+------------------------------------------------------------------------
+
+The **import\_CondaEnv** function allows the user to create a new conda
+environment from a *.yml* file. These can be previously exported from
+**export\_CondaEnv**, conda, renv or manually created.
+
+Users can simply provide a path to the YAML file for import. They can
+also specify the environment name, but by default the name will be taken
+from the YAML.
+
+``` r
+import_CondaEnv(yml_name, "herper2",myMiniconda)
+```
+
+<br> <br>
 
 Acknowledgements
-================
+----------------
 
-Thank you to Ji-Dung Luo and Wei Wang for testing/vignette
+The Herper package was developed by Matt Paul, Tom Carroll and Doug
+Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette
 review/critical feedback and Ziwei Liang for their support.
 
-Session info
-============
+<br> \#\# Session Information
 
 ``` r
 sessionInfo()
@@ -185,38 +329,22 @@ sessionInfo()
     ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
     ## 
     ## attached base packages:
-    ##  [1] stats4    grid      parallel  stats     graphics  grDevices utils     datasets  methods  
-    ## [10] base     
+    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] rmarkdown_2.3               magrittr_1.5                dplyr_1.0.2                
-    ##  [4] stringr_1.4.0               ggplot2_3.3.2               CondaSysReqs_0.9.8         
-    ##  [7] reticulate_1.16             MOFA_1.4.0                  MultiAssayExperiment_1.14.0
-    ## [10] SummarizedExperiment_1.18.2 DelayedArray_0.14.1         matrixStats_0.56.0         
-    ## [13] Biobase_2.48.0              GenomicRanges_1.40.0        GenomeInfoDb_1.24.2        
-    ## [16] IRanges_2.22.2              S4Vectors_0.26.1            Rgraphviz_2.32.0           
-    ## [19] graph_1.66.0                BiocGenerics_0.34.0        
+    ##  [1] BiocStyle_2.16.0    CondaSysReqs_0.99.0 seqCNA_1.34.0       seqCNA.annot_1.24.0
+    ##  [5] adehabitatLT_0.3.25 CircStats_0.2-6     boot_1.3-25         MASS_7.3-53        
+    ##  [9] adehabitatMA_0.3.14 ade4_1.7-15         sp_1.4-2            doSNOW_1.0.18      
+    ## [13] snow_0.4-3          iterators_1.0.12    foreach_1.5.0       GLAD_2.52.0        
+    ## [17] reticulate_1.16    
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] fs_1.5.0               bitops_1.0-6           usethis_1.6.1          devtools_2.3.1        
-    ##  [5] doParallel_1.0.15      RColorBrewer_1.1-2     rprojroot_1.3-2        tools_4.0.2           
-    ##  [9] backports_1.1.9        R6_2.4.1               vipor_0.4.5            colorspace_1.4-1      
-    ## [13] withr_2.2.0            tidyselect_1.1.0       prettyunits_1.1.1      processx_3.4.4        
-    ## [17] compiler_4.0.2         cli_2.0.2              desc_1.2.0             scales_1.1.1          
-    ## [21] callr_3.4.4            digest_0.6.25          XVector_0.28.0         pkgconfig_2.0.3       
-    ## [25] htmltools_0.5.0        sessioninfo_1.1.1      rlang_0.4.7            rstudioapi_0.11       
-    ## [29] generics_0.0.2         jsonlite_1.7.1         RCurl_1.98-1.2         GenomeInfoDbData_1.2.3
-    ## [33] Matrix_1.2-18          Rcpp_1.0.5             ggbeeswarm_0.6.0       munsell_0.5.0         
-    ## [37] Rhdf5lib_1.10.1        fansi_0.4.1            lifecycle_0.2.0        stringi_1.5.3         
-    ## [41] yaml_2.2.1             zlibbioc_1.34.0        rhdf5_2.32.2           pkgbuild_1.1.0        
-    ## [45] plyr_1.8.6             ggrepel_0.8.2          crayon_1.3.4           lattice_0.20-41       
-    ## [49] cowplot_1.1.0          knitr_1.29             ps_1.3.4               pillar_1.4.6          
-    ## [53] rjson_0.2.20           reshape2_1.4.4         codetools_0.2-16       pkgload_1.1.0         
-    ## [57] glue_1.4.2             evaluate_0.14          remotes_2.2.0          BiocManager_1.30.10   
-    ## [61] vctrs_0.3.4            foreach_1.5.0          testthat_2.3.2         gtable_0.3.0          
-    ## [65] purrr_0.3.4            assertthat_0.2.1       xfun_0.17              tibble_3.0.3          
-    ## [69] pheatmap_1.0.12        iterators_1.0.12       beeswarm_0.2.3         memoise_1.1.0         
-    ## [73] corrplot_0.84          ellipsis_0.3.1         BiocStyle_2.16.0
-
-References
-==========
+    ##  [1] Rcpp_1.0.5          BiocManager_1.30.10 compiler_4.0.2      tools_4.0.2        
+    ##  [5] testthat_2.3.2      digest_0.6.25       pkgload_1.1.0       evaluate_0.14      
+    ##  [9] jsonlite_1.7.1      lattice_0.20-41     rlang_0.4.7         Matrix_1.2-18      
+    ## [13] cli_2.0.2           rstudioapi_0.11     yaml_2.2.1          parallel_4.0.2     
+    ## [17] xfun_0.17           stringr_1.4.0       withr_2.2.0         knitr_1.29         
+    ## [21] desc_1.2.0          rprojroot_1.3-2     grid_4.0.2          glue_1.4.2         
+    ## [25] R6_2.4.1            fansi_0.4.1         bookdown_0.20       rmarkdown_2.3      
+    ## [29] magrittr_1.5        backports_1.1.9     codetools_0.2-16    htmltools_0.5.0    
+    ## [33] assertthat_0.2.1    stringi_1.5.3       rjson_0.2.20        crayon_1.3.4
