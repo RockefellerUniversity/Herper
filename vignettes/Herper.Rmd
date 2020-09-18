@@ -82,7 +82,6 @@ We can add additional tools to our Conda environment by specifying *updateEnv = 
 
 
 ```{r ,updateCondaTools, echo=T, eval=T}
-
 pathToConda <- install_CondaTools(c("samtools", "macs2"), "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
 pathToConda
 ```
@@ -163,6 +162,7 @@ conda_search("salm",pathToMiniConda = myMiniconda)
 
 
 <br>
+
 ## Export of Conda environments to YAML files using **export_CondaEnv**.
 
 The **export_CondaEnv** function allows the user to export the environment information to a *.yml* file. These environment YAML files contain all essential information about the package, allowing for reproducibilty and easy distribution of Conda system configuration for collaboration. 
@@ -195,14 +195,15 @@ import_CondaEnv(yml_name, "herper2",myMiniconda)
 <br>
 <br>
 
-```{r, echo=F, eval=T, message=F, warning=F}
-unlink(dir(".",pattern=".yml"))
+```{r, echo=F, eval=F, message=F, warning=F}
+unlink(dir(".",pattern="herper_.*.yml"))
 ```
 
 ## Acknowledgements
 The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
 
 <br>
+
 ## Session Information
 
 ```{r}
