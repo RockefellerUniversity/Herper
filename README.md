@@ -16,7 +16,7 @@ packages having several requirements) \[03 September, 2020\].
 
 <br>
 
-<img src="/Library/Frameworks/R.framework/Versions/4.0/Resources/library/CondaSysReqs/extdata/pkg_deps_bar_mask-1.png" width="1000px" style="display: block; margin: auto;" />
+<img src="inst/extdata/pkg_deps_bar_mask-1.png" width="1000px" style="display: block; margin: auto;" />
 
 The Herper package includes functions that allow the easy management of
 these external dependencies from within the R console.
@@ -311,7 +311,8 @@ The Herper package was developed by Matt Paul, Tom Carroll and Doug
 Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette
 review/critical feedback and Ziwei Liang for their support.
 
-<br> \#\# Session Information
+<br> 
+\#\# Session Information
 
 ``` r
 sessionInfo()
