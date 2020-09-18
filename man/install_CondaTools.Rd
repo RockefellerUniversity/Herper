@@ -7,7 +7,6 @@
 install_CondaTools(
   tools,
   env,
-  vers = NULL,
   channels = NULL,
   pathToMiniConda = NULL,
   updateEnv = FALSE
@@ -17,8 +16,6 @@ install_CondaTools(
 \item{tools}{Vector of software to install using conda.}
 
 \item{env}{Name of Conda environment to install tools into.}
-
-\item{vers}{Vector of software version numbers to install using conda}
 
 \item{channels}{Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)}
 
