@@ -255,8 +255,10 @@ conda_search("salm",pathToMiniConda = myMiniconda)
 
     ## [1] FALSE
 
-<br> \#\# Export of Conda environments to YAML files using
-**export\_CondaEnv**.
+<br>
+
+Export of Conda environments to YAML files using **export\_CondaEnv**.
+----------------------------------------------------------------------
 
 The **export\_CondaEnv** function allows the user to export the
 environment information to a *.yml* file. These environment YAML files
@@ -311,8 +313,10 @@ The Herper package was developed by Matt Paul, Tom Carroll and Doug
 Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette
 review/critical feedback and Ziwei Liang for their support.
 
-<br> 
-\#\# Session Information
+<br>
+
+Session Information
+-------------------
 
 ``` r
 sessionInfo()
