@@ -140,15 +140,6 @@ conda_create_silentJSON <- function(envname = NULL,
 #'   specify multiple channels, including the Conda Forge, you can use
 #'   `c("conda-forge", <other channels>)`.
 #'
-#' @param pip_ignore_installed Ignore installed versions when using pip. This is
-#'   `TRUE` by default so that specific package versions can be installed even
-#'   if they are downgrades. The `FALSE` option is useful for situations where
-#'   you don't want a pip install to attempt an overwrite of a conda binary
-#'   package (e.g. SciPy on Windows which is very difficult to install via pip
-#'   due to compilation requirements).
-#'   
-#' @param pip_options An optional character vector of additional command line
-#'   arguments to be passed to `pip` if `pip` is used.
 #'
 #'
 #' @keywords internal
