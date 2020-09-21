@@ -167,23 +167,6 @@ conda_install_silentJSON <- function(envname = NULL,
   # resolve environment name
   envname <- condaenv_resolve(envname)
   
-  ######
-  # not quite sure what to keep from this???
-  #######
-  
-  
-  # check if the environment exists, and create it on demand if needed.
-  # if the environment does already exist, but a version of Python was
-  # requested, attempt to install that in the existing environment
-  # (effectively re-creating it if the Python version differs)
-  python <- tryCatch(conda_python(envname = envname, conda = conda), error = identity)  
-  
-  if (inherits(python, "error") || !file.exists(python)) {
-    conda_create_silentJSON(envname, conda = conda) # create environment if doesn't exist
-    python <- conda_python(envname = envname, conda = conda)
-  } 
-
-  
   # otherwise, use conda
   args <- conda_args("install", envname)
   

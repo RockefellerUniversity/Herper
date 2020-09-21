@@ -6,7 +6,6 @@
 \usage{
 conda_create_silentJSON(
   envname = NULL,
-  packages = "python",
   forge = TRUE,
   channel = character(),
   conda = "auto"
