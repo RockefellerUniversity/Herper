@@ -61,26 +61,6 @@ condaenv_resolve <- function(envname = NULL) {
   
 }
 
-pip_install <- function(python, packages, pip_options = character(), ignore_installed = FALSE) {
-  
-  # construct command line arguments
-  args <- c("-m", "pip", "install", "--upgrade")
-  if (ignore_installed)
-    args <- c(args, "--ignore-installed")
-  args <- c(args, pip_options)
-  args <- c(args, packages)
-  
-  # run it
-  result <- system2(python, args)
-  if (result != 0L) {
-    pkglist <- paste(shQuote(packages), collapse = ", ")
-    msg <- paste("Error installing package(s):", pkglist)
-    stop(msg, call. = FALSE)
-  }
-  
-  invisible(packages)
-  
-}
 
 stopf <- function(fmt, ..., call. = FALSE) {
   stop(sprintf(fmt, ...), call. = call.)
@@ -109,7 +89,6 @@ stopf <- function(fmt, ..., call. = FALSE) {
 #'
 #' @import reticulate
 conda_create_silentJSON <- function(envname = NULL,
-                         packages = "python",
                          forge = TRUE,
                          channel = character(),
                          conda = "auto") {
@@ -121,7 +100,7 @@ conda_create_silentJSON <- function(envname = NULL,
   envname <- condaenv_resolve(envname)
   
   # create the environment
-  args <- conda_args("create", envname, packages)
+  args <- conda_args("create", envname)
   
   # add user-requested channels
   channels <- if (length(channel))
@@ -161,15 +140,6 @@ conda_create_silentJSON <- function(envname = NULL,
 #'   specify multiple channels, including the Conda Forge, you can use
 #'   `c("conda-forge", <other channels>)`.
 #'
-#' @param pip_ignore_installed Ignore installed versions when using pip. This is
-#'   `TRUE` by default so that specific package versions can be installed even
-#'   if they are downgrades. The `FALSE` option is useful for situations where
-#'   you don't want a pip install to attempt an overwrite of a conda binary
-#'   package (e.g. SciPy on Windows which is very difficult to install via pip
-#'   due to compilation requirements).
-#'   
-#' @param pip_options An optional character vector of additional command line
-#'   arguments to be passed to `pip` if `pip` is used.
 #'
 #'
 #' @keywords internal
@@ -179,11 +149,7 @@ conda_install_silentJSON <- function(envname = NULL,
                           packages,
                           forge = TRUE,
                           channel = character(),
-                          pip = FALSE,
-                          pip_options = character(),
-                          pip_ignore_installed = FALSE,
                           conda = "auto",
-                          python_version = NULL,
                           ...)
 {
   # resolve conda binary
@@ -191,33 +157,6 @@ conda_install_silentJSON <- function(envname = NULL,
   
   # resolve environment name
   envname <- condaenv_resolve(envname)
-  
-  # honor request for specific Python
-  python_package <- "python"
-  if (!is.null(python_version))
-    python_package <- paste(python_package, python_version, sep = "=")
-  
-  # check if the environment exists, and create it on demand if needed.
-  # if the environment does already exist, but a version of Python was
-  # requested, attempt to install that in the existing environment
-  # (effectively re-creating it if the Python version differs)
-  python <- tryCatch(conda_python(envname = envname, conda = conda), error = identity)  
-  
-  if (inherits(python, "error") || !file.exists(python)) {
-    conda_create_silentJSON(envname, packages = python_package, conda = conda) # create environment if doesn't exist
-    python <- conda_python(envname = envname, conda = conda)
-  } else if (!is.null(python_package)) {
-    args <- conda_args("install", envname, python_package)
-    status <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE) # install python into the environment if its not there
-    if (status != 0L) {
-      fmt <- "installation of '%s' into environment '%s' failed [error code %i]"
-      msg <- sprintf(fmt, python_package, envname, status)
-      stop(msg, call. = FALSE)
-    }
-  }
-  # delegate to pip if requested
-  if (pip)
-    return(pip_install(python, packages, pip_options = pip_options))
   
   # otherwise, use conda
   args <- conda_args("install", envname)
@@ -231,7 +170,7 @@ conda_install_silentJSON <- function(envname = NULL,
   for (ch in channels)
     args <- c(args, "-c", ch)
   
-  args <- c(args, python_package, packages)
+  args <- c(args, packages)
   
   result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
   

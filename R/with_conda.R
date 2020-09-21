@@ -174,7 +174,7 @@ unset_condapaths <- function(old) {
   if(!is.null(PYTHONPATH)){  
     Sys.setenv(PYTHONPATH = PYTHONPATH)
   }else{
-    Sys.unsetenv("PERL5LIB")
+    Sys.unsetenv("PYTHONPATH")
   }
 }
 
