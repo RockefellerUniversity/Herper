@@ -10,10 +10,10 @@ with_CondaEnv(
   code,
   pathToMiniConda = NULL,
   path_action = "prefix",
+  path_additional = NULL,
   pythonpath_action = "replace",
   perl5lib_action = "replace",
   javahome_action = "replace",
-  path_additional = NULL,
   pythonpath_additional = NULL,
   perl5lib_additional = NULL,
   javahome_additional = NULL
@@ -23,10 +23,10 @@ local_CondaEnv(
   new,
   pathToMiniConda = NULL,
   path_action = "prefix",
+  path_additional = NULL,
   pythonpath_action = "replace",
   perl5lib_action = "replace",
   javahome_action = "replace",
-  path_additional = NULL,
   pythonpath_additional = NULL,
   perl5lib_additional = NULL,
   javahome_additional = NULL,
@@ -42,13 +42,13 @@ local_CondaEnv(
 
 \item{path_action}{Should new values "replace", "prefix" or "suffix" existing PATH variable.}
 
+\item{path_additional}{Additional paths to suffix to existing PATH variable.}
+
 \item{pythonpath_action}{Should new values "replace", "prefix" or "suffix" existing PYTHONPATH variable.}
 
 \item{perl5lib_action}{Should new values "replace", "prefix" or "suffix" existing PERL5LIB variable.}
 
 \item{javahome_action}{Should new values "replace", "prefix" or "suffix" existing JAVA_HOME variable.}
-
-\item{path_additional}{Additional paths to suffix to existing PATH variable.}
 
 \item{pythonpath_additional}{Additional paths to suffix to existing PYTHONPATH variable.}
 
