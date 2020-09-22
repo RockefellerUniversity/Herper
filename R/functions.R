@@ -346,7 +346,7 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
   #Set Channels
   defaultChannels <- c("bioconda","defaults","conda-forge")
   channels <- unique(c(channels,defaultChannels))
-  pathToConda <- file.path(pathToCondaInstall,"bin","conda")
+  pathToConda <- miniconda_conda(pathToCondaInstall)
   # set<-suppressWarnings(sapply(channels, function(x) system(paste(pathToConda, "config --add channels", x),intern = TRUE,
   #                                                      ignore.stderr = TRUE)))
 
