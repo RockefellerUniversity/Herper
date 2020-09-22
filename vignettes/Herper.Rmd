@@ -73,7 +73,8 @@ If you already have Miniconda installed or you would like to install to a custom
 
 
 ```{r installCondaTools, echo=T, eval=T}
-myMiniconda <- file.path(tempdir(),"Test")
+myMiniconda <- file.path(tempdir2(),"Test")
+myMiniconda
 install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
 ```
 
