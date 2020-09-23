@@ -41,7 +41,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
   }
 
   version_sep<-c("[<>)(=]")
-  pkg_and_vers<-unlist(strsplit(package, version_sep, perl = T))
+  pkg_and_vers<-unlist(strsplit(as.character(package), version_sep, perl = T))
   pkg_and_vers<-pkg_and_vers[!(nchar(pkg_and_vers)==0)]
   version_included<-grepl("=",package)
   if(version_included){
@@ -85,9 +85,10 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
       }
     }
   }else if (pkg_and_vers[1] %in% names(condaSearch)){
-    condaSearch_df <- as.data.frame(do.call(rbind, lapply(condaSearch[[1]], function(x) c(name = x$name,
-                                                                            version = x$version,
-                                                                            channel = x$channel))))
+
+    condaSearch_df <- as.data.frame(do.call(rbind, lapply(condaSearch[[1]], function(x) c(name = x$name, 
+                                                                            version = x$version, 
+                                                                            channel = x$channel))),stringsAsFactors =FALSE)
     condaSearch_df <- condaSearch_df[!duplicated(condaSearch_df$version, fromLast = TRUE), ]
 
     if (version_included){

@@ -353,8 +353,9 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
   # set<-suppressWarnings(sapply(channels, function(x) system(paste(pathToConda, "config --add channels", x),intern = TRUE,
   #                                                      ignore.stderr = TRUE)))
 
-
-  checks<-sapply(tools, conda_search, print_out=F, pathToMiniConda=pathToMiniConda, channel=channels)
+  
+  
+  checks<-sapply(tools, conda_search, print_out=FALSE, pathToMiniConda=pathToMiniConda, channel=channels)
 
   if(sum(checks[1,]==F)>0){
     idx<-which(checks[1,]==F)
@@ -423,8 +424,7 @@ export_CondaEnv <- function(env_name,yml_export=NULL,pathToMiniConda=NULL,depend
     export_path<-paste0(env_name, ".yml")
   }else{export_path<-yml_export}
 
-  #need to add check for existence
-
+  
   if(depends==TRUE){
     system(paste(pathToConda,"env export -n", env_name, ">", export_path))
   }else{
@@ -452,8 +452,8 @@ export_CondaEnv <- function(env_name,yml_export=NULL,pathToMiniConda=NULL,depend
 #' @examples
 #' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
 #' condaDir <- file.path(tempdir(),"r-miniconda")
-#' import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
-#' export_CondaEnv("HerperTest",yml_export=tempfile(),pathToMiniConda=condaDir)
+#' import_CondaEnv(testYML, "herper_test",pathToMiniConda=condaDir)
+#' export_CondaEnv("herper_test",yml_export=tempfile(),pathToMiniConda=condaDir)
 #' @export
 import_CondaEnv <- function(yml_import, name=NULL, pathToMiniConda=NULL){
   # pathToMiniConda <- "~/Desktop/testConda"
@@ -464,27 +464,36 @@ import_CondaEnv <- function(yml_import, name=NULL, pathToMiniConda=NULL){
     pathToMiniConda <- file.path(pathToMiniConda)
   }
 
-  if(!is.null(name)){
-    file.copy(yml_import, "tmp.yml")
-    tmp <- readLines("tmp.yml")
-    tmp[1]<-paste0("name: ", name)
-    writeLines(tmp,"tmp.yml")
-    yml_import <- "tmp.yml"
-  }
-
   pathToCondaInstall <- pathToMiniConda
   pathToConda <- file.path(pathToCondaInstall,"bin","conda")
 
   condaPathExists <- miniconda_exists(pathToCondaInstall)
   if(!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
 
-  #need to add check for existence of yml
-  #need to check there is no conflicting yml name
-
-  system(paste(pathToConda,"env create -f", yml_import))
-
+  
   if(!is.null(name)){
-    unlink("tmp.yml")
+    if(list_CondaEnv(pathToMiniConda=pathToMiniConda, env=name)){
+      stop(paste("Conda environment with the name",name, "already exists.\n Try using list_CondaEnv to see what envirnoment names are already in use."))
+    }
+    tmpname<-paste0("tmp_",substr(stats::rnorm(1),5,7),".yml")
+    file.copy(yml_import, tmpname)
+    tmp <- readLines(tmpname)
+    tmp[1]<-paste0("name: ", name)
+    writeLines(tmp,tmpname)
+    yml_import <- tmpname
+  }else{
+    name <- gsub("name: ","", readLines(yml_import, n=1))
+    if(list_CondaEnv(pathToMiniConda=pathToMiniConda, env=name)){
+      stop(paste("Conda environment with the name",name, "already exists.\n Try using list_CondaEnv to see what envirnoment names are already in use."))
+    }
+  }
+  
+  args <- paste0("-f", yml_import)
+  result <- suppressWarnings(system2(pathToConda, shQuote(c("env","create","--quiet", "--json", args )), stdout = TRUE, stderr = TRUE))
+  
+  if(!is.null(name)){
+   unlink(tmpname) 
+
   }
 }
 
