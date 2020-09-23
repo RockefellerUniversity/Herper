@@ -71,6 +71,12 @@ Miniconda is installed as part of the process (by default into the r-reticulate'
 If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the *pathToMiniConda* parameter.
 
 
+```{r, echo=F, eval=T}
+tempdir2 <- function(){
+  gsub("\\","/", tempdir(),fixed=T)
+}
+```
+
 
 ```{r installCondaTools, echo=T, eval=T}
 myMiniconda <- file.path(tempdir2(),"Test")
@@ -83,6 +89,7 @@ We can add additional tools to our Conda environment by specifying *updateEnv = 
 
 
 ```{r ,updateCondaTools, echo=T, eval=T}
+
 pathToConda <- install_CondaTools(c("samtools"), "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
 pathToConda
 ```
