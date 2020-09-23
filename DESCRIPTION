@@ -1,6 +1,6 @@
 Package: CondaSysReqs
 Type: Package
-Title: Install Conda packages from System Requirements section of package Description file
+Title: The Herper package is a simple toolset to install and manage conda packages and environments from R
 Version: 0.99.0
 Authors@R: c(
     person("Thomas", "Carroll", , "tc.infomatics@gmail.com", role = c("aut", "cre"),
@@ -13,7 +13,7 @@ Authors@R: c(
       comment = c(ORCID = "??")
     )
   )
-Description: Install Conda packages from System Requirements section of package Description file.
+Description: Many tools for data analysis are not available in R, but are present in public repositories like conda. The Herper package provides a comprehensive set of functions to interact with the conda package managament system. With Herper users can install, manage and run conda packages from the comfort or their R session.  
 Depends: R (>= 3.5.0), reticulate
 Imports: utils, rjson, withr
 Suggests: BiocStyle, testthat, knitr, rmarkdown, seqCNA
