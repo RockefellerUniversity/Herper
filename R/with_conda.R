@@ -2,10 +2,10 @@
 set_condapaths <- function(env,
                            pathToMiniConda=NULL,
                            path_action= "prefix",
+                           path_additional= NULL,
                            pythonpath_action = "replace",
                            perl5lib_action = "replace",
                            javahome_action = "replace",
-                           path_additional= NULL,
                            pythonpath_additional = NULL,
                            perl5lib_additional = NULL,
                            javahome_additional = NULL
@@ -31,21 +31,17 @@ set_condapaths <- function(env,
   condaPaths <- list(pathToConda=pathToConda,environment=environment,pathToEnvBin=pathToEnvBin)
   
   
-  
-  
-  
-  
-  
   stopifnot(is.character(path_action), length(path_action) == 1,
             is.character(perl5lib_action), length(perl5lib_action) == 1,
             is.character(pythonpath_action), length(pythonpath_action) == 1,
             is.character(javahome_action), length(javahome_action) == 1
-            )
-
+  )
+  
   path_action <- match.arg(path_action, c("replace", "prefix", "suffix"))
   perl5lib_action <- match.arg(perl5lib_action, c("replace", "prefix", "suffix"))    
   javahome_action <- match.arg(javahome_action, c("replace", "prefix", "suffix"))    
-  pythonpath_action <- match.arg(pythonpath_action, c("replace", "prefix", "suffix"))    
+  pythonpath_action <- match.arg(pythonpath_action, c("replace", "prefix", "suffix")) 
+  
   
   path <- strsplit(Sys.getenv("PATH"), .Platform$path.sep)[[1]]
   path <- normalizePath(path, mustWork = FALSE)
@@ -56,11 +52,20 @@ set_condapaths <- function(env,
   old$PYTHONPATH <- Sys.getenv("PYTHONPATH",unset = NA)
   old$PERL5LIB <- Sys.getenv("PERL5LIB",unset = NA)
   old <- old[c(TRUE,!sapply(old[-1],is.na))]
-  ###
-  ##
-  if(file.exists(file.path(condaPaths$pathToEnvBin,"java"))){
-    JAVA_HOME=c(dirname(condaPaths$pathToEnvBin))
-    JAVA_HOME=c(JAVA_HOME,javahome_additional)
+  
+  newPATH <- c(condaPaths$pathToEnvBin,path_additional)
+  if (path_action == "suffix") {
+    newPATH <- c(old$PATH, newPATH)
+  } else if (path_action == "prefix") {
+    newPATH <- c(newPATH, old$PATH)
+  }
+  newPATH <- paste(newPATH, collapse = .Platform$path.sep)
+  
+  Sys.setenv(PATH = newPATH)
+  Sys.setenv(CONDA_PREFIX = pathToCondaPkgEnv)
+  
+  if(!is.null(javahome_additional)){
+    JAVA_HOME <- javahome_additional
     old_JAVA_HOME <- old$JAVA_HOME
     if (javahome_action == "suffix") {
       JAVA_HOME <- c(old_JAVA_HOME, JAVA_HOME)
@@ -75,13 +80,8 @@ set_condapaths <- function(env,
   ###
   ###
   ##
-  if(file.exists(file.path(condaPaths$pathToEnvBin,"python"))){
-    PYTHONPATH <- dir(file.path(dirname(condaPaths$pathToEnvBin),"lib"),
-                      pattern="site-packages$",
-                      recursive=TRUE,
-                      full.names = TRUE,
-                      include.dirs=TRUE)
-    PYTHONPATH=c(PYTHONPATH,pythonpath_additional)
+  if(!is.null(pythonpath_additional)){
+    PYTHONPATH <- pythonpath_additional
     old_PYTHONPATH <- old$PYTHONPATH
     if (pythonpath_action == "suffix") {
       PYTHONPATH <- c(old_PYTHONPATH, PYTHONPATH)
@@ -96,12 +96,8 @@ set_condapaths <- function(env,
   ###
   ###
   ##
-  if(file.exists(file.path(condaPaths$pathToEnvBin,"perl"))){
-    PERL5LIB <- dirname(dir(file.path(dirname(condaPaths$pathToEnvBin),"lib"),
-                pattern="CPAN.pm",
-                recursive=TRUE,
-                full.names = TRUE))
-    PERL5LIB <- c(PERL5LIB,perl5lib_additional)
+  if(!is.null(perl5lib_additional)){
+    PERL5LIB <- perl5lib_additional
     old_PERL5LIB <- old$PERL5LIB
     if (perl5lib_action == "suffix") {
       PERL5LIB <- c(old_PERL5LIB, PERL5LIB)
@@ -112,51 +108,82 @@ set_condapaths <- function(env,
     Sys.setenv(PERL5LIB=PERL5LIB)
     message(PERL5LIB)
   }
-  ##
-  ###
   
-  newPATH <- condaPaths$pathToEnvBin
-  if (path_action == "suffix") {
-    newPATH <- c(old$PATH, newPATH)
-  } else if (path_action == "prefix") {
-    newPATH <- c(newPATH, old$PATH)
+  activateScripts <- dir(file.path(pathToCondaPkgEnv,
+                               "etc",
+                               "conda",
+                               "activate.d"),full.names = TRUE)
+
+  deactivateScripts <- dir(file.path(pathToCondaPkgEnv,
+                                   "etc",
+                                   "conda",
+                                   "deactivate.d"),full.names = TRUE)
+  
+  
+  if(length(activateScripts) > 0 & length(activateScripts) == length(deactivateScripts)){
+    old$activateScripts <- activateScripts
+    old$deactivateScripts <- deactivateScripts    
+    old$EnvironmentalVariables <- list()
+    for(i in 1:length(activateScripts)){
+      # message("Running activate script - ",activateScripts[i])
+      # system(readLines(activateScripts[i]),intern = TRUE)
+      if(.Platform$OS.type == "unix"){
+        CondaPrefix <- paste0("CONDA_PREFIX=",Sys.getenv("CONDA_PREFIX"))
+        CondaPath <- paste0("PATH=",Sys.getenv("PATH"))      
+        # allEnv <- paste(names(allEnv),unname(allEnv),sep = "=")
+        envsToMount <- system2(command = "source",args=paste0(activateScripts[i],";printenv"),env = c(CondaPrefix,CondaPath),stdout =TRUE)
+        for(k in 1:length(envsToMount)){
+          envS <- unlist(strsplit(envsToMount[k],"="))
+          envVariable <- envS[1]
+          envValue<- envS[2]
+          previousEnv <- Sys.getenv(envVariable,unset = NA)
+          old$EnvironmentalVariables[envVariable] <- previousEnv
+          # if(previousEnv!=envValue){
+            # message("Setting environmental variable for ",envVariable," to ",envValue)
+            # .Internal(Sys.setenv(envVariable,envValue))
+            do.call(Sys.setenv, as.list(setNames(envValue, envVariable)))
+          # }
+          
+        }
+      }
+    }
   }
-  newPATH <- paste(newPATH, collapse = .Platform$path.sep)
-  Sys.setenv(PATH = newPATH)
+  
+  
+
   invisible(old)
 }
 
 unset_condapaths <- function(old) {
   if (length(old) == 0) return()
-  # path <- old$PATH
-  # path <- strsplit(path, .Platform$path.sep)
-  # path <- normalizePath(unlist(path), mustWork = FALSE)
-  # path <- paste(path, collapse = .Platform$path.sep)
-  # Sys.setenv(PATH = path)
-  # 
-  # JAVA_HOME <- old$JAVA_HOME
-  # JAVA_HOME <- strsplit(JAVA_HOME, .Platform$path.sep)
-  # JAVA_HOME <- normalizePath(unlist(JAVA_HOME), mustWork = FALSE)
-  # JAVA_HOME <- paste(JAVA_HOME, collapse = .Platform$path.sep)    
-  # Sys.setenv(JAVA_HOME = JAVA_HOME)
-  # 
-  # PERL5LIB <- old$PERL5LIB
-  # PERL5LIB <- strsplit(PERL5LIB, .Platform$path.sep)
-  # PERL5LIB <- normalizePath(unlist(PERL5LIB), mustWork = FALSE)
-  # PERL5LIB <- paste(PERL5LIB, collapse = .Platform$path.sep)    
-  # Sys.setenv(PERL5LIB = PERL5LIB)
-  # 
-  # PYTHONPATH <- old$PYTHONPATH
-  # PYTHONPATH <- strsplit(PYTHONPATH, .Platform$path.sep)
-  # PYTHONPATH <- normalizePath(unlist(PYTHONPATH), mustWork = FALSE)
-  # PYTHONPATH <- paste(PYTHONPATH, collapse = .Platform$path.sep)    
-  # Sys.setenv(PYTHONPATH = PYTHONPATH)
   
+  
+  # if(length(old$deactivateScripts) > 0){
+  #   for(i in 1:length(old$deactivateScripts)){
+  #     message("Running activate script - ",old$deactivateScripts[i])
+  #     if(.Platform$OS.type == "unix"){
+  #       system(paste0("source ",old$deactivateScripts[i]),intern = TRUE)
+  #     }
+  #   }
+  # }
+  
+  if(length(old$EnvironmentalVariables) > 0){
+    for(e in 1:length(old$EnvironmentalVariables)){
+      envVariable <- names(old$EnvironmentalVariables)[e]
+      envValue <- old$EnvironmentalVariables[[e]]
+      if(is.na(envValue)){
+        Sys.unsetenv(envVariable)
+      }else{
+        do.call(Sys.setenv, as.list(setNames(envValue, envVariable)))
+        # .Internal(Sys.setenv(envVariable,envValue))
+      }
+    }
+  }
   
   path <- old$PATH
   path <- paste(path, collapse = .Platform$path.sep)
   Sys.setenv(PATH = path)
-  
+  Sys.unsetenv("CONDA_PREFIX")
   JAVA_HOME <- old$JAVA_HOME
   if(!is.null(JAVA_HOME)){
     Sys.setenv(JAVA_HOME = old$JAVA_HOME)
@@ -176,6 +203,8 @@ unset_condapaths <- function(old) {
   }else{
     Sys.unsetenv("PYTHONPATH")
   }
+  
+  
 }
 
 #' Use Conda environments.
@@ -201,6 +230,7 @@ unset_condapaths <- function(old) {
 #' @param perl5lib_additional Additional paths to suffix to existing PERL5LIB variable.
 #' @param .local_envir The environment to use for scoping.
 #' @import withr
+#' @importFrom stats setNames
 #' @examples
 #' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
 #' condaDir <- file.path(tempdir(),"r-miniconda")
