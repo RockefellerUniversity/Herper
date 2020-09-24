@@ -41,8 +41,9 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
   }
 
   version_sep<-c("[<>)(=]")
-  pkg_and_vers<-unlist(strsplit(as.character(package), version_sep, perl = T))
+  pkg_and_vers<-unlist(strsplit(as.character(package), version_sep, perl = TRUE))
   pkg_and_vers<-pkg_and_vers[!(nchar(pkg_and_vers)==0)]
+  pkg_and_vers[2] <- gsub(pattern = "[[:alpha:]]", "", pkg_and_vers[2])
   version_included<-grepl("=",package)
   if(version_included){
     if(grepl(">=",package)){
@@ -90,11 +91,14 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
                                                                             version = x$version, 
                                                                             channel = x$channel))),stringsAsFactors =FALSE)
     condaSearch_df <- condaSearch_df[!duplicated(condaSearch_df$version, fromLast = TRUE), ]
-
+    
+    versions_no_letters <- gsub(pattern = "[[:alpha:]]", "", condaSearch_df$version)
+    
     if (version_included){
       package_version <- as.character(pkg_and_vers[2])
-      if (any(grepl(package_version, condaSearch_df$version)) & !(ver_logic %in% c("<=",">=")) ){
-        sub_df <- condaSearch_df[grepl(package_version, condaSearch_df$version), ]
+      if (any(apply(versions_no_letters, compareVersion, b=package_version) %in% 0) & !(ver_logic %in% c("<=",">=")) ){
+      #if (any(grepl(package_version, condaSearch_df$version)) & !(ver_logic %in% c("<=",">=")) ){
+        sub_df <- condaSearch_df[sapply(versions_no_letters, compareVersion, b=package_version) %in% 0, ]
         rownames(sub_df) <- NULL
         if(print_out){
           message(paste(pkg_and_vers[1], "version", package_version, "is available from the following channels:"))
@@ -104,8 +108,9 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
           return(list(exact_match=TRUE, version_matches=sub_df))
         }
       }else if(ver_logic==">="){
-          if(sum(sapply(condaSearch_df$version, compareVersion, b=package_version)==1)>0){
-            sub_df <- condaSearch_df[sapply(condaSearch_df$version, compareVersion, b=package_version)==1, ]
+          if(suppressWarnings(sum(sapply(versions_no_letters, compareVersion, b=package_version)==1, na.rm = TRUE) + 
+                              sum(sapply(versions_no_letters, compareVersion, b=package_version)==0, na.rm = TRUE) > 0)){
+            sub_df <- condaSearch_df[suppressWarnings(sapply(versions_no_letters, compareVersion, b=package_version))>=0, ]
           if(print_out){
             message(paste(pkg_and_vers[1], "version", ver_logic ,package_version, "are available from the following channels:"))
              print(sub_df)
@@ -122,23 +127,25 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
             }
           }
       }else if(ver_logic=="<="){
-        if(sum(sapply(condaSearch_df$version, compareVersion, b=package_version)==(-1))>0){
-          sub_df <- condaSearch_df[sapply(condaSearch_df$version, compareVersion, b=package_version)==(-1), ]
+        if(suppressWarnings(sum(sapply(versions_no_letters, compareVersion, b=package_version)==(-1), na.rm = TRUE) + 
+                            sum(sapply(versions_no_letters, compareVersion, b=package_version)== 0, na.rm = TRUE) >0)){
+          sub_df <- condaSearch_df[suppressWarnings(sapply(versions_no_letters, compareVersion, b=package_version))<=0, ]
           if(print_out){
             message(paste(pkg_and_vers[1], "versions", ver_logic ,package_version, "are available from the following channels:"))
             print(sub_df)
             return(TRUE)
           }else{
             return(list(exact_match=TRUE, version_matches=sub_df))
-          }}else{
-            if(print_out){
-              message(paste(pkg_and_vers[1], "is available, but version",ver_logic , package_version, "are not. The following versions are currently available:"))
-              print(condaSearch_df)
-              return(FALSE)
-            }else{
-              return(list(exact_match=FALSE, version_matches=condaSearch_df))
-            }
           }
+        }else{
+          if(print_out){
+            message(paste(pkg_and_vers[1], "is available, but version",ver_logic , package_version, "are not. The following versions are currently available:"))
+            print(condaSearch_df)
+            return(FALSE)
+          }else{
+            return(list(exact_match=FALSE, version_matches=condaSearch_df))
+          }
+        }
       }else{
         if(print_out){
           message(paste(pkg_and_vers[1], "is available, but version", package_version, "is not. The following versions are currently available:"))

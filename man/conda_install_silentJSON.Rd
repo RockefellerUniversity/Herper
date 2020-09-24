@@ -22,6 +22,9 @@ When specified, the `forge` argument is ignored. If you need to
 specify multiple channels, including the Conda Forge, you can use
 `c("conda-forge", <other channels>)`.}
 }
+\value{
+Nothing returned, packages are installed in specified environment.
+}
 \description{
 Reticulate's conda_install with silent output and json output capability
 }

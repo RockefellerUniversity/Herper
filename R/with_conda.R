@@ -124,7 +124,7 @@ set_condapaths <- function(env,
     old$activateScripts <- activateScripts
     old$deactivateScripts <- deactivateScripts    
     old$EnvironmentalVariables <- list()
-    for(i in 1:length(activateScripts)){
+    for(i in seq_along(activateScripts)){
       # message("Running activate script - ",activateScripts[i])
       # system(readLines(activateScripts[i]),intern = TRUE)
       if(.Platform$OS.type == "unix"){
@@ -132,7 +132,7 @@ set_condapaths <- function(env,
         CondaPath <- paste0("PATH=",Sys.getenv("PATH"))      
         # allEnv <- paste(names(allEnv),unname(allEnv),sep = "=")
         envsToMount <- system2(command = "source",args=paste0(activateScripts[i],";printenv"),env = c(CondaPrefix,CondaPath),stdout =TRUE)
-        for(k in 1:length(envsToMount)){
+        for(k in seq_along(envsToMount)){
           envS <- unlist(strsplit(envsToMount[k],"="))
           envVariable <- envS[1]
           envValue<- envS[2]
@@ -168,7 +168,7 @@ unset_condapaths <- function(old) {
   # }
   
   if(length(old$EnvironmentalVariables) > 0){
-    for(e in 1:length(old$EnvironmentalVariables)){
+    for(e in seq_along(old$EnvironmentalVariables)){
       envVariable <- names(old$EnvironmentalVariables)[e]
       envValue <- old$EnvironmentalVariables[[e]]
       if(is.na(envValue)){
@@ -231,6 +231,8 @@ unset_condapaths <- function(old) {
 #' @param .local_envir The environment to use for scoping.
 #' @import withr
 #' @importFrom stats setNames
+#' 
+#' @return Nothing returned. 
 #' @examples
 #' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
 #' condaDir <- file.path(tempdir(),"r-miniconda")

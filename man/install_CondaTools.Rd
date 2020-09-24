@@ -9,7 +9,8 @@ install_CondaTools(
   env,
   channels = NULL,
   pathToMiniConda = NULL,
-  updateEnv = FALSE
+  updateEnv = FALSE,
+  search = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ install_CondaTools(
 \item{pathToMiniConda}{NULL Path to miniconda installation}
 
 \item{updateEnv}{Update existing package's conda environment if already installed.}
+
+\item{search}{Whether to search for the package name and version before installing. It is highly recommended this be set to TRUE as information about available versions or similar packages will be included in the output if the exact match is not found.}
 }
 \value{
 Nothing returned. Output written to file.

@@ -3,7 +3,7 @@ is_windows <- function () {
 }
 
 tempdir2 <- function(){
-  gsub("\\","/", tempdir(),fixed=T)
+  gsub("\\","/", tempdir(),fixed=TRUE)
 }
 
 miniconda_exists <- function (path = miniconda_path())
@@ -88,7 +88,7 @@ stopf <- function(fmt, ..., call. = FALSE) {
 #'   specify multiple channels, including the Conda Forge, you can use
 #'   `c("conda-forge", <other channels>)`.
 #'
-#'
+#' @return Nothing returned, conda environment created. 
 #' @keywords internal
 #'
 #' @import reticulate
@@ -144,7 +144,7 @@ conda_create_silentJSON <- function(envname = NULL,
 #'   specify multiple channels, including the Conda Forge, you can use
 #'   `c("conda-forge", <other channels>)`.
 #'
-#'
+#' @return Nothing returned, packages are installed in specified environment.
 #'
 #' @keywords internal
 #'
@@ -183,7 +183,6 @@ conda_install_silentJSON <- function(envname = NULL,
     fmt <- "one or more Python packages failed to install [error code %i]"
     stopf(fmt, result)
   }
-
 
   invisible(packages)
 }
@@ -242,7 +241,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
 
     pkg_and_vers<-lapply(sysreqs, function(x) {
       x<-gsub("version|versions|Version|Versions","",x)
-      nm<-trimws(unlist(strsplit(x, version_sep, perl = T)))
+      nm<-trimws(unlist(strsplit(x, version_sep, perl = TRUE)))
       nm<-nm[!(nchar(nm)==0)]
     })
     parsed_count<-sapply(pkg_and_vers, length)
@@ -250,9 +249,9 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
       stop(paste("System requirements not parsed succesfully. Issues with:",sysreqs[parsed_count>2]))
     }
 
-    idx1<-grep(">=",sysreqs, fixed = T)
-    idx2<-grep("<=",sysreqs, fixed = T)
-    idx3<-setdiff(setdiff(grep("=",sysreqs, fixed = T), idx1), idx2)
+    idx1<-grep(">=",sysreqs, fixed = TRUE)
+    idx2<-grep("<=",sysreqs, fixed = TRUE)
+    idx3<-setdiff(setdiff(grep("=",sysreqs, fixed = TRUE), idx1), idx2)
     if(length(idx1)>0){pkg_and_vers[[idx1]] <- paste0(pkg_and_vers[[idx1]], collapse=">=")}
     if(length(idx2)>0){pkg_and_vers[[idx2]] <- paste0(pkg_and_vers[[idx2]], collapse=">=")}
     if(length(idx3)>0){pkg_and_vers[[idx3]] <- paste0(pkg_and_vers[[idx3]], collapse="==")}
@@ -315,6 +314,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
 #' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param updateEnv Update existing package's conda environment if already installed.
+#' @param search Whether to search for the package name and version before installing. It is highly recommended this be set to TRUE as information about available versions or similar packages will be included in the output if the exact match is not found. 
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
@@ -322,7 +322,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
 #' condaPaths <- install_CondaTools("salmon","salmon",pathToMiniConda=condaDir)
 #' system2(file.path(condaPaths$pathToEnvBin,"salmon"),args = "--help")
 #' @export
-install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,updateEnv=FALSE){
+install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,updateEnv=FALSE, search = TRUE){
   # pathToMiniConda <- "~/Desktop/testConda"
 
   #Setup miniconda
@@ -341,7 +341,7 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
   #   if(cp_pass){
   #     unlink("~/.condarc")
   #   }else{stop("Backup of your .condarc file failed.")}
-  #   on.exit(file.copy("~/tmp_condarc", "~/.condarc", overwrite = T))
+  #   on.exit(file.copy("~/tmp_condarc", "~/.condarc", overwrite = TRUE))
   #   on.exit(unlink("~/tmp_condarc"))
   # }else{
   #   on.exit(unlink("~/.condarc"))
@@ -355,25 +355,26 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
   #                                                      ignore.stderr = TRUE)))
 
   
-  
-  checks<-sapply(tools, conda_search, print_out=FALSE, pathToMiniConda=pathToMiniConda, channel=channels)
-
-  if(sum(checks[1,]==F)>0){
-    idx<-which(checks[1,]==F)
-    sapply(idx, function(x){
-      message(paste0('The package "',tools[x], '" has no matches.\nThere are these packages and versions available: \n'))
-      if(is.null(dim(checks[2,x][[1]]))){
-        message(paste0(checks[2,x],"\n"))
+  if(search == TRUE){
+    checks<-sapply(tools, conda_search, print_out=FALSE, pathToMiniConda=pathToMiniConda, channel=channels)
+    
+    if(sum(checks[1,]==FALSE)>0){
+      idx<-which(checks[1,]==FALSE)
+      sapply(idx, function(x){
+        message(paste0('The package "',tools[x], '" has no matches.\nThere are these packages and versions available: \n'))
+        if(is.null(dim(checks[2,x][[1]]))){
+          message(paste0(checks[2,x],"\n"))
+        }else{
+          print(checks[2,x])
+        }})
+      if(is_windows()){
+        message("The package and/or version are not available in conda. Check above for details.\nUnfortunately many packages are unavailable on conda for windows.")
+        return()
       }else{
-        print(checks[2,x])
-      }})
-    if(is_windows()){
-      message("The package and/or version are not available in conda. Check above for details.\nUnfortunately many packages are unavailable on conda for windows.")
-      return()
-    }else{
-    stop("The package and/or version are not available in conda. Check above for details.")
-  }}
-
+        stop("The package and/or version are not available in conda. Check above for details.")
+      }}
+  }
+  
   environment <- env
   pathToCondaPkgEnv <- file.path(pathToMiniConda,"envs",environment)
 
@@ -387,9 +388,9 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
     conda_create_silentJSON(envname=environment,conda=pathToConda)
   }
   if(!condaPkgEnvPathExists | (condaPkgEnvPathExists & updateEnv)){
-    conda_install_silentJSON(envname = environment,packages = tools,
-                              conda=pathToConda,
-                              channel = channels)
+    install <- conda_install_silentJSON(envname = environment,packages = tools,
+                                        conda=pathToConda,
+                                        channel = channels)
     message(paste0("The package(s) (", paste(tools, collapse = ", "), ") are in the ", environment, " environment. \n"))
   }else if(condaPkgEnvPathExists & !updateEnv){
     message(paste0("The environment ", environment, " already exists but the tools were not installed because the 'updateEnv' argument was set to FALSE. \n"))

@@ -58,6 +58,9 @@ local_CondaEnv(
 
 \item{.local_envir}{The environment to use for scoping.}
 }
+\value{
+Nothing returned.
+}
 \description{
 Use Conda environments
 

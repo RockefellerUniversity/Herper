@@ -20,6 +20,9 @@ When specified, the `forge` argument is ignored. If you need to
 specify multiple channels, including the Conda Forge, you can use
 `c("conda-forge", <other channels>)`.}
 }
+\value{
+Nothing returned, conda environment created.
+}
 \description{
 Reticulate's conda_create with silent output and json output capability
 }
