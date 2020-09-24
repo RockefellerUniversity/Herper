@@ -288,7 +288,9 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
                               channel = channels)
   }
   pathToEnvBin <- file.path(dirname(dirname(pathToConda)),"envs",environment,"bin")
-  return(list(pathToConda=pathToConda,environment=environment,pathToEnvBin=pathToEnvBin))
+  return({print("Conda and Environment Information")
+    print(list(pathToConda=pathToConda,environment=environment,pathToEnvBin=pathToEnvBin))
+  })
 }
 
 
@@ -358,7 +360,7 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
     }else{
     print(checks[2,x])
     }})
-    stop("The package and/or version are not available in conda. Check above for details.")
+    stop("The package(s) and/or version(s) are not available in conda. Check above for details.")
   }
   
   environment <- env
@@ -369,14 +371,22 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
   
   
 
-  if(!condaPkgEnvPathExists) conda_create_silentJSON(envname=environment,conda=pathToConda)
+  if(!condaPkgEnvPathExists){
+    message(paste0("The environment ", environment, " does not currently exist and will be created. \n"))
+    conda_create_silentJSON(envname=environment,conda=pathToConda)
+  }
   if(!condaPkgEnvPathExists | (condaPkgEnvPathExists & updateEnv)){
     conda_install_silentJSON(envname = environment,packages = tools,
                               conda=pathToConda,
                               channel = channels)
+    message(paste0("The package(s) (", paste(tools, collapse = ", "), ") are in the ", environment, " environment. \n"))
+  }else if(condaPkgEnvPathExists & !updateEnv){
+    message(paste0("The environment ", environment, " already exists but the tools were not installed because the 'updateEnv' argument was set to FALSE. \n"))
   }
   pathToEnvBin <- file.path(dirname(dirname(pathToConda)),"envs",environment,"bin")
-  return(list(pathToConda=pathToConda,environment=environment,pathToEnvBin=pathToEnvBin))
+  return({print("Conda and Environment Information")
+    print(list(pathToConda=pathToConda,environment=environment,pathToEnvBin=pathToEnvBin))
+  })
 }
 
 
