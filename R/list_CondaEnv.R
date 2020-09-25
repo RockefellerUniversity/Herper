@@ -50,6 +50,6 @@ list_CondaEnv <- function(pathToMiniConda = NULL, allCondas = FALSE, env = NULL)
       return(any(env_out[, 2] %in% env))
     }
 
-    print(env_out[, 1:2])
+    print(env_out[, c(1,2)])
   }
 }
