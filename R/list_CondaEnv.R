@@ -29,9 +29,9 @@ list_CondaEnv <- function(pathToMiniConda=NULL, allCondas=FALSE, env=NULL){
   all_envs<-conda_list(conda_bin)
   }else{all_envs<-conda_list()}
   
-  conda_paths<-sapply(all_envs[,2], strsplit, split="/condaenvs/|/envs/")
-  conda_paths<-sapply(conda_paths, function(x){
-    ifelse(length(x)==1, gsub("/bin/python","",x), x)})
+  conda_paths<-vapply(all_envs[,2], strsplit, FUN.VALUE = list(length = length(all_envs[,2])), split="/condaenvs/|/envs/")
+  conda_paths<-vapply(as.list(conda_paths), function(x){
+    ifelse(length(x)==1, gsub("/bin/python","",x), x)}, FUN.VALUE = character(length = 1))
   conda_paths<-as.data.frame(conda_paths)
   rownames(conda_paths)<-NULL
   all_envs<-cbind(conda_paths, all_envs)

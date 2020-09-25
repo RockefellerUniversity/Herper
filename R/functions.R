@@ -244,7 +244,7 @@ install_CondaSysReqs <- function(pkg,channels=NULL,env=NULL,pathToMiniConda=NULL
       nm<-trimws(unlist(strsplit(x, version_sep, perl = TRUE)))
       nm<-nm[!(nchar(nm)==0)]
     })
-    parsed_count<-sapply(pkg_and_vers, length)
+    parsed_count<-vapply(pkg_and_vers, length, FUN.VALUE = numeric(length = 1))
     if(sum(parsed_count>2)>0){
       stop(paste("System requirements not parsed succesfully. Issues with:",sysreqs[parsed_count>2]))
     }
@@ -356,17 +356,19 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
 
   
   if(search == TRUE){
-    checks<-sapply(tools, conda_search, print_out=FALSE, pathToMiniConda=pathToMiniConda, channel=channels)
+    checks<-lapply(as.list(tools), conda_search, print_out=FALSE, pathToMiniConda=pathToMiniConda, channel=channels)
+    checks <- simplify2array(checks)
     
     if(sum(checks[1,]==FALSE)>0){
       idx<-which(checks[1,]==FALSE)
-      sapply(idx, function(x){
+      lapply(list(idx), function(x){
         message(paste0('The package "',tools[x], '" has no matches.\nThere are these packages and versions available: \n'))
         if(is.null(dim(checks[2,x][[1]]))){
           message(paste0(checks[2,x],"\n"))
         }else{
           print(checks[2,x])
-        }})
+        }
+        })
       if(is_windows()){
         message("The package and/or version are not available in conda. Check above for details.\nUnfortunately many packages are unavailable on conda for windows.")
         return()
@@ -388,7 +390,7 @@ install_CondaTools <- function(tools,env,channels=NULL,pathToMiniConda=NULL,upda
     conda_create_silentJSON(envname=environment,conda=pathToConda)
   }
   if(!condaPkgEnvPathExists | (condaPkgEnvPathExists & updateEnv)){
-    install <- conda_install_silentJSON(envname = environment,packages = tools,
+    conda_install_silentJSON(envname = environment,packages = tools,
                                         conda=pathToConda,
                                         channel = channels)
     message(paste0("The package(s) (", paste(tools, collapse = ", "), ") are in the ", environment, " environment. \n"))

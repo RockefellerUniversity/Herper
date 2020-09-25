@@ -51,7 +51,7 @@ set_condapaths <- function(env,
   old$JAVA_HOME <- Sys.getenv("JAVA_HOME",unset = NA)
   old$PYTHONPATH <- Sys.getenv("PYTHONPATH",unset = NA)
   old$PERL5LIB <- Sys.getenv("PERL5LIB",unset = NA)
-  old <- old[c(TRUE,!sapply(old[-1],is.na))]
+  old <- old[c(TRUE,!vapply(old[-1],is.na, FUN.VALUE = logical(length = 1)))]
   
   newPATH <- c(condaPaths$pathToEnvBin,path_additional)
   if (path_action == "suffix") {

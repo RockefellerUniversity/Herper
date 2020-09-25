@@ -35,7 +35,7 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
   pathToConda <- miniconda_conda(pathToCondaInstall)
 
   if (!is.null(channel)){
-    channel_command <- paste(sapply(channel, function(x){paste0(" -c ",x)}), collapse="")
+    channel_command <- paste(vapply(as.list(channel), function(x){paste0(" -c ",x)}, FUN.VALUE = character(length = 1)), collapse="")
   }else{
     channel_command <- NULL
   }
@@ -94,11 +94,15 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
     
     versions_no_letters <- gsub(pattern = "[[:alpha:]]", "", condaSearch_df$version)
     
+    compareVersion_vapply <- function(versions_no_letters, package_version){
+      vapply(as.list(versions_no_letters), compareVersion, FUN.VALUE = numeric(length = 1), b=package_version)
+    }
+    
     if (version_included){
       package_version <- as.character(pkg_and_vers[2])
-      if (any(apply(versions_no_letters, compareVersion, b=package_version) %in% 0) & !(ver_logic %in% c("<=",">=")) ){
+      if (any(compareVersion_vapply(versions_no_letters, package_version) %in% 0) & !(ver_logic %in% c("<=",">=")) ){
       #if (any(grepl(package_version, condaSearch_df$version)) & !(ver_logic %in% c("<=",">=")) ){
-        sub_df <- condaSearch_df[sapply(versions_no_letters, compareVersion, b=package_version) %in% 0, ]
+        sub_df <- condaSearch_df[compareVersion_vapply(versions_no_letters, package_version) %in% 0, ]
         rownames(sub_df) <- NULL
         if(print_out){
           message(paste(pkg_and_vers[1], "version", package_version, "is available from the following channels:"))
@@ -108,9 +112,9 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
           return(list(exact_match=TRUE, version_matches=sub_df))
         }
       }else if(ver_logic==">="){
-          if(suppressWarnings(sum(sapply(versions_no_letters, compareVersion, b=package_version)==1, na.rm = TRUE) + 
-                              sum(sapply(versions_no_letters, compareVersion, b=package_version)==0, na.rm = TRUE) > 0)){
-            sub_df <- condaSearch_df[suppressWarnings(sapply(versions_no_letters, compareVersion, b=package_version))>=0, ]
+          if(suppressWarnings(sum(compareVersion_vapply(versions_no_letters, package_version)==1, na.rm = TRUE) + 
+                              sum(compareVersion_vapply(versions_no_letters, package_version)==0, na.rm = TRUE) > 0)){
+            sub_df <- condaSearch_df[suppressWarnings(compareVersion_vapply(versions_no_letters, package_version))>=0, ]
           if(print_out){
             message(paste(pkg_and_vers[1], "version", ver_logic ,package_version, "are available from the following channels:"))
              print(sub_df)
@@ -127,9 +131,9 @@ conda_search <- function(package, channel = NULL, print_out=TRUE, pathToMiniCond
             }
           }
       }else if(ver_logic=="<="){
-        if(suppressWarnings(sum(sapply(versions_no_letters, compareVersion, b=package_version)==(-1), na.rm = TRUE) + 
-                            sum(sapply(versions_no_letters, compareVersion, b=package_version)== 0, na.rm = TRUE) >0)){
-          sub_df <- condaSearch_df[suppressWarnings(sapply(versions_no_letters, compareVersion, b=package_version))<=0, ]
+        if(suppressWarnings(sum(compareVersion_vapply(versions_no_letters, package_version)==(-1), na.rm = TRUE) + 
+                            sum(compareVersion_vapply(versions_no_letters, package_version)== 0, na.rm = TRUE) >0)){
+          sub_df <- condaSearch_df[suppressWarnings(compareVersion_vapply(versions_no_letters, package_version))<=0, ]
           if(print_out){
             message(paste(pkg_and_vers[1], "versions", ver_logic ,package_version, "are available from the following channels:"))
             print(sub_df)
