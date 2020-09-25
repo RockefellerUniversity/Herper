@@ -451,10 +451,10 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
     export_path <- yml_export
   }
 
-  if (depends == TRUE) {
-    system2(pathToConda, shQuote(c("env","export", "-n", env_name, ">", export_path)))
-  } else {
-    system2(pathToConda, shQuote(c("env","export","--from-history", "-n", env_name, ">", export_path)))
+  if(depends==TRUE){
+    system(paste(pathToConda,"env export -n", env_name, ">", export_path))
+  }else{
+    system(paste(pathToConda,"env export --from-history -n", env_name, ">", export_path))
   }
   return(export_path)
 }
@@ -491,7 +491,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
   }
 
   pathToCondaInstall <- pathToMiniConda
-  pathToConda <- file.path(pathToCondaInstall, "bin", "conda")
+  pathToConda <- miniconda_conda(pathToCondaInstall)
 
   condaPathExists <- miniconda_exists(pathToCondaInstall)
   if (!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
