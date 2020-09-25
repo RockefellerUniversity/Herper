@@ -145,6 +145,26 @@ set_condapaths <- function(env,
           # }
           
         }
+      }else{
+        CondaPrefix <- paste0("CONDA_PREFIX=",Sys.getenv("CONDA_PREFIX"))
+        CondaPath <- paste0("PATH=",Sys.getenv("PATH"))      
+        # allEnv <- paste(names(allEnv),unname(allEnv),sep = "=")
+        envsToMount <- system2(command = "call",args=paste0(activateScripts[i],";set"),env = c(CondaPrefix,CondaPath),stdout =TRUE)
+        for(k in seq_along(envsToMount)){
+          envS <- unlist(strsplit(envsToMount[k],"="))
+          envVariable <- envS[1]
+          envValue<- envS[2]
+          previousEnv <- Sys.getenv(envVariable,unset = NA)
+          old$EnvironmentalVariables[envVariable] <- previousEnv
+          # if(previousEnv!=envValue){
+          # message("Setting environmental variable for ",envVariable," to ",envValue)
+          # .Internal(Sys.setenv(envVariable,envValue))
+          do.call(Sys.setenv, as.list(setNames(envValue, envVariable)))
+          # }
+          
+        }
+        
+        
       }
     }
   }
