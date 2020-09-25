@@ -9,7 +9,7 @@
 #'
 #' @author Matt Paul
 #' @param pathToMiniConda NULL Path to miniconda installation
-#' @param allCondas Logical. Whether to return conda envirnments, for all discoverable conda installs, or just the conda specified in pathToMiniConda.
+#' @param allCondas Logical. Whether to return conda environments, for all discoverable conda installs, or just the conda specified in pathToMiniConda.
 #' @param env Environment name. If this is supplied to list_CondaEnv, it will query whether that environment is present in the given conda.
 #' @return Conda environment names and the file paths to their conda installation are printed to the screen. If environment name is supplied a TRUE/FALSE will be returned depending on whether that environment is present or not.
 #' @import reticulate
