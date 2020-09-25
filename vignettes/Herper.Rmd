@@ -146,7 +146,7 @@ with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data = seqsumm_HCC1143),
 
 ## Running Conda packages from R console with **with_CondaEnv**
 
-**with_CondaEnv** allows users to run an conda tools from within R. The user simply has to wrap the command in the **system()** or **system2()** fucntions. 
+**with_CondaEnv** allows users to run an conda tools from within R. The user simply has to wrap the command in the **system()** or **system2()** functions. 
 
 ```{r with_condaenv_conda}
 with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"), pathToMiniConda = myMiniconda)
@@ -172,7 +172,7 @@ conda_search("salm", pathToMiniConda = myMiniconda)
 
 ## Export of Conda environments to YAML files using **export_CondaEnv**.
 
-The **export_CondaEnv** function allows the user to export the environment information to a *.yml* file. These environment YAML files contain all essential information about the package, allowing for reproducibilty and easy distribution of Conda system configuration for collaboration. 
+The **export_CondaEnv** function allows the user to export the environment information to a *.yml* file. These environment YAML files contain all essential information about the package, allowing for reproducibility and easy distribution of Conda system configuration for collaboration. 
 
 ```{r export}
 yml_name <- paste0("herper_", format(Sys.Date(), "%Y%m%d"), ".yml")
@@ -220,7 +220,7 @@ if (file.exists(file.path(tempdir(), "r-miniconda"))) {
 ```
 
 ## Acknowledgements
-The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
+The herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
 
 <br>
 
