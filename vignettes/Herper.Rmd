@@ -15,12 +15,9 @@ vignette: >
 ---
 
 ```{r setup, echo=FALSE, results="hide", include = FALSE}
-knitr::opts_chunk$set(tidy=FALSE, cache=FALSE,
-                      #dev="png",
-                      message=FALSE, error=FALSE, warning=TRUE)
-options(width=100)
-load(system.file("extdata/Bioc_Pkg_Details.RData",package="CondaSysReqs"))
-
+knitr::opts_chunk$set(tidy = FALSE, cache = FALSE, message = FALSE, error = FALSE, warning = TRUE)
+options(width = 100)
+load(system.file("extdata/Bioc_Pkg_Details.RData", package = "CondaSysReqs"))
 ```
 
 <br>
@@ -35,7 +32,7 @@ Many R packages require the use of external dependencies. Often these dependenci
 <br>
 
 ```{r, echo=F, out.width = "1000px", fig.align="center"}
-knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png",package="CondaSysReqs"))
+knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png", package = "CondaSysReqs"))
 ```
 
 The Herper package includes functions that allow the easy management of these external dependencies from within the R console.
@@ -48,8 +45,9 @@ The Herper package includes functions that allow the easy management of these ex
 Use the `BiocManager` package to download and install the package from our Github repository:
 
 ```{r getPackage, eval=FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+      install.packages("BiocManager")
+  }
 BiocManager::install("https://github.com/RockefellerUniversity/CondaSysReqs")
 ```
 
@@ -75,14 +73,14 @@ If you already have Miniconda installed or you would like to install to a custom
 
 
 ```{r, echo=F, eval=T}
-tempdir2 <- function(){
-  gsub("\\","/", tempdir(),fixed=TRUE)
+tempdir2 <- function() {
+    gsub("\\", "/", tempdir(), fixed = TRUE)
 }
 ```
 
 
 ```{r installCondaTools, echo=T, eval=T}
-myMiniconda <- file.path(tempdir2(),"Test")
+myMiniconda <- file.path(tempdir2(), "Test")
 myMiniconda
 install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
 ```
@@ -104,7 +102,6 @@ Specific package versions can be installed using conda formatted inputs into the
 ```{r ,versionCondaTools, echo=T, eval=T}
 
 pathToConda <- install_CondaTools("salmon<=1.3", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
-
 ```
 
 
@@ -115,16 +112,15 @@ The **install_CondaSysReqs** checks the System Requirements for the specified R 
 
 ```{r test_package}
 
-testPkg <- system.file("extdata/HerperTestPkg",package="CondaSysReqs")
-install.packages(testPkg,type = "source",repos = NULL)
-utils::packageDescription("HerperTestPkg",fields = "SystemRequirements")
+testPkg <- system.file("extdata/HerperTestPkg", package = "CondaSysReqs")
+install.packages(testPkg, type = "source", repos = NULL)
+utils::packageDescription("HerperTestPkg", fields = "SystemRequirements")
 ```
 
 The user can simply supply the name of an installed R package, and **install_CondaSysReqs** will install the System Requirements through conda. 
 ```{r install_CondaSysReqs}
 
-condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
-
+condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda, SysReqsAsJSON = FALSE)
 ```
 
 By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the *env* parameter. As with **install_CondaTools()**, user can control which version of Miniconda with the parameter *pathToMiniConda*, and whether they want to amend an existing environment with the parameter *updateEnv*.
@@ -140,11 +136,11 @@ To demonstrate this we will use the first command from the [seqCNA](https://www.
 ```{r with_condaenv_R}
 library(seqCNA)
 data(seqsumm_HCC1143)
-try(rco <- readSeqsumm(tumour.data=seqsumm_HCC1143),silent = FALSE)
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
-with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
- ,pathToMiniConda = myMiniconda)
-
+try(rco <- readSeqsumm(tumour.data = seqsumm_HCC1143), silent = FALSE)
+install_CondaSysReqs("seqCNA", env = "seqCNA", pathToMiniConda = myMiniconda, SysReqsAsJSON = FALSE)
+with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data = seqsumm_HCC1143),
+    pathToMiniConda = myMiniconda
+)
 ``` 
 <br>
 
@@ -153,7 +149,7 @@ with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
 **with_CondaEnv** allows users to run an conda tools from within R. The user simply has to wrap the command in the **system()** or **system2()** fucntions. 
 
 ```{r with_condaenv_conda}
-with_CondaEnv("HerperTestPkg_0.1.0",system2(command = "rmats.py",args = "-h"),pathToMiniConda = myMiniconda)
+with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"), pathToMiniConda = myMiniconda)
 ```
 
 ## Finding Conda packages with **conda_search**
@@ -161,15 +157,14 @@ with_CondaEnv("HerperTestPkg_0.1.0",system2(command = "rmats.py",args = "-h"),pa
 If the user is unsure of the exact name, or version of a tool available on conda, they can use the **conda_search** function. 
 
 ```{r conda_search}
-conda_search("salmon",pathToMiniConda = myMiniconda)
+conda_search("salmon", pathToMiniConda = myMiniconda)
 ```
 
 Specific package versions can be searched for using the conda format i.e. "salmon==1.3", "salmon>=1.3" or "salmon<=1.3". Searches will also find close matches for incorrect queries. Channels to search in can be controlled with *channels* parameter. 
 
 ```{r conda_search_nuance}
-conda_search("salmon<=1.0",pathToMiniConda = myMiniconda)
-conda_search("salm",pathToMiniConda = myMiniconda)
-
+conda_search("salmon<=1.0", pathToMiniConda = myMiniconda)
+conda_search("salm", pathToMiniConda = myMiniconda)
 ```
 
 
@@ -180,16 +175,16 @@ conda_search("salm",pathToMiniConda = myMiniconda)
 The **export_CondaEnv** function allows the user to export the environment information to a *.yml* file. These environment YAML files contain all essential information about the package, allowing for reproducibilty and easy distribution of Conda system configuration for collaboration. 
 
 ```{r export}
-yml_name <- paste0("herper_", format(Sys.Date(), "%Y%m%d"),".yml")
-export_CondaEnv("herper", yml_name,pathToMiniConda = myMiniconda)
+yml_name <- paste0("herper_", format(Sys.Date(), "%Y%m%d"), ".yml")
+export_CondaEnv("herper", yml_name, pathToMiniConda = myMiniconda)
 ```
 
 <br>
 
 The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the *depends* paramter. 
 ```{r export_rename}
-yml_name <- paste0("herper_nodeps_", format(Sys.Date(), "%Y%m%d"),".yml")
-export_CondaEnv("herper", yml_name, depends=FALSE, pathToMiniConda = myMiniconda)
+yml_name <- paste0("herper_nodeps_", format(Sys.Date(), "%Y%m%d"), ".yml")
+export_CondaEnv("herper", yml_name, depends = FALSE, pathToMiniConda = myMiniconda)
 ```
 
 <br>
@@ -208,19 +203,19 @@ import_CondaEnv(yml_name, "herper2", myMiniconda)
 <br>
 
 ```{r, echo=F, eval=F, message=F, warning=F}
-unlink(dir(".",pattern="herper_.*.yml"))
+unlink(dir(".", pattern = "herper_.*.yml"))
 ```
 
 ```{r, echo=F, eval=F, message=F, warning=F}
-myMiniconda <- file.path(tempdir(),"Test")
-reticulate::conda_remove("herper", packages = NULL, conda = file.path(myMiniconda,"bin","conda"))
-reticulate::conda_remove("herper2", packages = NULL, conda = file.path(myMiniconda,"bin","conda"))
-reticulate::conda_remove("HerperTestPkg_0.1.0", packages = NULL, conda = file.path(myMiniconda,"bin","conda"))
+myMiniconda <- file.path(tempdir(), "Test")
+reticulate::conda_remove("herper", packages = NULL, conda = file.path(myMiniconda, "bin", "conda"))
+reticulate::conda_remove("herper2", packages = NULL, conda = file.path(myMiniconda, "bin", "conda"))
+reticulate::conda_remove("HerperTestPkg_0.1.0", packages = NULL, conda = file.path(myMiniconda, "bin", "conda"))
 
-if(file.exists(file.path(tempdir(),"r-miniconda"))){
-condaDir <- file.path(tempdir(),"r-miniconda")
-reticulate::conda_remove("herper", packages = NULL, conda = file.path(condaDir,"bin","conda"))
-reticulate::conda_remove("herpertest", packages = NULL, conda = file.path(condaDir,"bin","conda"))
+if (file.exists(file.path(tempdir(), "r-miniconda"))) {
+    condaDir <- file.path(tempdir(), "r-miniconda")
+    reticulate::conda_remove("herper", packages = NULL, conda = file.path(condaDir, "bin", "conda"))
+    reticulate::conda_remove("herpertest", packages = NULL, conda = file.path(condaDir, "bin", "conda"))
 }
 ```
 
