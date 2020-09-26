@@ -26,16 +26,19 @@ set_condapaths <- function(env,
   if(!condaPathExists) stop("No Conda found at ",pathToCondaInstall)
   if(!condaPkgEnvPathExists) stop("No Conda environment found for ",environment," at ",condaPkgEnvPathExists)
   
+  # newPATH <- normalizePath(newPATH,mustWork = FALSE)
   
   pathToEnvBin <- file.path(dirname(dirname(pathToConda)),"envs",environment,"bin")
   condaPaths <- list(pathToConda=pathToConda,environment=environment,pathToEnvBin=pathToEnvBin)
   
+  condaPaths <- lapply(condaPaths,normalizePath, winslash = "\\",mustWork=FALSE)
   
   stopifnot(is.character(path_action), length(path_action) == 1,
             is.character(perl5lib_action), length(perl5lib_action) == 1,
             is.character(pythonpath_action), length(pythonpath_action) == 1,
             is.character(javahome_action), length(javahome_action) == 1
   )
+  
   
   path_action <- match.arg(path_action, c("replace", "prefix", "suffix"))
   perl5lib_action <- match.arg(perl5lib_action, c("replace", "prefix", "suffix"))    
@@ -44,7 +47,7 @@ set_condapaths <- function(env,
   
   
   path <- strsplit(Sys.getenv("PATH"), .Platform$path.sep)[[1]]
-  path <- normalizePath(path, mustWork = FALSE)
+  path <- normalizePath(path,  winslash = "\\",mustWork = FALSE)
   
   old <- list()
   old$PATH <- path
@@ -52,18 +55,34 @@ set_condapaths <- function(env,
   old$PYTHONPATH <- Sys.getenv("PYTHONPATH",unset = NA)
   old$PERL5LIB <- Sys.getenv("PERL5LIB",unset = NA)
   old <- old[c(TRUE,!vapply(old[-1],is.na, FUN.VALUE = logical(length = 1)))]
-  
-  newPATH <- c(condaPaths$pathToEnvBin,path_additional)
+
+  if(!is_windows()){
+    newPATH <- c(condaPaths$pathToEnvBin,path_additional)
+  }else{
+    newPATH <- c(condaPaths$pathToEnvBin,
+                 file.path(dirname(condaPaths$pathToEnvBin),"Library", "mingw-w64", "bin"),
+                 file.path(dirname(condaPaths$pathToEnvBin),"Library", "usr", "bin"),
+                 file.path(dirname(condaPaths$pathToEnvBin),"Library", "bin"),
+                 file.path(dirname(condaPaths$pathToEnvBin), "Scripts"),
+                 path_additional)
+  }
   if (path_action == "suffix") {
     newPATH <- c(old$PATH, newPATH)
   } else if (path_action == "prefix") {
     newPATH <- c(newPATH, old$PATH)
   }
+  
+  newPATH <- normalizePath(newPATH, winslash = "\\",mustWork = FALSE)
+  # Sys.setenv(PATH=newPATH[4])
+  # system("perl.exe --help")
   newPATH <- paste(newPATH, collapse = .Platform$path.sep)
+
+  # Sys.setenv(PATH=normalizePath("C:/Users/ZiweiLiang/AppData/Local/r-miniconda/envs/cytoscape/Library/bin/"))
+  # system("perl.exe --help")
   
   Sys.setenv(PATH = newPATH)
-  Sys.setenv(CONDA_PREFIX = pathToCondaPkgEnv)
-  
+  Sys.setenv(CONDA_PREFIX = normalizePath(pathToCondaPkgEnv, winslash = "\\",mustWork = FALSE))
+
   if(!is.null(javahome_additional)){
     JAVA_HOME <- javahome_additional
     old_JAVA_HOME <- old$JAVA_HOME
@@ -127,7 +146,7 @@ set_condapaths <- function(env,
     for(i in seq_along(activateScripts)){
       # message("Running activate script - ",activateScripts[i])
       # system(readLines(activateScripts[i]),intern = TRUE)
-      if(.Platform$OS.type == "unix"){
+      if(!is_windows()){
         CondaPrefix <- paste0("CONDA_PREFIX=",Sys.getenv("CONDA_PREFIX"))
         CondaPath <- paste0("PATH=",Sys.getenv("PATH"))      
         # allEnv <- paste(names(allEnv),unname(allEnv),sep = "=")
