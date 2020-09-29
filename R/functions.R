@@ -212,8 +212,8 @@ conda_install_silentJSON <- function(envname = NULL,
 #' condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = condaDir, SysReqsAsJSON = FALSE)
 #' system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
 #' @export
-install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL, 
-                                 pathToMiniConda = NULL, updateEnv = FALSE, 
+install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
+                                 pathToMiniConda = NULL, updateEnv = FALSE,
                                  SysReqsAsJSON = TRUE, SysReqsSep = ",") {
   # pathToMiniConda <- "~/Desktop/testConda"
 
@@ -330,8 +330,8 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' condaPaths <- install_CondaTools("salmon", "salmon", pathToMiniConda = condaDir)
 #' system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
 #' @export
-install_CondaTools <- function(tools, env, channels = NULL, 
-                               pathToMiniConda = NULL, updateEnv = FALSE, 
+install_CondaTools <- function(tools, env, channels = NULL,
+                               pathToMiniConda = NULL, updateEnv = FALSE,
                                search = TRUE) {
   # pathToMiniConda <- "~/Desktop/testConda"
 
@@ -495,9 +495,10 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
 
   condaPathExists <- miniconda_exists(pathToCondaInstall)
   if (!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
-
+  name_check<-FALSE
 
   if (!is.null(name)) {
+    name_check<-TRUE
     if (list_CondaEnv(pathToMiniConda = pathToMiniConda, env = name)) {
       stop(paste("Conda environment with the name", name, "already exists.\n Try using list_CondaEnv to see what envirnoment names are already in use."))
     }
@@ -517,7 +518,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
   args <- paste0("-f", yml_import)
   result <- suppressWarnings(system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json", args)), stdout = TRUE, stderr = TRUE))
 
-  if (!is.null(name)) {
+  if (name_check) {
     unlink(tmpname)
   }
 }
