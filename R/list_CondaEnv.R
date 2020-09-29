@@ -16,7 +16,7 @@
 #' @examples
 #' list_CondaEnv()
 #' condaDir <- file.path(tempdir(), "r-miniconda")
-#' condaPaths <- install_CondaTools("salmon", "herper", pathToMiniConda = condaDir)
+#' condaPaths <- install_CondaTools("igv", "herper", pathToMiniConda = condaDir)
 #' list_CondaEnv(pathToMiniConda = condaDir)
 #' list_CondaEnv(pathToMiniConda = condaDir, env = "herper")
 #' @export

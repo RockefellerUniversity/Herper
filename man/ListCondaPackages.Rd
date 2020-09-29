@@ -20,8 +20,8 @@ Conda package information is printed to the screen. If package name is supplied 
 List Conda packages
 }
 \examples{
-condaDir <- file.path(tempdir(),"r-miniconda")
-condaPaths <- install_CondaTools("salmon","herper",pathToMiniConda=condaDir)
+condaDir <- file.path(tempdir(), "r-miniconda")
+condaPaths <- install_CondaTools("igv", "herper", pathToMiniConda = condaDir)
 list_CondaPkgs("herper", condaDir)
 }
 \author{

@@ -15,7 +15,7 @@
 #' @import reticulate rjson
 #' @examples
 #' condaDir <- file.path(tempdir(), "r-miniconda")
-#' condaPaths <- install_CondaTools("salmon", "herper", pathToMiniConda = condaDir)
+#' condaPaths <- install_CondaTools("igv", "herper", pathToMiniConda = condaDir)
 #' list_CondaPkgs("herper", condaDir)
 #' @export
 list_CondaPkgs <- function(env, pathToMiniConda = NULL,

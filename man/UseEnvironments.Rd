@@ -59,10 +59,10 @@ Use Conda environments
 Use Conda environments
 }
 \examples{
-testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
+testYML <- system.file("extdata/test.yml",package="CondaSysReqs")
 condaDir <- file.path(tempdir(),"r-miniconda")
 import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
-with_CondaEnv("HerperTest",system2(command = "rmats.py",args = "-h"),pathToMiniConda = condaDir)
+with_CondaEnv("HerperTest",system2(command = "multiqc",args = ,"--version"),pathToMiniConda = condaDir)
 \dontrun{
   install_CondaTools("cytoscape","cytoscape",updateEnv = TRUE,pathToMiniConda = condaDir)
   with_CondaEnv("cytoscape",system2(command = "cytoscape.sh"),pathToMiniConda = condaDir)
