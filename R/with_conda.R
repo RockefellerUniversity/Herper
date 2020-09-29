@@ -209,7 +209,8 @@ unset_condapaths <- function(old) {
 #' testYML <- system.file("extdata/test.yml",package="CondaSysReqs")
 #' condaDir <- file.path(tempdir(),"r-miniconda")
 #' import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
-#' with_CondaEnv("HerperTest",system2(command = "multiqc",args = ,"--version"),pathToMiniConda = condaDir)
+#' with_CondaEnv("HerperTest",system2(command = "multiqc",args = ,"--version"),
+#'     pathToMiniConda = condaDir)
 #' \dontrun{
 #'   install_CondaTools("cytoscape","cytoscape",updateEnv = TRUE,pathToMiniConda = condaDir)
 #'   with_CondaEnv("cytoscape",system2(command = "cytoscape.sh"),pathToMiniConda = condaDir)

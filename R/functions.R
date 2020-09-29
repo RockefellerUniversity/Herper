@@ -209,7 +209,8 @@ conda_install_silentJSON <- function(envname = NULL,
 #' testPkg <- system.file("extdata/HerperTestPkg", package = "CondaSysReqs")
 #' install.packages(testPkg, type = "source", repos = NULL)
 #' condaDir <- file.path(tempdir(), "r-miniconda")
-#' condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = condaDir, SysReqsAsJSON = FALSE)
+#' condaPaths <- install_CondaSysReqs("HerperTestPkg", 
+#'     pathToMiniConda = condaDir, SysReqsAsJSON = FALSE)
 #' system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
 #' @export
 install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
