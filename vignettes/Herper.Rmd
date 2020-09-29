@@ -184,7 +184,6 @@ conda_search("salmon<=1.0", pathToMiniConda = myMiniconda)
 conda_search("salm", pathToMiniConda = myMiniconda)
 ```
 
-
 <br>
 
 ## Export of Conda environments to YAML files using **export_CondaEnv**.
@@ -217,13 +216,31 @@ import_CondaEnv(yml_import="../inst/extdata/test.yml", pathToMiniConda = myMinic
 ```
 
 <br>
+
+## Checking for existing environments with **list_CondaEnv**
+The **list_CondaEnv** function allows users to check what environments already exist within the given conda build. 
+
+If the User is using multiple builds of conda and wants to check environments across all them, they can include the parameter *allCondas = TRUE*.
+```{r list_CondaEnv}
+list_CondaEnv(pathToMiniConda = myMiniconda)
+```
+
+<br>
+
+## Checking for packages in an environment with **list_CondaPkgs**
+The **list_CondaPkgs** function allows users to check what packages are installed in a given environment.
+```{r list_CondaPkgs}
+list_CondaPkgs("my_test", pathToMiniConda = myMiniconda)
+```
+
+<br>
 <br>
 
 ```{r, echo=F, eval=F, message=F, warning=F}
 unlink(dir(".", pattern = "herper_.*.yml"))
 ```
 
-```{r, echo=F, eval=T, message=F, warning=F}
+```{r, echo=F, eval=F, message=F, warning=F}
 myMiniconda <- file.path(tempdir(), "Test")
 reticulate::conda_remove("herper", packages = NULL, conda = file.path(myMiniconda, "bin", "conda"))
 reticulate::conda_remove("herper2", packages = NULL, conda = file.path(myMiniconda, "bin", "conda"))
