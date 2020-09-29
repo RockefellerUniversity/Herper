@@ -29,10 +29,7 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
     pathToMiniConda <- reticulate::miniconda_path()
   }
 
-  pathToConda <- file.path(
-    pathToMiniConda, "bin",
-    "conda"
-  )
+  pathToConda <- miniconda_conda(pathToMiniConda)
 
   args <- paste0("-n", env)
 
