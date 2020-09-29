@@ -33,11 +33,11 @@ setPATH <- function(condaPaths,old,path_additional,path_action,winslash = "\\"){
   } else if (path_action == "prefix") {
     newPATH <- c(newPATH, old$PATH)
   }
-  
+
   newPATH <- normalizePath(newPATH, winslash = "\\",mustWork = FALSE)
   newPATH <- paste(newPATH, collapse = .Platform$path.sep)
   Sys.setenv(PATH = newPATH)
-  Sys.setenv(CONDA_PREFIX = normalizePath(dirname(condaPaths$pathToEnvBin), 
+  Sys.setenv(CONDA_PREFIX = normalizePath(dirname(condaPaths$pathToEnvBin),
                                           winslash = winslash,mustWork = FALSE))
   invisible(newPATH)
 }
@@ -66,7 +66,7 @@ setEnvVariables <- function(libpath,old,additional,action,winslash = "\\"){
 
 unsetEnvVariables <- function(libpath,old){
   ENVVAR <- old[[libpath]]
-  if(!is.null(ENVVAR)){  
+  if(!is.null(ENVVAR)){
     do.call(Sys.setenv, as.list(setNames(ENVVAR, libpath)))
   }else{
     Sys.unsetenv(libpath)
@@ -95,7 +95,7 @@ setActivateEnvVariables <- function(activateScript,winslash = "\\"){
     envvarcmd <- "set"
   }
   CondaPrefix <- paste0("CONDA_PREFIX=",Sys.getenv("CONDA_PREFIX"))
-  CondaPath <- paste0("PATH=",Sys.getenv("PATH"))      
+  CondaPath <- paste0("PATH=",Sys.getenv("PATH"))
   envsToMount <- system2(command = cmd,args=paste0(activateScript,";",envvarcmd),
                          env = c(CondaPrefix,CondaPath),stdout =TRUE)
   for(k in seq_along(envsToMount)){
@@ -114,16 +114,16 @@ activateScriptsEnvVariables <- function(old,condaPaths){
                                    "etc",
                                    "conda",
                                    "activate.d"),full.names = TRUE)
-  
+
   deactivateScripts <- dir(file.path(dirname(condaPaths$pathToEnvBin),
                                      "etc",
                                      "conda",
                                      "deactivate.d"),full.names = TRUE)
   stopifnot(length(activateScripts) == length(deactivateScripts))
-  
+
   if(length(activateScripts) > 0){
     old$activateScripts <- activateScripts
-    old$deactivateScripts <- deactivateScripts    
+    old$deactivateScripts <- deactivateScripts
     old$EnvironmentalVariables <- unlist(lapply(activateScripts,setActivateEnvVariables))
   }
   return(old)
@@ -153,17 +153,17 @@ set_condapaths <- function(environment,
                            pythonpath_additional = NULL,
                            perl5lib_additional = NULL
                            ) {
-  
+
   if (length(environment) == 0) return()
   stopifnot(is.character(path_action), length(path_action) == 1,
             is.character(perl5lib_action), length(perl5lib_action) == 1,
             is.character(pythonpath_action), length(pythonpath_action) == 1)
-  
+
   path_action <- match.arg(path_action, c("replace", "prefix", "suffix"))
-  perl5lib_action <- match.arg(perl5lib_action, c("replace", "prefix", "suffix"))    
-  pythonpath_action <- match.arg(pythonpath_action, c("replace", "prefix", "suffix")) 
-  
-  
+  perl5lib_action <- match.arg(perl5lib_action, c("replace", "prefix", "suffix"))
+  pythonpath_action <- match.arg(pythonpath_action, c("replace", "prefix", "suffix"))
+
+
   condaPaths <- getCondaPaths(environment,pathToMiniConda,winslash="\\")
   old <- getEnvVariables()
   setPATH(condaPaths,old,path_additional,path_action)
@@ -203,13 +203,13 @@ unset_condapaths <- function(old) {
 #' @param .local_envir The environment to use for scoping.
 #' @import withr
 #' @importFrom stats setNames
-#' 
-#' @return Nothing returned. 
+#'
+#' @return Nothing returned.
 #' @examples
-#' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml",package="CondaSysReqs")
+#' testYML <- system.file("extdata/test.yml",package="CondaSysReqs")
 #' condaDir <- file.path(tempdir(),"r-miniconda")
 #' import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
-#' with_CondaEnv("HerperTest",system2(command = "rmats.py",args = "-h"),pathToMiniConda = condaDir)
+#' with_CondaEnv("HerperTest",system2(command = "multiqc",args = ,"--version"),pathToMiniConda = condaDir)
 #' \dontrun{
 #'   install_CondaTools("cytoscape","cytoscape",updateEnv = TRUE,pathToMiniConda = condaDir)
 #'   with_CondaEnv("cytoscape",system2(command = "cytoscape.sh"),pathToMiniConda = condaDir)
