@@ -9,7 +9,7 @@ list_CondaEnv(pathToMiniConda = NULL, allCondas = FALSE, env = NULL)
 \arguments{
 \item{pathToMiniConda}{NULL Path to miniconda installation}
 
-\item{allCondas}{Logical. Whether to return conda envirnments, for all discoverable conda installs, or just the conda specified in pathToMiniConda.}
+\item{allCondas}{Logical. Whether to return conda environments, for all discoverable conda installs, or just the conda specified in pathToMiniConda.}
 
 \item{env}{Environment name. If this is supplied to list_CondaEnv, it will query whether that environment is present in the given conda.}
 }
@@ -21,10 +21,10 @@ List Conda environments
 }
 \examples{
 list_CondaEnv()
-condaDir <- file.path(tempdir(),"r-miniconda")
-condaPaths <- install_CondaTools("salmon","herper",pathToMiniConda=condaDir)
-list_CondaEnv(pathToMiniConda=condaDir)
-list_CondaEnv(pathToMiniConda=condaDir, env="herper")
+condaDir <- file.path(tempdir(), "r-miniconda")
+condaPaths <- install_CondaTools("igv", "herper", pathToMiniConda = condaDir)
+list_CondaEnv(pathToMiniConda = condaDir)
+list_CondaEnv(pathToMiniConda = condaDir, env = "herper")
 }
 \author{
 Matt Paul

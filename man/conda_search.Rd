@@ -24,7 +24,6 @@ Search package availabilty
 \examples{
 
 conda_search("salmon")
-
 }
 \author{
 Doug Barrows and Matt Paul

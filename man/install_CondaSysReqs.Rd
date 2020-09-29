@@ -36,11 +36,11 @@ Nothing returned. Output written to file.
 Install Conda requirements
 }
 \examples{
-testPkg <- system.file("extdata/HerperTestPkg",package="CondaSysReqs")
-install.packages(testPkg,type = "source",repos = NULL)
-condaDir <- file.path(tempdir(),"r-miniconda")
-condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=condaDir,SysReqsAsJSON=FALSE)
-system2(file.path(condaPaths$pathToEnvBin,"samtools"),args = "--help")
+testPkg <- system.file("extdata/HerperTestPkg", package = "CondaSysReqs")
+install.packages(testPkg, type = "source", repos = NULL)
+condaDir <- file.path(tempdir(), "r-miniconda")
+condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = condaDir, SysReqsAsJSON = FALSE)
+system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
 }
 \author{
 Thomas Carroll
