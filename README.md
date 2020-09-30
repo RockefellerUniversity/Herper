@@ -16,7 +16,7 @@ packages having several requirements) \[03 September, 2020\].
 
 <br>
 
-<img src="/Library/Frameworks/R.framework/Versions/4.0/Resources/library/Herper/extdata/pkg_deps_bar_mask-1.png" width="1000px" style="display: block; margin: auto;" />
+<img src="inst/extdata/pkg_deps_bar_mask-1.png" width="1000px" style="display: block; margin: auto;" />
 
 The Herper package includes functions that allow the easy management of
 these external dependencies from within the R console.
