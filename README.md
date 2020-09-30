@@ -69,56 +69,49 @@ a custom location, you can specify the path with the *pathToMiniConda*
 parameter.
 
 ``` r
-myMiniconda <- file.path(tempdir2(), "Test")
-myMiniconda
-```
-
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test"
-
-``` r
-install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
+install_CondaTools("salmon", "herper")
 ```
 
     ## [1] "Conda and Environment Information"
     ## $pathToConda
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/bin/conda"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/bin/conda"
     ## 
     ## $environment
     ## [1] "herper"
     ## 
     ## $pathToEnvBin
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/envs/herper/bin"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/herper/bin"
 
 <br> We can add additional tools to our Conda environment by specifying
 *updateEnv = TRUE*. A vector of tools can be used to install several at
 once.
 
 ``` r
-pathToConda <- install_CondaTools(c("samtools", "kallisto"), "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
+pathToConda <- install_CondaTools(c("samtools", "kallisto"), "herper", updateEnv = TRUE)
 ```
 
     ## [1] "Conda and Environment Information"
     ## $pathToConda
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/bin/conda"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/bin/conda"
     ## 
     ## $environment
     ## [1] "herper"
     ## 
     ## $pathToEnvBin
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/envs/herper/bin"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/herper/bin"
 
 ``` r
 pathToConda
 ```
 
     ## $pathToConda
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/bin/conda"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/bin/conda"
     ## 
     ## $environment
     ## [1] "herper"
     ## 
     ## $pathToEnvBin
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/envs/herper/bin"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/herper/bin"
 
 <br> Specific package versions can be installed using conda formatted
 inputs into the *tools* argument i.e. “salmon==1.3”, “salmon\>=1.3” or
@@ -126,18 +119,18 @@ inputs into the *tools* argument i.e. “salmon==1.3”, “salmon\>=1.3” or
 downgrade existing tools in the chosen environment.
 
 ``` r
-pathToConda <- install_CondaTools("salmon<=1.3", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
+pathToConda <- install_CondaTools("salmon<=1.3", "herper", updateEnv = TRUE)
 ```
 
     ## [1] "Conda and Environment Information"
     ## $pathToConda
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/bin/conda"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/bin/conda"
     ## 
     ## $environment
     ## [1] "herper"
     ## 
     ## $pathToEnvBin
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/envs/herper/bin"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/herper/bin"
 
 <br>
 
@@ -162,18 +155,18 @@ The user can simply supply the name of an installed R package, and
 conda.
 
 ``` r
-condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda, SysReqsAsJSON = FALSE)
+condaPaths <- install_CondaSysReqs("HerperTestPkg")
 ```
 
     ## [1] "Conda and Environment Information"
     ## $pathToConda
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/bin/conda"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/bin/conda"
     ## 
     ## $environment
     ## [1] "HerperTestPkg_0.1.0"
     ## 
     ## $pathToEnvBin
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/envs/HerperTestPkg_0.1.0/bin"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/HerperTestPkg_0.1.0/bin"
 
 By default these packages are installed in a new environment, which has
 the name name of the R package and its version number. Users can control
@@ -211,20 +204,19 @@ try(rco <- readSeqsumm(tumour.data = seqsumm_HCC1143), silent = FALSE)
 ```
 
 ``` r
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
-with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
- ,pathToMiniConda = myMiniconda)
+install_CondaSysReqs("seqCNA",env="seqCNA")
+with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143))
 ```
 
     ## [1] "Conda and Environment Information"
     ## $pathToConda
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/bin/conda"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/bin/conda"
     ## 
     ## $environment
     ## [1] "seqCNA"
     ## 
     ## $pathToEnvBin
-    ## [1] "/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//Rtmp5EUaMG/Test/envs/seqCNA/bin"
+    ## [1] "/Users/mattpaul/Library/r-miniconda/envs/seqCNA/bin"
 
 <br>
 
@@ -236,7 +228,7 @@ user simply has to wrap the command in the **system()** or **system2()**
 functions.
 
 ``` r
-with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"), pathToMiniConda = myMiniconda)
+with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"))
 ```
 
 Finding Conda packages with **conda\_search**
@@ -246,7 +238,7 @@ If the user is unsure of the exact name, or version of a tool available
 on conda, they can use the **conda\_search** function.
 
 ``` r
-conda_search("salmon", pathToMiniConda = myMiniconda)
+conda_search("salmon")
 ```
 
     ##      name version                                    channel
@@ -278,7 +270,7 @@ find close matches for incorrect queries. Channels to search in can be
 controlled with *channels* parameter.
 
 ``` r
-conda_search("salmon<=1.0", pathToMiniConda = myMiniconda)
+conda_search("salmon<=1.0")
 ```
 
     ##      name version                                    channel
@@ -300,7 +292,7 @@ conda_search("salmon<=1.0", pathToMiniConda = myMiniconda)
     ## [1] TRUE
 
 ``` r
-conda_search("salm", pathToMiniConda = myMiniconda)
+conda_search("salm")
 ```
 
     ## [1] FALSE
@@ -318,7 +310,7 @@ collaboration.
 
 ``` r
 yml_name <- paste0("herper_", format(Sys.Date(), "%Y%m%d"), ".yml")
-export_CondaEnv("herper", yml_name, pathToMiniConda = myMiniconda)
+export_CondaEnv("herper", yml_name)
 ```
 
     ## [1] "herper_20200930.yml"
@@ -332,7 +324,7 @@ paramter.
 
 ``` r
 yml_name <- paste0("herper_nodeps_", format(Sys.Date(), "%Y%m%d"), ".yml")
-export_CondaEnv("herper", yml_name, depends = FALSE, pathToMiniConda = myMiniconda)
+export_CondaEnv("herper", yml_name, depends = FALSE)
 ```
 
     ## [1] "herper_nodeps_20200930.yml"
@@ -352,7 +344,7 @@ from the YAML.
 
 ``` r
 testYML <- system.file("extdata/test.yml",package="Herper")
-import_CondaEnv(yml_import=testYML, pathToMiniConda = myMiniconda)
+import_CondaEnv(yml_import=testYML)
 ```
 
 <br>
@@ -368,16 +360,24 @@ environments across all them, they can include the parameter *allCondas
 = TRUE*.
 
 ``` r
-list_CondaEnv(pathToMiniConda = myMiniconda)
+list_CondaEnv()
 ```
 
-    ##                                                                 conda path                 env
-    ## 1 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/Rtmp5EUaMG/Test                Test
-    ## 2 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/Rtmp5EUaMG/Test HerperTestPkg_0.1.0
-    ## 3 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/Rtmp5EUaMG/Test              herper
-    ## 4 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/Rtmp5EUaMG/Test             my_test
-    ## 5 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/Rtmp5EUaMG/Test        r-reticulate
-    ## 6 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/Rtmp5EUaMG/Test              seqCNA
+    ##                                                                  conda path                 env
+    ## 1                                                    /Users/mattpaul/.conda       seqCNA_1.34.0
+    ## 2                                                    /Users/mattpaul/.conda                test
+    ## 3                  /Users/mattpaul/Documents/Box Sync/Matt/test/renv/python         renv-python
+    ## 4                                       /Users/mattpaul/Library/r-miniconda         r-miniconda
+    ## 5                                       /Users/mattpaul/Library/r-miniconda HerperTestPkg_0.1.0
+    ## 6                                       /Users/mattpaul/Library/r-miniconda              herper
+    ## 7                                       /Users/mattpaul/Library/r-miniconda             my_test
+    ## 8                                       /Users/mattpaul/Library/r-miniconda        r-reticulate
+    ## 9                                       /Users/mattpaul/Library/r-miniconda              seqCNA
+    ## 10                                             /Users/mattpaul/my_miniconda        my_miniconda
+    ## 11                                             /Users/mattpaul/my_miniconda              dimRed
+    ## 12 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpVKtzTl/Test                Test
+    ## 13 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpVKtzTl/Test             my_test
+    ## 14 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpVKtzTl/Test        r-reticulate
 
 <br>
 
@@ -388,7 +388,7 @@ The **list\_CondaPkgs** function allows users to check what packages are
 installed in a given environment.
 
 ``` r
-list_CondaPkgs("my_test", pathToMiniConda = myMiniconda)
+list_CondaPkgs("my_test")
 ```
 
     ##                  name   version     channel platform
@@ -497,8 +497,7 @@ sessionInfo()
     ##  [1] seqCNA_1.34.0       seqCNA.annot_1.24.0 adehabitatLT_0.3.25 CircStats_0.2-6    
     ##  [5] boot_1.3-25         MASS_7.3-53         adehabitatMA_0.3.14 ade4_1.7-15        
     ##  [9] sp_1.4-2            doSNOW_1.0.18       snow_0.4-3          iterators_1.0.12   
-    ## [13] foreach_1.5.0       GLAD_2.52.0         Herper_0.99.0       CondaSysReqs_0.99.0
-    ## [17] reticulate_1.16    
+    ## [13] foreach_1.5.0       GLAD_2.52.0         Herper_0.99.0       reticulate_1.16    
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] Rcpp_1.0.5          compiler_4.0.2      BiocManager_1.30.10 tools_4.0.2        
@@ -508,5 +507,5 @@ sessionInfo()
     ## [17] xfun_0.17           withr_2.3.0         stringr_1.4.0       knitr_1.29         
     ## [21] desc_1.2.0          rprojroot_1.3-2     grid_4.0.2          glue_1.4.2         
     ## [25] R6_2.4.1            fansi_0.4.1         rmarkdown_2.3       magrittr_1.5       
-    ## [29] codetools_0.2-16    backports_1.1.10    htmltools_0.5.0     assertthat_0.2.1   
+    ## [29] backports_1.1.10    codetools_0.2-16    htmltools_0.5.0     assertthat_0.2.1   
     ## [33] BiocStyle_2.16.0    stringi_1.5.3       crayon_1.3.4        rjson_0.2.20

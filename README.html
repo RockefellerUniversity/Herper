@@ -784,52 +784,49 @@ Once installed, load it into your R session:</p>
 <p>The <strong>install_CondaTools()</strong> function allows the user to specify required Conda software and the desired environment to install into.</p>
 <p>Miniconda is installed as part of the process (by default into the r-reticulate’s default Conda location - /Users/mattpaul/Library/r-miniconda) and the user’s requested conda environment built within the same directory (by default /Users/mattpaul/Library/r-miniconda/envs/USERS_ENVIRONMENT_HERE).</p>
 <p>If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the <em>pathToMiniConda</em> parameter.</p>
-<pre class="r"><code>myMiniconda &lt;- file.path(tempdir2(), &quot;Test&quot;)
-myMiniconda</code></pre>
-<pre><code>## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test&quot;</code></pre>
-<pre class="r"><code>install_CondaTools(&quot;salmon&quot;, &quot;herper&quot;, pathToMiniConda = myMiniconda)</code></pre>
+<pre class="r"><code>install_CondaTools(&quot;salmon&quot;, &quot;herper&quot;)</code></pre>
 <pre><code>## [1] &quot;Conda and Environment Information&quot;
 ## $pathToConda
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/bin/conda&quot;
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/bin/conda&quot;
 ## 
 ## $environment
 ## [1] &quot;herper&quot;
 ## 
 ## $pathToEnvBin
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/envs/herper/bin&quot;</code></pre>
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/envs/herper/bin&quot;</code></pre>
 <p><br>
 We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>. A vector of tools can be used to install several at once.</p>
-<pre class="r"><code>pathToConda &lt;- install_CondaTools(c(&quot;samtools&quot;, &quot;kallisto&quot;), &quot;herper&quot;, updateEnv = TRUE, pathToMiniConda = myMiniconda)</code></pre>
+<pre class="r"><code>pathToConda &lt;- install_CondaTools(c(&quot;samtools&quot;, &quot;kallisto&quot;), &quot;herper&quot;, updateEnv = TRUE)</code></pre>
 <pre><code>## [1] &quot;Conda and Environment Information&quot;
 ## $pathToConda
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/bin/conda&quot;
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/bin/conda&quot;
 ## 
 ## $environment
 ## [1] &quot;herper&quot;
 ## 
 ## $pathToEnvBin
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/envs/herper/bin&quot;</code></pre>
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/envs/herper/bin&quot;</code></pre>
 <pre class="r"><code>pathToConda</code></pre>
 <pre><code>## $pathToConda
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/bin/conda&quot;
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/bin/conda&quot;
 ## 
 ## $environment
 ## [1] &quot;herper&quot;
 ## 
 ## $pathToEnvBin
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/envs/herper/bin&quot;</code></pre>
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/envs/herper/bin&quot;</code></pre>
 <p><br>
 Specific package versions can be installed using conda formatted inputs into the <em>tools</em> argument i.e. “salmon==1.3”, “salmon&gt;=1.3” or “salmon&lt;=1.3”. This can also be used to specifically upgrade or downgrade existing tools in the chosen environment.</p>
-<pre class="r"><code>pathToConda &lt;- install_CondaTools(&quot;salmon&lt;=1.3&quot;, &quot;herper&quot;, updateEnv = TRUE, pathToMiniConda = myMiniconda)</code></pre>
+<pre class="r"><code>pathToConda &lt;- install_CondaTools(&quot;salmon&lt;=1.3&quot;, &quot;herper&quot;, updateEnv = TRUE)</code></pre>
 <pre><code>## [1] &quot;Conda and Environment Information&quot;
 ## $pathToConda
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/bin/conda&quot;
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/bin/conda&quot;
 ## 
 ## $environment
 ## [1] &quot;herper&quot;
 ## 
 ## $pathToEnvBin
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/envs/herper/bin&quot;</code></pre>
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/envs/herper/bin&quot;</code></pre>
 <p><br></p>
 </div>
 <div id="install-r-package-dependencies-with-install_condasysreqs." class="section level2" number="0.4">
@@ -840,16 +837,16 @@ install.packages(testPkg, type = &quot;source&quot;, repos = NULL)
 utils::packageDescription(&quot;HerperTestPkg&quot;, fields = &quot;SystemRequirements&quot;)</code></pre>
 <pre><code>## [1] &quot;samtools==1.10, rmats&gt;=v4.1.0&quot;</code></pre>
 <p>The user can simply supply the name of an installed R package, and <strong>install_CondaSysReqs</strong> will install the System Requirements through conda.</p>
-<pre class="r"><code>condaPaths &lt;- install_CondaSysReqs(&quot;HerperTestPkg&quot;, pathToMiniConda = myMiniconda, SysReqsAsJSON = FALSE)</code></pre>
+<pre class="r"><code>condaPaths &lt;- install_CondaSysReqs(&quot;HerperTestPkg&quot;)</code></pre>
 <pre><code>## [1] &quot;Conda and Environment Information&quot;
 ## $pathToConda
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/bin/conda&quot;
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/bin/conda&quot;
 ## 
 ## $environment
 ## [1] &quot;HerperTestPkg_0.1.0&quot;
 ## 
 ## $pathToEnvBin
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/envs/HerperTestPkg_0.1.0/bin&quot;</code></pre>
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/envs/HerperTestPkg_0.1.0/bin&quot;</code></pre>
 <p>By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the <em>env</em> parameter. As with <strong>install_CondaTools()</strong>, user can control which version of Miniconda with the parameter <em>pathToMiniConda</em>, and whether they want to amend an existing environment with the parameter <em>updateEnv</em>.</p>
 <p><em>Note: <strong>install_CondaSysReqs</strong> can handle standard System Requirement formats, but will not work if the package has free form text. In this case just use <strong>install_CondaTools</strong></em></p>
 <p><br></p>
@@ -861,29 +858,28 @@ utils::packageDescription(&quot;HerperTestPkg&quot;, fields = &quot;SystemRequir
 <pre class="r"><code>library(seqCNA)
 data(seqsumm_HCC1143)
 try(rco &lt;- readSeqsumm(tumour.data = seqsumm_HCC1143), silent = FALSE)</code></pre>
-<pre class="r"><code>install_CondaSysReqs(&quot;seqCNA&quot;,env=&quot;seqCNA&quot;,pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
-with_CondaEnv(&quot;seqCNA&quot;, rco &lt;- readSeqsumm(tumour.data=seqsumm_HCC1143)
- ,pathToMiniConda = myMiniconda)</code></pre>
+<pre class="r"><code>install_CondaSysReqs(&quot;seqCNA&quot;,env=&quot;seqCNA&quot;)
+with_CondaEnv(&quot;seqCNA&quot;, rco &lt;- readSeqsumm(tumour.data=seqsumm_HCC1143))</code></pre>
 <pre><code>## [1] &quot;Conda and Environment Information&quot;
 ## $pathToConda
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/bin/conda&quot;
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/bin/conda&quot;
 ## 
 ## $environment
 ## [1] &quot;seqCNA&quot;
 ## 
 ## $pathToEnvBin
-## [1] &quot;/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T//RtmpZIdmUc/Test/envs/seqCNA/bin&quot;</code></pre>
+## [1] &quot;/Users/mattpaul/Library/r-miniconda/envs/seqCNA/bin&quot;</code></pre>
 <p><br></p>
 </div>
 <div id="running-conda-packages-from-r-console-with-with_condaenv" class="section level2" number="0.6">
 <h2><span class="header-section-number">0.6</span> Running Conda packages from R console with <strong>with_CondaEnv</strong></h2>
 <p><strong>with_CondaEnv</strong> allows users to run an conda tools from within R. The user simply has to wrap the command in the <strong>system()</strong> or <strong>system2()</strong> functions.</p>
-<pre class="r"><code>with_CondaEnv(&quot;HerperTestPkg_0.1.0&quot;, system2(command = &quot;rmats.py&quot;, args = &quot;-h&quot;), pathToMiniConda = myMiniconda)</code></pre>
+<pre class="r"><code>with_CondaEnv(&quot;HerperTestPkg_0.1.0&quot;, system2(command = &quot;rmats.py&quot;, args = &quot;-h&quot;))</code></pre>
 </div>
 <div id="finding-conda-packages-with-conda_search" class="section level2" number="0.7">
 <h2><span class="header-section-number">0.7</span> Finding Conda packages with <strong>conda_search</strong></h2>
 <p>If the user is unsure of the exact name, or version of a tool available on conda, they can use the <strong>conda_search</strong> function.</p>
-<pre class="r"><code>conda_search(&quot;salmon&quot;, pathToMiniConda = myMiniconda)</code></pre>
+<pre class="r"><code>conda_search(&quot;salmon&quot;)</code></pre>
 <pre><code>##      name version                                    channel
 ## 2  salmon   0.8.2 https://conda.anaconda.org/bioconda/osx-64
 ## 3  salmon   0.9.0 https://conda.anaconda.org/bioconda/osx-64
@@ -906,7 +902,7 @@ with_CondaEnv(&quot;seqCNA&quot;, rco &lt;- readSeqsumm(tumour.data=seqsumm_HCC1
 ## 28 salmon   1.3.0 https://conda.anaconda.org/bioconda/osx-64</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>Specific package versions can be searched for using the conda format i.e. “salmon==1.3”, “salmon&gt;=1.3” or “salmon&lt;=1.3”. Searches will also find close matches for incorrect queries. Channels to search in can be controlled with <em>channels</em> parameter.</p>
-<pre class="r"><code>conda_search(&quot;salmon&lt;=1.0&quot;, pathToMiniConda = myMiniconda)</code></pre>
+<pre class="r"><code>conda_search(&quot;salmon&lt;=1.0&quot;)</code></pre>
 <pre><code>##      name version                                    channel
 ## 2  salmon   0.8.2 https://conda.anaconda.org/bioconda/osx-64
 ## 3  salmon   0.9.0 https://conda.anaconda.org/bioconda/osx-64
@@ -923,7 +919,7 @@ with_CondaEnv(&quot;seqCNA&quot;, rco &lt;- readSeqsumm(tumour.data=seqsumm_HCC1
 ## 22 salmon  0.14.2 https://conda.anaconda.org/bioconda/osx-64
 ## 23 salmon  0.15.0 https://conda.anaconda.org/bioconda/osx-64</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>conda_search(&quot;salm&quot;, pathToMiniConda = myMiniconda)</code></pre>
+<pre class="r"><code>conda_search(&quot;salm&quot;)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <p><br></p>
 </div>
@@ -931,12 +927,12 @@ with_CondaEnv(&quot;seqCNA&quot;, rco &lt;- readSeqsumm(tumour.data=seqsumm_HCC1
 <h2><span class="header-section-number">0.8</span> Export of Conda environments to YAML files using <strong>export_CondaEnv</strong>.</h2>
 <p>The <strong>export_CondaEnv</strong> function allows the user to export the environment information to a <em>.yml</em> file. These environment YAML files contain all essential information about the package, allowing for reproducibility and easy distribution of Conda system configuration for collaboration.</p>
 <pre class="r"><code>yml_name &lt;- paste0(&quot;herper_&quot;, format(Sys.Date(), &quot;%Y%m%d&quot;), &quot;.yml&quot;)
-export_CondaEnv(&quot;herper&quot;, yml_name, pathToMiniConda = myMiniconda)</code></pre>
+export_CondaEnv(&quot;herper&quot;, yml_name)</code></pre>
 <pre><code>## [1] &quot;herper_20200930.yml&quot;</code></pre>
 <p><br></p>
 <p>The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the <em>depends</em> paramter.</p>
 <pre class="r"><code>yml_name &lt;- paste0(&quot;herper_nodeps_&quot;, format(Sys.Date(), &quot;%Y%m%d&quot;), &quot;.yml&quot;)
-export_CondaEnv(&quot;herper&quot;, yml_name, depends = FALSE, pathToMiniConda = myMiniconda)</code></pre>
+export_CondaEnv(&quot;herper&quot;, yml_name, depends = FALSE)</code></pre>
 <pre><code>## [1] &quot;herper_nodeps_20200930.yml&quot;</code></pre>
 <p><br></p>
 </div>
@@ -945,27 +941,49 @@ export_CondaEnv(&quot;herper&quot;, yml_name, depends = FALSE, pathToMiniConda =
 <p>The <strong>import_CondaEnv</strong> function allows the user to create a new conda environment from a <em>.yml</em> file. These can be previously exported from <strong>export_CondaEnv</strong>, conda, renv or manually created.</p>
 <p>Users can simply provide a path to the YAML file for import. They can also specify the environment name, but by default the name will be taken from the YAML.</p>
 <pre class="r"><code>testYML &lt;- system.file(&quot;extdata/test.yml&quot;,package=&quot;Herper&quot;)
-import_CondaEnv(yml_import=testYML, pathToMiniConda = myMiniconda)</code></pre>
+import_CondaEnv(yml_import=testYML)</code></pre>
 <p><br></p>
 </div>
 <div id="checking-for-existing-environments-with-list_condaenv" class="section level2" number="0.10">
 <h2><span class="header-section-number">0.10</span> Checking for existing environments with <strong>list_CondaEnv</strong></h2>
 <p>The <strong>list_CondaEnv</strong> function allows users to check what environments already exist within the given conda build.</p>
 <p>If the User is using multiple builds of conda and wants to check environments across all them, they can include the parameter <em>allCondas = TRUE</em>.</p>
-<pre class="r"><code>list_CondaEnv(pathToMiniConda = myMiniconda)</code></pre>
-<pre><code>##                                                                 conda path                 env
-## 1 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpZIdmUc/Test                Test
-## 2 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpZIdmUc/Test HerperTestPkg_0.1.0
-## 3 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpZIdmUc/Test              herper
-## 4 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpZIdmUc/Test             my_test
-## 5 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpZIdmUc/Test        r-reticulate
-## 6 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpZIdmUc/Test              seqCNA</code></pre>
+<pre class="r"><code>list_CondaEnv()</code></pre>
+<pre><code>##                                                                  conda path                 env
+## 1                                                    /Users/mattpaul/.conda       seqCNA_1.34.0
+## 2                                                    /Users/mattpaul/.conda                test
+## 3                  /Users/mattpaul/Documents/Box Sync/Matt/test/renv/python         renv-python
+## 4                                       /Users/mattpaul/Library/r-miniconda         r-miniconda
+## 5                                       /Users/mattpaul/Library/r-miniconda HerperTestPkg_0.1.0
+## 6                                       /Users/mattpaul/Library/r-miniconda                MOFA
+## 7                                       /Users/mattpaul/Library/r-miniconda        abseqR_1.6.0
+## 8                                       /Users/mattpaul/Library/r-miniconda   basecallQC_1.12.0
+## 9                                       /Users/mattpaul/Library/r-miniconda              herper
+## 10                                      /Users/mattpaul/Library/r-miniconda      myCondaToolSet
+## 11                                      /Users/mattpaul/Library/r-miniconda     myCondaToolSet2
+## 12                                      /Users/mattpaul/Library/r-miniconda             my_test
+## 13                                      /Users/mattpaul/Library/r-miniconda             newtest
+## 14                                      /Users/mattpaul/Library/r-miniconda              pandoc
+## 15                                      /Users/mattpaul/Library/r-miniconda        r-reticulate
+## 16                                      /Users/mattpaul/Library/r-miniconda              seqCNA
+## 17                                      /Users/mattpaul/Library/r-miniconda       seqCNA_1.34.0
+## 18                                      /Users/mattpaul/Library/r-miniconda                test
+## 19                                      /Users/mattpaul/Library/r-miniconda               test3
+## 20                                      /Users/mattpaul/Library/r-miniconda            test_env
+## 21                                      /Users/mattpaul/Library/r-miniconda           test_env2
+## 22                                      /Users/mattpaul/Library/r-miniconda              tester
+## 23                                      /Users/mattpaul/Library/r-miniconda             tester2
+## 24                                             /Users/mattpaul/my_miniconda        my_miniconda
+## 25                                             /Users/mattpaul/my_miniconda              dimRed
+## 26 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpVKtzTl/Test                Test
+## 27 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpVKtzTl/Test             my_test
+## 28 /private/var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpVKtzTl/Test        r-reticulate</code></pre>
 <p><br></p>
 </div>
 <div id="checking-for-packages-in-an-environment-with-list_condapkgs" class="section level2" number="0.11">
 <h2><span class="header-section-number">0.11</span> Checking for packages in an environment with <strong>list_CondaPkgs</strong></h2>
 <p>The <strong>list_CondaPkgs</strong> function allows users to check what packages are installed in a given environment.</p>
-<pre class="r"><code>list_CondaPkgs(&quot;my_test&quot;, pathToMiniConda = myMiniconda)</code></pre>
+<pre class="r"><code>list_CondaPkgs(&quot;my_test&quot;)</code></pre>
 <pre><code>##                  name   version     channel platform
 ## 1            brotlipy     0.7.0 conda-forge   osx-64
 ## 2     ca-certificates 2020.6.20 conda-forge   osx-64

@@ -32,7 +32,7 @@ Many R packages require the use of external dependencies. Often these dependenci
 <br>
 
 ```{r, echo=F, out.width = "1000px", fig.align="center"}
-knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png", package = "Herper"))
+knitr::include_graphics("inst/extdata/pkg_deps_bar_mask-1.png")
 ```
 
 The Herper package includes functions that allow the easy management of these external dependencies from within the R console.
@@ -75,17 +75,10 @@ Miniconda is installed as part of the process (by default into the r-reticulate'
 If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the *pathToMiniConda* parameter.
 
 
-```{r, echo=F, eval=T}
-tempdir2 <- function() {
-    gsub("\\", "/", tempdir(), fixed = TRUE)
-}
-```
 
 
 ```{r installCondaTools, echo=T, eval=T}
-myMiniconda <- file.path(tempdir2(), "Test")
-myMiniconda
-install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
+install_CondaTools("salmon", "herper")
 ```
 
 <br>
@@ -94,7 +87,7 @@ We can add additional tools to our Conda environment by specifying *updateEnv = 
 
 ```{r ,updateCondaTools, echo=T, eval=T}
 
-pathToConda <- install_CondaTools(c("samtools", "kallisto"), "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
+pathToConda <- install_CondaTools(c("samtools", "kallisto"), "herper", updateEnv = TRUE)
 
 pathToConda
 ```
@@ -104,7 +97,7 @@ Specific package versions can be installed using conda formatted inputs into the
 
 ```{r ,versionCondaTools, echo=T, eval=T}
 
-pathToConda <- install_CondaTools("salmon<=1.3", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
+pathToConda <- install_CondaTools("salmon<=1.3", "herper", updateEnv = TRUE)
 ```
 
 
@@ -123,7 +116,7 @@ utils::packageDescription("HerperTestPkg", fields = "SystemRequirements")
 The user can simply supply the name of an installed R package, and **install_CondaSysReqs** will install the System Requirements through conda. 
 ```{r install_CondaSysReqs}
 
-condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda, SysReqsAsJSON = FALSE)
+condaPaths <- install_CondaSysReqs("HerperTestPkg")
 ```
 
 By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the *env* parameter. As with **install_CondaTools()**, user can control which version of Miniconda with the parameter *pathToMiniConda*, and whether they want to amend an existing environment with the parameter *updateEnv*.
@@ -143,17 +136,15 @@ try(rco <- readSeqsumm(tumour.data = seqsumm_HCC1143), silent = FALSE)
 ```
 
 ```{r, echo=T, eval=F}
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
-with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
- ,pathToMiniConda = myMiniconda)
+install_CondaSysReqs("seqCNA",env="seqCNA")
+with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143))
 
 ``` 
 
 ```{r, echo=F, eval=T}
 if(!identical(.Platform$OS.type, "windows")){
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
-with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
- ,pathToMiniConda = myMiniconda)
+install_CondaSysReqs("seqCNA",env="seqCNA")
+with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143))
 }
 ``` 
 
@@ -164,12 +155,12 @@ with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
 **with_CondaEnv** allows users to run an conda tools from within R. The user simply has to wrap the command in the **system()** or **system2()** functions. 
 
 ```{r with_condaenv_conda, echo=T, eval=F}
-with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"), pathToMiniConda = myMiniconda)
+with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"))
 ```
 
 ```{r, echo=F, eval=T}
 if(!identical(.Platform$OS.type, "windows")){
-  with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"), pathToMiniConda = myMiniconda)}
+  with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"))}
 ```
 
 ## Finding Conda packages with **conda_search**
@@ -177,14 +168,14 @@ if(!identical(.Platform$OS.type, "windows")){
 If the user is unsure of the exact name, or version of a tool available on conda, they can use the **conda_search** function. 
 
 ```{r conda_search}
-conda_search("salmon", pathToMiniConda = myMiniconda)
+conda_search("salmon")
 ```
 
 Specific package versions can be searched for using the conda format i.e. "salmon==1.3", "salmon>=1.3" or "salmon<=1.3". Searches will also find close matches for incorrect queries. Channels to search in can be controlled with *channels* parameter. 
 
 ```{r conda_search_nuance}
-conda_search("salmon<=1.0", pathToMiniConda = myMiniconda)
-conda_search("salm", pathToMiniConda = myMiniconda)
+conda_search("salmon<=1.0")
+conda_search("salm")
 ```
 
 <br>
@@ -195,7 +186,7 @@ The **export_CondaEnv** function allows the user to export the environment infor
 
 ```{r export}
 yml_name <- paste0("herper_", format(Sys.Date(), "%Y%m%d"), ".yml")
-export_CondaEnv("herper", yml_name, pathToMiniConda = myMiniconda)
+export_CondaEnv("herper", yml_name)
 ```
 
 <br>
@@ -203,7 +194,7 @@ export_CondaEnv("herper", yml_name, pathToMiniConda = myMiniconda)
 The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the *depends* paramter. 
 ```{r export_rename}
 yml_name <- paste0("herper_nodeps_", format(Sys.Date(), "%Y%m%d"), ".yml")
-export_CondaEnv("herper", yml_name, depends = FALSE, pathToMiniConda = myMiniconda)
+export_CondaEnv("herper", yml_name, depends = FALSE)
 ```
 
 <br>
@@ -216,7 +207,7 @@ Users can simply provide a path to the YAML file for import. They can also speci
 
 ```{r import}
 testYML <- system.file("extdata/test.yml",package="Herper")
-import_CondaEnv(yml_import=testYML, pathToMiniConda = myMiniconda)
+import_CondaEnv(yml_import=testYML)
 ```
 
 <br>
@@ -226,7 +217,7 @@ The **list_CondaEnv** function allows users to check what environments already e
 
 If the User is using multiple builds of conda and wants to check environments across all them, they can include the parameter *allCondas = TRUE*.
 ```{r list_CondaEnv}
-list_CondaEnv(pathToMiniConda = myMiniconda)
+list_CondaEnv()
 ```
 
 <br>
@@ -234,7 +225,7 @@ list_CondaEnv(pathToMiniConda = myMiniconda)
 ## Checking for packages in an environment with **list_CondaPkgs**
 The **list_CondaPkgs** function allows users to check what packages are installed in a given environment.
 ```{r list_CondaPkgs}
-list_CondaPkgs("my_test", pathToMiniConda = myMiniconda)
+list_CondaPkgs("my_test")
 ```
 
 <br>
