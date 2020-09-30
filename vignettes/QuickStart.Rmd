@@ -2,7 +2,7 @@
 title: "Herper Quick Start Guide"
 author: "Matt Paul - mpaul@rockefeller.edu"
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
-package: CondaSysReqs
+package: Herper
 output:
  BiocStyle::html_document:
   number_sections: yes
@@ -40,13 +40,13 @@ Use the `BiocManager` package to download and install the package from our Githu
 ```{r getPackage, eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install("https://github.com/RockefellerUniversity/CondaSysReqs")
+BiocManager::install("https://github.com/RockefellerUniversity/Herper")
 ```
 
 Once installed, load it into your R session:
 
 ```{r}
-library(CondaSysReqs)
+library(Herper)
 ```
 
 
@@ -66,7 +66,7 @@ install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
 The **install_CondaSysReqs** checks the System Requirements for the specified R package, and uses Conda to install this software.
 
 ```{r install_CondaSysReqs, eval=F}
-testPkg <- system.file("extdata/HerperTestPkg",package="CondaSysReqs")
+testPkg <- system.file("extdata/HerperTestPkg",package="Herper")
 install.packages(testPkg,type = "source",repos = NULL)
 condaDir <- file.path(tempdir(),"r-miniconda")
 condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=condaDir,SysReqsAsJSON=FALSE)
@@ -75,7 +75,7 @@ condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=condaDir,SysR
 ```
 
 ## Acknowledgements
-The Herper package was developed by Matt Paul, Tom Carroll and Doug Barrows in the Bioinformatics Resource Center at Rockefeller University. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
+Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
 
 ## Session Information
 

@@ -1,4 +1,4 @@
-Package: CondaSysReqs
+Package: Herper
 Type: Package
 Title: The Herper package is a simple toolset to install and manage conda packages and environments from R
 Version: 0.99.0

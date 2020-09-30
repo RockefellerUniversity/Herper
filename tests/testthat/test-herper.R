@@ -1,4 +1,4 @@
-library(CondaSysReqs)
+library(Herper)
 
 tempdir2 <- function(){
   gsub("\\","/", tempdir(),fixed=TRUE)

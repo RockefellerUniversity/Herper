@@ -1,4 +1,4 @@
 library(testthat)
-library(CondaSysReqs)
+library(Herper)
 
-test_check("CondaSysReqs")
+test_check("Herper")

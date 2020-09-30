@@ -36,7 +36,7 @@ Nothing returned. Output written to file.
 Install Conda requirements
 }
 \examples{
-testPkg <- system.file("extdata/HerperTestPkg", package = "CondaSysReqs")
+testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
 install.packages(testPkg, type = "source", repos = NULL)
 condaDir <- file.path(tempdir(), "r-miniconda")
 condaPaths <- install_CondaSysReqs("HerperTestPkg", 
