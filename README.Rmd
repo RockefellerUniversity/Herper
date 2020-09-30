@@ -20,7 +20,7 @@ options(width = 100)
 load(system.file("extdata/Bioc_Pkg_Details.RData", package = "Herper"))
 ```
 
-```{r, echo=F, eval=F, message=F, warning=F}
+```{r, echo=F, eval=T, message=F, warning=F}
 
 reticulate::conda_remove("herper", packages = NULL)
 reticulate::conda_remove("herper2", packages = NULL)
