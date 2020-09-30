@@ -123,7 +123,7 @@ utils::packageDescription("HerperTestPkg", fields = "SystemRequirements")
 The user can simply supply the name of an installed R package, and **install_CondaSysReqs** will install the System Requirements through conda. 
 ```{r install_CondaSysReqs}
 
-condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda, SysReqsAsJSON = FALSE)
+condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda)
 ```
 
 By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the *env* parameter. As with **install_CondaTools()**, user can control which version of Miniconda with the parameter *pathToMiniConda*, and whether they want to amend an existing environment with the parameter *updateEnv*.
@@ -143,7 +143,7 @@ try(rco <- readSeqsumm(tumour.data = seqsumm_HCC1143), silent = FALSE)
 ```
 
 ```{r, echo=T, eval=F}
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
+install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda)
 with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
  ,pathToMiniConda = myMiniconda)
 
@@ -151,7 +151,7 @@ with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
 
 ```{r, echo=F, eval=T}
 if(!identical(.Platform$OS.type, "windows")){
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda,SysReqsAsJSON=FALSE)
+install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda)
 with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
  ,pathToMiniConda = myMiniconda)
 }

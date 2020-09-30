@@ -10,7 +10,7 @@ install_CondaSysReqs(
   env = NULL,
   pathToMiniConda = NULL,
   updateEnv = FALSE,
-  SysReqsAsJSON = TRUE,
+  SysReqsAsJSON = FALSE,
   SysReqsSep = ","
 )
 }

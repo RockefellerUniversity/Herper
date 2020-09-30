@@ -215,7 +215,7 @@ conda_install_silentJSON <- function(envname = NULL,
 #' @export
 install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
                                  pathToMiniConda = NULL, updateEnv = FALSE,
-                                 SysReqsAsJSON = TRUE, SysReqsSep = ",") {
+                                 SysReqsAsJSON = FALSE, SysReqsSep = ",") {
   # pathToMiniConda <- "~/Desktop/testConda"
 
   # if(is.null(pathToMiniConda)){
