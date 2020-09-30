@@ -90,13 +90,15 @@ setActivateEnvVariables <- function(activateScript,winslash = "\\"){
   if(!is_windows()){
     cmd <- "source"
     envvarcmd <- "printenv"
+    args <- paste0(activateScript,";",envvarcmd)
   }else{
-    cmd <- "call"
+    cmd <- Sys.getenv("COMSPEC")
     envvarcmd <- "set"
+    args <- paste0("\c call ",activateScript," && ",envvarcmd)
   }
   CondaPrefix <- paste0("CONDA_PREFIX=",Sys.getenv("CONDA_PREFIX"))
   CondaPath <- paste0("PATH=",Sys.getenv("PATH"))
-  envsToMount <- system2(command = cmd,args=paste0(activateScript,";",envvarcmd),
+  envsToMount <- system2(command = cmd,args=args,
                          env = c(CondaPrefix,CondaPath),stdout =TRUE)
   for(k in seq_along(envsToMount)){
     envS <- unlist(strsplit(envsToMount[k],"="))
