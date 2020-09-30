@@ -20,6 +20,15 @@ options(width = 100)
 load(system.file("extdata/Bioc_Pkg_Details.RData", package = "Herper"))
 ```
 
+```{r, echo=F, eval=F, message=F, warning=F}
+
+reticulate::conda_remove("herper", packages = NULL)
+reticulate::conda_remove("herper2", packages = NULL)
+reticulate::conda_remove("HerperTestPkg_0.1.0", packages = NULL)
+reticulate::conda_remove("my_test", packages = NULL)
+reticulate::conda_remove("seqCNA", packages = NULL)
+```
+
 <br>
 
 ---
@@ -233,19 +242,6 @@ list_CondaPkgs("my_test")
 
 ```{r, echo=F, eval=F, message=F, warning=F}
 unlink(dir(".", pattern = "herper_.*.yml"))
-```
-
-```{r, echo=F, eval=F, message=F, warning=F}
-myMiniconda <- file.path(tempdir(), "Test")
-reticulate::conda_remove("herper", packages = NULL, conda = file.path(myMiniconda, "bin", "conda"))
-reticulate::conda_remove("herper2", packages = NULL, conda = file.path(myMiniconda, "bin", "conda"))
-reticulate::conda_remove("HerperTestPkg_0.1.0", packages = NULL, conda = file.path(myMiniconda, "bin", "conda"))
-
-if (file.exists(file.path(tempdir(), "r-miniconda"))) {
-    condaDir <- file.path(tempdir(), "r-miniconda")
-    reticulate::conda_remove("herper", packages = NULL, conda = file.path(condaDir, "bin", "conda"))
-    reticulate::conda_remove("herpertest", packages = NULL, conda = file.path(condaDir, "bin", "conda"))
-}
 ```
 
 ## Acknowledgements
