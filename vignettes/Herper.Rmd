@@ -37,6 +37,9 @@ knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png", package =
 
 The Herper package includes functions that allow the easy management of these external dependencies from within the R console.
 
+
+The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-2006), [Doug Barrows](https://github.com/dougbarrows) and [Thomas Carroll](https://github.com/ThomasCarroll) at the [Rockefeller University Bioinformatics Resources Center](https://rockefelleruniversity.github.io) with contributions from [Katherine Rozen-Gagnon](https://github.com/kathrynrozengagnon).
+
 <br>
 
 
@@ -255,7 +258,7 @@ if (file.exists(file.path(tempdir(), "r-miniconda"))) {
 ```
 
 ## Acknowledgements
-The herper package was developed by Matt Paul, Tom Carroll and Doug Barrows. Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
+Thank you to Ji-Dung Luo and Wei Wang for testing/vignette review/critical feedback and Ziwei Liang for their support.
 
 <br>
 

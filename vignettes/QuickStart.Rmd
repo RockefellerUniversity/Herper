@@ -27,6 +27,9 @@ options(width=100)
 
 The Herper package is a simple toolset to install and manage Conda packages and environments from R.
  
+ 
+The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-2006), [Doug Barrows](https://github.com/dougbarrows) and [Thomas Carroll](https://github.com/ThomasCarroll) at the [Rockefeller University Bioinformatics Resources Center](https://rockefelleruniversity.github.io) with contributions from [Katherine Rozen-Gagnon](https://github.com/kathrynrozengagnon).
+
 ______
  
  
