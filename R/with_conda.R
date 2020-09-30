@@ -94,7 +94,7 @@ setActivateEnvVariables <- function(activateScript,winslash = "\\"){
   }else{
     cmd <- Sys.getenv("COMSPEC")
     envvarcmd <- "set"
-    args <- paste0("\c call ",activateScript," && ",envvarcmd)
+    args <- paste0("/c call ",activateScript," && ",envvarcmd)
   }
   CondaPrefix <- paste0("CONDA_PREFIX=",Sys.getenv("CONDA_PREFIX"))
   CondaPath <- paste0("PATH=",Sys.getenv("PATH"))
