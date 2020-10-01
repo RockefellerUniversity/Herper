@@ -1,7 +1,7 @@
 Package: Herper
 Type: Package
 Title: The Herper package is a simple toolset to install and manage conda packages and environments from R
-Version: 0.99.0
+Version: 0.99.1
 Authors@R: c(
     person("Matt", "Paul", , "mpaul@rockefeller.edu", role = c("aut"),
       comment = c(ORCID = "0000-0002-3020-7729")
