@@ -5,7 +5,7 @@
 #'
 #'
 #' @name conda_search
-#' @rdname conda_search
+#' @rdname search_conda
 #'
 #'
 #' @author Doug Barrows and Matt Paul
@@ -17,6 +17,9 @@
 #' @return TRUE/FALSE
 #' @examples
 #' condaDir <- file.path(tempdir(), "r-miniconda")
+#' if(!dir.exists(condaDir)){
+#'  condaPaths <- install_CondaTools("salmon", "salmon", pathToMiniConda = condaDir)
+#' }
 #' conda_search("salmon",pathToMiniConda=condaDir)
 #' @export
 #'
