@@ -15,6 +15,7 @@ Authors@R: c(
     )
   )
 Description: Many tools for data analysis are not available in R, but are present in public repositories like conda. The Herper package provides a comprehensive set of functions to interact with the conda package managament system. With Herper users can install, manage and run conda packages from the comfort of their R session.  
+URL: https://github.com/RockefellerUniversity/Herper
 Depends: R (>= 4.0), reticulate
 Imports: utils, rjson, withr, stats
 Suggests: BiocStyle, testthat, knitr, rmarkdown, seqCNA
