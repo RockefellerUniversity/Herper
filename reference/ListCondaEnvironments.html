@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Silent/json version of reticulate's conda_create — conda_create_silentJSON • Herper</title>
+<title>List Conda environments. — list_CondaEnv • Herper</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Silent/json version of reticulate's conda_create — conda_create_silentJSON" />
-<meta property="og:description" content="Reticulate's conda_create with silent output and json output capability" />
+<meta property="og:title" content="List Conda environments. — list_CondaEnv" />
+<meta property="og:description" content="List Conda environments" />
 
 
 
@@ -118,43 +118,63 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Silent/json version of reticulate's conda_create</h1>
+    <h1>List Conda environments.</h1>
     
-    <div class="hidden name"><code>conda_create_silentJSON.Rd</code></div>
+    <div class="hidden name"><code>ListCondaEnvironments.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Reticulate's conda_create with silent output and json output capability</p>
+    <p>List Conda environments</p>
     </div>
 
-    <pre class="usage"><span class='fu'>conda_create_silentJSON</span><span class='op'>(</span>
-  envname <span class='op'>=</span> <span class='cn'>NULL</span>,
-  forge <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  channel <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span><span class='op'>(</span><span class='op'>)</span>,
-  conda <span class='op'>=</span> <span class='st'>"auto"</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>list_CondaEnv</span><span class='op'>(</span>pathToMiniConda <span class='op'>=</span> <span class='cn'>NULL</span>, allCondas <span class='op'>=</span> <span class='cn'>FALSE</span>, env <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>forge</th>
-      <td><p>Boolean; include the [Conda Forge](https://conda-forge.org/)
-repository?</p></td>
+      <th>pathToMiniConda</th>
+      <td><p>NULL Path to miniconda installation</p></td>
     </tr>
     <tr>
-      <th>channel</th>
-      <td><p>An optional character vector of Conda channels to include.
-When specified, the `forge` argument is ignored. If you need to
-specify multiple channels, including the Conda Forge, you can use
-`c("conda-forge", &lt;other channels&gt;)`.</p></td>
+      <th>allCondas</th>
+      <td><p>Logical. Whether to return conda environments, for all discoverable conda installs, or just the conda specified in pathToMiniConda.</p></td>
+    </tr>
+    <tr>
+      <th>env</th>
+      <td><p>Environment name. If this is supplied to list_CondaEnv, it will query whether that environment is present in the given conda.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Nothing returned, conda environment created.</p>
+    <p>Conda environment names and the file paths to their conda installation are printed to the screen. If environment name is supplied a TRUE/FALSE will be returned depending on whether that environment is present or not.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
+    <p>Matt Paul</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"r-miniconda"</span><span class='op'>)</span>
+<span class='va'>condaPaths</span> <span class='op'>&lt;-</span> <span class='fu'><a href='install_CondaTools.html'>install_CondaTools</a></span><span class='op'>(</span><span class='st'>"igv"</span>, <span class='st'>"herper"</span>, pathToMiniConda <span class='op'>=</span> <span class='va'>condaDir</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>* Downloading 'https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh' ...</span></div><div class='output co'>#&gt; <span class='message'>* Installing Miniconda -- please wait a moment ...</span></div><div class='output co'>#&gt; <span class='message'>* Miniconda has been successfully installed at '/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp5gWnGo/r-miniconda'.</span></div><div class='output co'>#&gt; <span class='message'>The environment herper does not currently exist and will be created. </span></div><div class='output co'>#&gt; <span class='message'>The package(s) (igv) are in the herper environment. </span></div><div class='output co'>#&gt; [1] "Conda and Environment Information"
+#&gt; $pathToConda
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp5gWnGo/r-miniconda/bin/conda"
+#&gt; 
+#&gt; $environment
+#&gt; [1] "herper"
+#&gt; 
+#&gt; $pathToEnvBin
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp5gWnGo/r-miniconda/envs/herper/bin"
+#&gt; </div><div class='input'><span class='fu'>list_CondaEnv</span><span class='op'>(</span>pathToMiniConda <span class='op'>=</span> <span class='va'>condaDir</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;                                                                        conda path
+#&gt; 1 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp5gWnGo/r-miniconda
+#&gt; 2 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp5gWnGo/r-miniconda
+#&gt; 3 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp5gWnGo/r-miniconda
+#&gt;            env
+#&gt; 1  r-miniconda
+#&gt; 2       herper
+#&gt; 3 r-reticulate</div><div class='input'><span class='fu'>list_CondaEnv</span><span class='op'>(</span>pathToMiniConda <span class='op'>=</span> <span class='va'>condaDir</span>, env <span class='op'>=</span> <span class='st'>"herper"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

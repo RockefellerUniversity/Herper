@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Use Conda environments. — with_CondaEnv • CondaSysReqs</title>
+<title>Use Conda environments. — with_CondaEnv • Herper</title>
 
 
 <!-- jquery -->
@@ -72,8 +72,8 @@ Use Conda environments" />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">CondaSysReqs</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <a class="navbar-link" href="../index.html">Herper</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -86,6 +86,9 @@ Use Conda environments" />
   </a>
 </li>
 <li>
+  <a href="../articles/Herper.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -95,9 +98,6 @@ Use Conda environments" />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Herper.html">Herper Guide</a>
-    </li>
     <li>
       <a href="../articles/QuickStart.html">Herper Quick Start Guide</a>
     </li>
@@ -129,33 +129,29 @@ Use Conda environments" />
 <p>Use Conda environments</p>
     </div>
 
-    <pre class="usage"><span class='fu'>with_CondaEnv</span>(
-  <span class='kw'>new</span>,
-  <span class='kw'>code</span>,
-  pathToMiniConda = <span class='kw'>NULL</span>,
-  path_action = <span class='st'>"prefix"</span>,
-  pythonpath_action = <span class='st'>"replace"</span>,
-  perl5lib_action = <span class='st'>"replace"</span>,
-  javahome_action = <span class='st'>"replace"</span>,
-  path_additional = <span class='kw'>NULL</span>,
-  pythonpath_additional = <span class='kw'>NULL</span>,
-  perl5lib_additional = <span class='kw'>NULL</span>,
-  javahome_additional = <span class='kw'>NULL</span>
-)
+    <pre class="usage"><span class='fu'>with_CondaEnv</span><span class='op'>(</span>
+  <span class='va'>new</span>,
+  <span class='va'>code</span>,
+  pathToMiniConda <span class='op'>=</span> <span class='cn'>NULL</span>,
+  path_action <span class='op'>=</span> <span class='st'>"prefix"</span>,
+  pythonpath_action <span class='op'>=</span> <span class='st'>"replace"</span>,
+  perl5lib_action <span class='op'>=</span> <span class='st'>"replace"</span>,
+  path_additional <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pythonpath_additional <span class='op'>=</span> <span class='cn'>NULL</span>,
+  perl5lib_additional <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>local_CondaEnv</span>(
-  <span class='kw'>new</span>,
-  pathToMiniConda = <span class='kw'>NULL</span>,
-  path_action = <span class='st'>"prefix"</span>,
-  pythonpath_action = <span class='st'>"replace"</span>,
-  perl5lib_action = <span class='st'>"replace"</span>,
-  javahome_action = <span class='st'>"replace"</span>,
-  path_additional = <span class='kw'>NULL</span>,
-  pythonpath_additional = <span class='kw'>NULL</span>,
-  perl5lib_additional = <span class='kw'>NULL</span>,
-  javahome_additional = <span class='kw'>NULL</span>,
-  .local_envir = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>()
-)</pre>
+<span class='fu'>local_CondaEnv</span><span class='op'>(</span>
+  <span class='va'>new</span>,
+  pathToMiniConda <span class='op'>=</span> <span class='cn'>NULL</span>,
+  path_action <span class='op'>=</span> <span class='st'>"prefix"</span>,
+  pythonpath_action <span class='op'>=</span> <span class='st'>"replace"</span>,
+  perl5lib_action <span class='op'>=</span> <span class='st'>"replace"</span>,
+  path_additional <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pythonpath_additional <span class='op'>=</span> <span class='cn'>NULL</span>,
+  perl5lib_additional <span class='op'>=</span> <span class='cn'>NULL</span>,
+  .local_envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,10 +181,6 @@ Use Conda environments" />
       <td><p>Should new values "replace", "prefix" or "suffix" existing PERL5LIB variable.</p></td>
     </tr>
     <tr>
-      <th>javahome_action</th>
-      <td><p>Should new values "replace", "prefix" or "suffix" existing JAVA_HOME variable.</p></td>
-    </tr>
-    <tr>
       <th>path_additional</th>
       <td><p>Additional paths to suffix to existing PATH variable.</p></td>
     </tr>
@@ -201,28 +193,28 @@ Use Conda environments" />
       <td><p>Additional paths to suffix to existing PERL5LIB variable.</p></td>
     </tr>
     <tr>
-      <th>javahome_additional</th>
-      <td><p>Additional paths to suffix to existing JAVA_HOME variable.</p></td>
-    </tr>
-    <tr>
       <th>.local_envir</th>
       <td><p>The environment to use for scoping.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Nothing returned.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Thomas Carroll</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>testYML</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/HerperTestPkg_0.1.0.yml"</span>,package=<span class='st'>"CondaSysReqs"</span>)
-<span class='kw'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),<span class='st'>"r-miniconda"</span>)
-<span class='fu'><a href='export_CondaEnv.html'>import_CondaEnv</a></span>(<span class='kw'>testYML</span>,<span class='st'>"HerperTest"</span>,pathToMiniConda=<span class='kw'>condaDir</span>)
-<span class='fu'>with_CondaEnv</span>(<span class='st'>"HerperTest"</span>,<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span>(command = <span class='st'>"rmats.py"</span>,args = <span class='st'>"-h"</span>),pathToMiniConda = <span class='kw'>condaDir</span>)
-</div><div class='output co'>#&gt; <span class='message'>/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpy4fLbn/r-miniconda/envs/HerperTest/lib/python3.7/site-packages</span></div><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='fu'><a href='install_CondaTools.html'>install_CondaTools</a></span>(<span class='st'>"cytoscape"</span>,<span class='st'>"cytoscape"</span>,updateEnv = <span class='fl'>TRUE</span>,pathToMiniConda = <span class='kw'>condaDir</span>)
-  <span class='fu'>with_CondaEnv</span>(<span class='st'>"cytoscape"</span>,<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span>(command = <span class='st'>"cytoscape.sh"</span>),pathToMiniConda = <span class='kw'>condaDir</span>)
-}
+    <pre class="examples"><div class='input'><span class='va'>testYML</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/test.yml"</span>,package<span class='op'>=</span><span class='st'>"Herper"</span><span class='op'>)</span>
+<span class='va'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,<span class='st'>"r-miniconda"</span><span class='op'>)</span>
+<span class='fu'><a href='export_CondaEnv.html'>import_CondaEnv</a></span><span class='op'>(</span><span class='va'>testYML</span>,<span class='st'>"HerperTest"</span>,pathToMiniConda<span class='op'>=</span><span class='va'>condaDir</span><span class='op'>)</span>
+<span class='fu'>with_CondaEnv</span><span class='op'>(</span><span class='st'>"HerperTest"</span>,<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span><span class='op'>(</span>command <span class='op'>=</span> <span class='st'>"multiqc"</span>,args <span class='op'>=</span> ,<span class='st'>"--version"</span><span class='op'>)</span>,
+    pathToMiniConda <span class='op'>=</span> <span class='va'>condaDir</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='install_CondaTools.html'>install_CondaTools</a></span><span class='op'>(</span><span class='st'>"cytoscape"</span>,<span class='st'>"cytoscape"</span>,updateEnv <span class='op'>=</span> <span class='cn'>TRUE</span>,pathToMiniConda <span class='op'>=</span> <span class='va'>condaDir</span><span class='op'>)</span>
+  <span class='fu'>with_CondaEnv</span><span class='op'>(</span><span class='st'>"cytoscape"</span>,<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span><span class='op'>(</span>command <span class='op'>=</span> <span class='st'>"cytoscape.sh"</span><span class='op'>)</span>,pathToMiniConda <span class='op'>=</span> <span class='va'>condaDir</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -235,7 +227,7 @@ Use Conda environments" />
 
       <footer>
       <div class="copyright">
-  <p>Developed by Thomas Carroll, Matt Paul, Doug Barrows.</p>
+  <p>Developed by Matt Paul, Thomas Carroll, Doug Barrows.</p>
 </div>
 
 <div class="pkgdown">

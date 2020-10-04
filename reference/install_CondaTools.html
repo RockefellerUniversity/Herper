@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Install Conda requirements. — install_CondaTools • CondaSysReqs</title>
+<title>Install Conda requirements. — install_CondaTools • Herper</title>
 
 
 <!-- jquery -->
@@ -71,8 +71,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">CondaSysReqs</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <a class="navbar-link" href="../index.html">Herper</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.1</span>
       </span>
     </div>
 
@@ -85,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/Herper.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -94,9 +97,6 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Herper.html">Herper Guide</a>
-    </li>
     <li>
       <a href="../articles/QuickStart.html">Herper Quick Start Guide</a>
     </li>
@@ -127,13 +127,14 @@
     <p>Install Conda requirements</p>
     </div>
 
-    <pre class="usage"><span class='fu'>install_CondaTools</span>(
-  <span class='kw'>tools</span>,
-  <span class='kw'>env</span>,
-  channels = <span class='kw'>NULL</span>,
-  pathToMiniConda = <span class='kw'>NULL</span>,
-  updateEnv = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>install_CondaTools</span><span class='op'>(</span>
+  <span class='va'>tools</span>,
+  <span class='va'>env</span>,
+  channels <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pathToMiniConda <span class='op'>=</span> <span class='cn'>NULL</span>,
+  updateEnv <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  search <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,6 +159,10 @@
       <th>updateEnv</th>
       <td><p>Update existing package's conda environment if already installed.</p></td>
     </tr>
+    <tr>
+      <th>search</th>
+      <td><p>Whether to search for the package name and version before installing. It is highly recommended this be set to TRUE as information about available versions or similar packages will be included in the output if the exact match is not found.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -168,9 +173,18 @@
     <p>Thomas Carroll</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),<span class='st'>"r-miniconda"</span>)
-<span class='kw'>condaPaths</span> <span class='op'>&lt;-</span> <span class='fu'>install_CondaTools</span>(<span class='st'>"salmon"</span>,<span class='st'>"salmon"</span>,pathToMiniConda=<span class='kw'>condaDir</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='kw'>condaPaths</span><span class='op'>$</span><span class='kw'>pathToEnvBin</span>,<span class='st'>"salmon"</span>),args = <span class='st'>"--help"</span>)
+    <pre class="examples"><div class='input'><span class='va'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"r-miniconda"</span><span class='op'>)</span>
+<span class='va'>condaPaths</span> <span class='op'>&lt;-</span> <span class='fu'>install_CondaTools</span><span class='op'>(</span><span class='st'>"salmon"</span>, <span class='st'>"salmon"</span>, pathToMiniConda <span class='op'>=</span> <span class='va'>condaDir</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>The environment salmon does not currently exist and will be created. </span></div><div class='output co'>#&gt; <span class='message'>The package(s) (salmon) are in the salmon environment. </span></div><div class='output co'>#&gt; [1] "Conda and Environment Information"
+#&gt; $pathToConda
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp5gWnGo/r-miniconda/bin/conda"
+#&gt; 
+#&gt; $environment
+#&gt; [1] "salmon"
+#&gt; 
+#&gt; $pathToEnvBin
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp5gWnGo/r-miniconda/envs/salmon/bin"
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>condaPaths</span><span class='op'>$</span><span class='va'>pathToEnvBin</span>, <span class='st'>"salmon"</span><span class='op'>)</span>, args <span class='op'>=</span> <span class='st'>"--help"</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -183,7 +197,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Thomas Carroll, Matt Paul, Doug Barrows.</p>
+  <p>Developed by Matt Paul, Thomas Carroll, Doug Barrows.</p>
 </div>
 
 <div class="pkgdown">
