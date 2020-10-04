@@ -77,7 +77,12 @@ If you already have Miniconda installed or you would like to install to a custom
 
 ```{r, echo=F, eval=T}
 tempdir2 <- function() {
-    gsub("\\", "/", tempdir(), fixed = TRUE)
+    tempDir <- tempdir()
+    if(dir.exists(tempDir)){
+      tempDir <- file.path(tempDir,"rr")
+    }
+    tempDir <- gsub("\\", "/", tempDir, fixed = TRUE)
+    tempDir
 }
 ```
 
