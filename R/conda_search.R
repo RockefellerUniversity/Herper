@@ -16,8 +16,8 @@
 #' @import utils rjson
 #' @return TRUE/FALSE
 #' @examples
-#'
-#' conda_search("salmon")
+#' condaDir <- file.path(tempdir(), "r-miniconda")
+#' conda_search("salmon",pathToMiniConda=condaDir)
 #' @export
 #'
 
