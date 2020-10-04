@@ -87,23 +87,23 @@ getEnvVariables <- function(winslash = "\\"){
 
 setActivateEnvVariables <- function(activateScript,winslash = "\\"){
   EnvironmentalVariables <- list()
+  envvarcmd <- file.path(R.home(component = "bin"),"Rscript -e 'cat(rjson::toJSON(Sys.getenv()))' ")
   if(!is_windows()){
     cmd <- "source"
-    envvarcmd <- "printenv"
-    args <- paste0(activateScript,";",envvarcmd)
+    args <- paste0(activateScript," && ",envvarcmd)
   }else{
     cmd <- Sys.getenv("COMSPEC")
-    envvarcmd <- "set"
     args <- paste0("/c call ",activateScript," && ",envvarcmd)
   }
   CondaPrefix <- paste0("CONDA_PREFIX=",Sys.getenv("CONDA_PREFIX"))
   CondaPath <- paste0("PATH=",Sys.getenv("PATH"))
   envsToMount <- system2(command = cmd,args=args,
                          env = c(CondaPrefix,CondaPath),stdout =TRUE)
+  envsToMount <- rjson::fromJSON(envsToMount)
   for(k in seq_along(envsToMount)){
-    envS <- unlist(strsplit(envsToMount[k],"="))
-    envVariable <- envS[1]
-    envValue<- envS[2]
+    # envS <- unlist(strsplit(envsToMount[k],"="))
+    envVariable <- names(envsToMount)[k]
+    envValue<- envsToMount[k]
     previousEnv <- Sys.getenv(envVariable,unset = NA)
     EnvironmentalVariables[envVariable] <- previousEnv
     do.call(Sys.setenv, as.list(setNames(envValue, envVariable)))
