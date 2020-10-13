@@ -38,7 +38,7 @@ knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png", package =
 The Herper package includes functions that allow the easy management of these external dependencies from within the R console.
 
 
-The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-2006), [Doug Barrows](https://github.com/dougbarrows) and [Thomas Carroll](https://github.com/ThomasCarroll) at the [Rockefeller University Bioinformatics Resources Center](https://rockefelleruniversity.github.io) with contributions from [Katherine Rozen-Gagnon](https://github.com/kathrynrozengagnon).
+The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-2006), [Doug Barrows](https://github.com/dougbarrows) and [Thomas Carroll](https://github.com/ThomasCarroll) at the [Rockefeller University Bioinformatics Resources Center](https://rockefelleruniversity.github.io) with contributions from [Kathryn Rozen-Gagnon](https://github.com/kathrynrozengagnon).
 
 <br>
 
