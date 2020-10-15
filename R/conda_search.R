@@ -63,12 +63,12 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     package_input <- paste0('"', pkg_and_vers[1], '"')
 
     # message(paste0('Using conda at: ', pathToConda))
-    condaSearch <- suppressWarnings(
+    condaSearch <- 
         system(paste(pathToConda, "search --quiet --json", package_input, channel_command),
             intern = TRUE,
             ignore.stderr = TRUE
         ) # if we want to include the output for 'conda search', which is a pretty informative error message, set this to FALSE
-    )
+    
     condaSearch <- fromJSON(paste(condaSearch, collapse = ""))
 
     if ("exception_name" %in% names(condaSearch)) {
@@ -124,9 +124,9 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                     return(list(exact_match = TRUE, version_matches = sub_df))
                 }
             } else if (ver_logic == ">=") {
-                if (suppressWarnings(sum(compareVersion_vapply(versions_no_letters, package_version) == 1, na.rm = TRUE) +
-                    sum(compareVersion_vapply(versions_no_letters, package_version) == 0, na.rm = TRUE) > 0)) {
-                    sub_df <- condaSearch_df[suppressWarnings(compareVersion_vapply(versions_no_letters, package_version)) >= 0, ]
+                if (sum(compareVersion_vapply(versions_no_letters, package_version) == 1, na.rm = TRUE) +
+                    sum(compareVersion_vapply(versions_no_letters, package_version) == 0, na.rm = TRUE) > 0) {
+                    sub_df <- condaSearch_df[compareVersion_vapply(versions_no_letters, package_version) >= 0, ]
                     if (print_out) {
                         message(paste(pkg_and_vers[1], "version", ver_logic, package_version, "are available from the following channels:"))
                         print(sub_df)
@@ -144,9 +144,9 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                     }
                 }
             } else if (ver_logic == "<=") {
-                if (suppressWarnings(sum(compareVersion_vapply(versions_no_letters, package_version) == (-1), na.rm = TRUE) +
-                    sum(compareVersion_vapply(versions_no_letters, package_version) == 0, na.rm = TRUE) > 0)) {
-                    sub_df <- condaSearch_df[suppressWarnings(compareVersion_vapply(versions_no_letters, package_version)) <= 0, ]
+                if (sum(compareVersion_vapply(versions_no_letters, package_version) == (-1), na.rm = TRUE) +
+                    sum(compareVersion_vapply(versions_no_letters, package_version) == 0, na.rm = TRUE) > 0) {
+                    sub_df <- condaSearch_df[compareVersion_vapply(versions_no_letters, package_version) <= 0, ]
                     if (print_out) {
                         message(paste(pkg_and_vers[1], "versions", ver_logic, package_version, "are available from the following channels:"))
                         print(sub_df)

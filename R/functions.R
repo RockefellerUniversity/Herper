@@ -517,7 +517,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
   }
 
   args <- paste0("-f", yml_import)
-  result <- suppressWarnings(system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json", args)), stdout = TRUE, stderr = TRUE))
+  result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json", args)), stdout = TRUE, stderr = TRUE)
 
   if (name_check) {
     unlink(tmpname)
