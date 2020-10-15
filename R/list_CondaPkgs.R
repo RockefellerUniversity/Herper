@@ -46,7 +46,7 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
         " was not found./n Use list_CondaEnv() to check what environments are available."
       ))
     } else {
-      message(message("Unexepected conda error. conda command failed."))
+      message("Unexepected conda error. conda command failed.")
     }
   }
 
