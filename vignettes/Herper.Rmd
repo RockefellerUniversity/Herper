@@ -51,7 +51,7 @@ Use the `BiocManager` package to download and install the package from our Githu
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
       install.packages("BiocManager")
   }
-BiocManager::install("https://github.com/RockefellerUniversity/Herper")
+BiocManager::install("Herper")
 ```
 
 <br>
