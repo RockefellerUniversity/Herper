@@ -140,16 +140,18 @@ _Note: **install_CondaSysReqs** can handle standard System Requirement formats, 
 ## Using R packages with System Dependencies with **with_CondaEnv**
 **with_CondaEnv** allows users to run an R command using a specific conda environment. This will give the R package access to the conda tools, Python, Perl and Java in this environment. This is done without formally activating your environment or initializing your conda. The Python/Perl/Java libraries used can also be controlled with the corresponding parameters __*_additional__.  
 
-To demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires access samtools. If this is not installed there is an error. But if the command is run using **with_CondaEnv**, then seqCNA can find samtools. 
+To demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires samtools. If this is not installed there is an error. 
 ```{r with_condaenv_R}
 library(seqCNA)
 data(seqsumm_HCC1143)
 try(rco <- readSeqsumm(tumour.data = seqsumm_HCC1143), silent = FALSE)
 ```
 
+Samtools is listed as a System Requirement for seqCNA, so we can first use **install_CondaSysReqs()** to install samtools. We can then run the seqCNA command using **with_CondaEnv**, so seqCNA can find samtools. 
+
 ```{r, echo=T, eval=F}
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda)
-with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
+install_CondaSysReqs("seqCNA_env",env="seqCNA",pathToMiniConda=myMiniconda)
+with_CondaEnv("seqCNA_env", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
  ,pathToMiniConda = myMiniconda)
 
 ``` 
