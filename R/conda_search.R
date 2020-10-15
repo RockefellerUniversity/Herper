@@ -62,7 +62,6 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
 
     package_input <- paste0('"', pkg_and_vers[1], '"')
 
-    # message(paste0('Using conda at: ', pathToConda))
     condaSearch <- suppressWarnings(
         system(paste(pathToConda, "search --quiet --json", package_input, channel_command),
             intern = TRUE,
@@ -74,14 +73,14 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     if ("exception_name" %in% names(condaSearch)) {
         if (condaSearch$exception_name == "PackagesNotFoundError") {
             if (print_out) {
-                message(paste0("package ", package, " not found"))
+                message("package ", package, " not found")
                 return(FALSE)
             } else {
                 return(list(exact_match = FALSE, version_matches = NULL))
             }
         } else if (condaSearch$exception_name == "UnavailableInvalidChannel") {
             if (print_out) {
-                message(paste0("channel ", channel, " not found"))
+                message("channel ", channel, " not found")
                 return(FALSE)
             } else {
                 return(list(exact_match = FALSE, version_matches = NULL))
@@ -183,14 +182,13 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
         }
     } else if (!pkg_and_vers[1] %in% names(condaSearch)) {
         if (print_out) {
-            message(paste0(
-                "There are no exact matches for the query '",
+            message("There are no exact matches for the query '",
                 pkg_and_vers[1],
                 "', but multiple packages contain this text:\n",
                 paste("-", names(condaSearch),
                     collapse = "\n"
                 )
-            ))
+            )
             return(FALSE)
         } else {
             return(list(exact_match = FALSE, version_matches = paste("-", names(condaSearch),
