@@ -26,7 +26,6 @@
 
 conda_search <- function(package, channel = NULL, print_out = TRUE, 
                          pathToMiniConda = NULL) {
-    # pathToMiniConda="/tmp"
 
     if (is.null(pathToMiniConda)) {
         pathToMiniConda <- reticulate::miniconda_path()

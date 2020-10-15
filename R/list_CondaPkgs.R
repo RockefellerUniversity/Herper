@@ -20,7 +20,6 @@
 #' @export
 list_CondaPkgs <- function(env, pathToMiniConda = NULL,
                            pkg = NULL) {
-  # pathToMiniConda <- '~/my_miniconda/' env='herper'
 
   if (!is.null(pathToMiniConda)) {
     pathToMiniConda <- normalizePath(pathToMiniConda)
