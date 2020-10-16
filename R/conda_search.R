@@ -72,14 +72,14 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     if ("exception_name" %in% names(condaSearch)) {
         if (condaSearch$exception_name == "PackagesNotFoundError") {
             if (print_out) {
-                message("package ", package, " not found")
+                warning("package ", package, " not found")
                 return(FALSE)
             } else {
                 return(list(exact_match = FALSE, version_matches = NULL))
             }
         } else if (condaSearch$exception_name == "UnavailableInvalidChannel") {
             if (print_out) {
-                message("channel ", channel, " not found")
+                warning("channel ", channel, " not found")
                 return(FALSE)
             } else {
                 return(list(exact_match = FALSE, version_matches = NULL))
