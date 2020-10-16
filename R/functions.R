@@ -353,7 +353,7 @@ install_CondaTools <- function(tools, env, channels = NULL,
         }
       })
       if (is_windows()) {
-        message("The package and/or version are not available in conda. Check above for details.\nUnfortunately many packages are unavailable on conda for windows.")
+        message(strwrap("The package and/or version are not available in conda. Check above for details. Unfortunately many packages are unavailable on conda for windows."))
         return()
       } else {
         stop("The package and/or version are not available in conda. Check above for details.")
