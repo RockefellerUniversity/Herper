@@ -40,10 +40,9 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
 
   if ("exception_name" %in% names(result)) {
     if (result$exception_name == "EnvironmentLocationNotFound") {
-      message(paste0(
-        "The environment ", env,
-        " was not found./n Use list_CondaEnv() to check what environments are available."
-      ))
+      message(strwrap(paste("The environment ", env,
+        " was not found. Use list_CondaEnv() to check what environments are available."
+      )))
     } else {
       message("Unexepected conda error. conda command failed.")
     }
@@ -55,7 +54,7 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
   if (!is.null(pkg)) {
     return(any(result[, "name"] %in% pkg))
   }
-  print(result[, c(
+  return(result[, c(
     "name", "version", "channel",
     "platform"
   )])
