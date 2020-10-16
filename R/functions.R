@@ -20,6 +20,14 @@ miniconda_conda <- function(path = miniconda_path()) {
   file.path(path, exe)
 }
 
+channel_list<-function(channel){
+  chan<-list()
+  for (ch in channel) {
+    chan <- c(chan, "-c", ch)
+  }
+  return(chan)
+}
+
 #####
 # following are internal functions from reticulate used in the conda_create_silentJSON() and conda_install_silentJSON() functions
 
@@ -109,9 +117,9 @@ conda_create_silentJSON <- function(envname = NULL,
     "conda-forge"
   }
 
-  for (ch in channels) {
-    args <- c(args, "-c", ch)
-  }
+  chan <- channel_list(channels) 
+  
+  args <- c(args, chan)
 
   result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
 
@@ -168,12 +176,10 @@ conda_install_silentJSON <- function(envname = NULL,
   } else if (forge) {
     "conda-forge"
   }
+  
+  chan <- channel_list(channels) 
 
-  for (ch in channels) {
-    args <- c(args, "-c", ch)
-  }
-
-  args <- c(args, packages)
+  args <- c(args, chan, packages)
 
   result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
 

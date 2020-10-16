@@ -37,13 +37,12 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     pathToConda <- miniconda_conda(pathToCondaInstall)
 
     if (!is.null(channel)) {
-        channel_command <- paste(vapply(as.list(channel), function(x) {
-            paste0(" -c ", x)
-        }, FUN.VALUE = character(length = 1)), collapse = "")
+        chan <- channel_list(channel)
+        channel_command <- paste(c(" ",paste(unlist(chan), collapse=" ")), collapse="")
     } else {
         channel_command <- NULL
     }
-
+    
     version_sep <- c("[<>)(=]")
     pkg_and_vers <- unlist(strsplit(as.character(package), version_sep, perl = TRUE))
     pkg_and_vers <- pkg_and_vers[!(nchar(pkg_and_vers) == 0)]
