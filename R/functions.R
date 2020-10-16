@@ -473,10 +473,11 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
   if (!is.null(name)) {
     name_check<-TRUE
     if (list_CondaEnv(pathToMiniConda = pathToMiniConda, env = name)) {
-      stop(paste("Conda environment with the name", name, "already exists.\n Try using list_CondaEnv to see what envirnoment names are already in use."))
+      stop(strwrap(paste("Conda environment with the name", name, "already exists. Try using list_CondaEnv to see what envirnoment names are already in use.")))
     }
     tmpname <- paste0("tmp_", substr(stats::rnorm(1), 5, 7), ".yml")
     file.copy(yml_import, tmpname)
+    on.exit(unlink(tmpname))
     tmp <- readLines(tmpname)
     tmp[1] <- paste0("name: ", name)
     writeLines(tmp, tmpname)
@@ -484,14 +485,11 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
   } else {
     name <- gsub("name: ", "", readLines(yml_import, n = 1))
     if (list_CondaEnv(pathToMiniConda = pathToMiniConda, env = name)) {
-      stop(paste("Conda environment with the name", name, "already exists.\n Try using list_CondaEnv to see what envirnoment names are already in use."))
+      stop(strwrap(paste("Conda environment with the name", name, "already exists. Try using list_CondaEnv to see what envirnoment names are already in use.")))
     }
   }
 
   args <- paste0("-f", yml_import)
   result <- suppressWarnings(system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json", args)), stdout = TRUE, stderr = TRUE))
 
-  if (name_check) {
-    unlink(tmpname)
-  }
 }
