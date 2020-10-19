@@ -20,7 +20,6 @@
 #' @export
 list_CondaPkgs <- function(env, pathToMiniConda = NULL,
                            pkg = NULL) {
-  # pathToMiniConda <- '~/my_miniconda/' env='herper'
 
   if (!is.null(pathToMiniConda)) {
     pathToMiniConda <- normalizePath(pathToMiniConda)
@@ -41,10 +40,9 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
 
   if ("exception_name" %in% names(result)) {
     if (result$exception_name == "EnvironmentLocationNotFound") {
-      message(paste(
-        "The environment", env,
-        "was not found.", "\nUse list_CondaEnv() to check what environments are available.", sep = " "
-      ))
+      message(strwrap(paste("The environment ", env,
+        " was not found. Use list_CondaEnv() to check what environments are available."
+      )))
     } else {
       message("Unexepected conda error. conda command failed.")
     }
@@ -61,4 +59,16 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
       "platform"
     )])
   }
+
+  result <- do.call(rbind.data.frame, result)
+  rownames(result) <- NULL
+
+  if (!is.null(pkg)) {
+    return(any(result[, "name"] %in% pkg))
+  }
+  return(result[, c(
+    "name", "version", "channel",
+    "platform"
+  )])
+
 }

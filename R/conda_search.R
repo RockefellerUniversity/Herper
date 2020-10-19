@@ -26,8 +26,8 @@
 
 conda_search <- function(package, channel = NULL, print_out = TRUE, 
                          pathToMiniConda = NULL) {
-    # pathToMiniConda="/tmp"
 
+    #Check conda install
     if (is.null(pathToMiniConda)) {
         pathToMiniConda <- reticulate::miniconda_path()
     } else {
@@ -38,13 +38,13 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     pathToConda <- miniconda_conda(pathToCondaInstall)
 
     if (!is.null(channel)) {
-        channel_command <- paste(vapply(as.list(channel), function(x) {
-            paste0(" -c ", x)
-        }, FUN.VALUE = character(length = 1)), collapse = "")
+        chan <- channel_list(channel)
+        channel_command <- paste(c(" ",paste(unlist(chan), collapse=" ")), collapse="")
     } else {
         channel_command <- NULL
     }
-
+    
+    #parse version info
     version_sep <- c("[<>)(=]")
     pkg_and_vers <- unlist(strsplit(as.character(package), version_sep, perl = TRUE))
     pkg_and_vers <- pkg_and_vers[!(nchar(pkg_and_vers) == 0)]
@@ -61,7 +61,8 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     }
 
     package_input <- paste0('"', pkg_and_vers[1], '"')
-
+ 
+    # run the search
     # message(paste0('Using conda at: ', pathToConda))
     condaSearch <- 
         system(paste(pathToConda, "search --quiet --json", package_input, channel_command),
@@ -71,17 +72,18 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     
     condaSearch <- fromJSON(paste(condaSearch, collapse = ""))
 
+    # parse search results
     if ("exception_name" %in% names(condaSearch)) {
         if (condaSearch$exception_name == "PackagesNotFoundError") {
             if (print_out) {
-                message(paste0("package ", package, " not found"))
+                warning("package ", package, " not found")
                 return(FALSE)
             } else {
                 return(list(exact_match = FALSE, version_matches = NULL))
             }
         } else if (condaSearch$exception_name == "UnavailableInvalidChannel") {
             if (print_out) {
-                message(paste0("channel ", channel, " not found"))
+                warning("channel ", channel, " not found")
                 return(FALSE)
             } else {
                 return(list(exact_match = FALSE, version_matches = NULL))
@@ -94,6 +96,7 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                 return(list(exact_match = FALSE, version_matches = NULL))
             }
         }
+    # look at matches now. breakdown.
     } else if (pkg_and_vers[1] %in% names(condaSearch)) {
         condaSearch_df <- as.data.frame(do.call(rbind, lapply(condaSearch[[1]], function(x) {
             c(
@@ -106,15 +109,24 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
 
         versions_no_letters <- gsub(pattern = "[[:alpha:]]", "", condaSearch_df$version)
 
+        
         compareVersion_vapply <- function(versions_no_letters, package_version) {
             vapply(as.list(versions_no_letters), compareVersion, FUN.VALUE = numeric(length = 1), b = package_version)
         }
-
+        
         if (version_included) {
             package_version <- as.character(pkg_and_vers[2])
-            if (any(compareVersion_vapply(versions_no_letters, package_version) %in% 0) & !(ver_logic %in% c("<=", ">="))) {
-                # if (any(grepl(package_version, condaSearch_df$version)) & !(ver_logic %in% c("<=",">=")) ){
-                sub_df <- condaSearch_df[compareVersion_vapply(versions_no_letters, package_version) %in% 0, ]
+            vers_comparison <- compareVersion_vapply(versions_no_letters, package_version)
+            res1 <- vers_comparison == (-1)
+            res2 <- vers_comparison == 0
+            res3 <- vers_comparison == 1
+            res4 <- suppressWarnings(vers_comparison >= 0)
+            res5 <- suppressWarnings(vers_comparison <= 0)
+            
+            equals_logic <- any(res2) & !(ver_logic %in% c("<=", ">="))
+            
+            if (equals_logic) {
+                sub_df <- condaSearch_df[res2, ]
                 rownames(sub_df) <- NULL
                 if (print_out) {
                     message(paste(pkg_and_vers[1], "version", package_version, "is available from the following channels:"))
@@ -123,10 +135,11 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                 } else {
                     return(list(exact_match = TRUE, version_matches = sub_df))
                 }
+                
             } else if (ver_logic == ">=") {
-                if (sum(compareVersion_vapply(versions_no_letters, package_version) == 1, na.rm = TRUE) +
-                    sum(compareVersion_vapply(versions_no_letters, package_version) == 0, na.rm = TRUE) > 0) {
-                    sub_df <- condaSearch_df[compareVersion_vapply(versions_no_letters, package_version) >= 0, ]
+                greater_logic <- (sum(res3, na.rm = TRUE) + sum(res2, na.rm = TRUE) > 0)
+                if (greater_logic) {
+                    sub_df <- condaSearch_df[res4, ]
                     if (print_out) {
                         message(paste(pkg_and_vers[1], "version", ver_logic, package_version, "are available from the following channels:"))
                         print(sub_df)
@@ -144,6 +157,11 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                     }
                 }
             } else if (ver_logic == "<=") {
+
+                lesser_logic <- (sum(res1, na.rm = TRUE) +
+                                                     sum(res2, na.rm = TRUE) > 0)
+                if (lesser_logic) {
+                    sub_df <- condaSearch_df[res5, ]
                 if (sum(compareVersion_vapply(versions_no_letters, package_version) == (-1), na.rm = TRUE) +
                     sum(compareVersion_vapply(versions_no_letters, package_version) == 0, na.rm = TRUE) > 0) {
                     sub_df <- condaSearch_df[compareVersion_vapply(versions_no_letters, package_version) <= 0, ]
@@ -183,14 +201,13 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
         }
     } else if (!pkg_and_vers[1] %in% names(condaSearch)) {
         if (print_out) {
-            message(paste0(
-                "There are no exact matches for the query '",
+            message("There are no exact matches for the query '",
                 pkg_and_vers[1],
                 "', but multiple packages contain this text:\n",
                 paste("-", names(condaSearch),
                     collapse = "\n"
                 )
-            ))
+            )
             return(FALSE)
         } else {
             return(list(exact_match = FALSE, version_matches = paste("-", names(condaSearch),

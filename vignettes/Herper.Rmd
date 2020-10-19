@@ -25,9 +25,11 @@ load(system.file("extdata/Bioc_Pkg_Details.RData", package = "Herper"))
 ---
 
 ## What is Herper?
-The Herper package is a simple toolset to install and manage Conda packages and environments from R.
+The Herper package is a simple toolset to install and manage Conda packages and environments from within the R console.
 
-Many R packages require the use of external dependencies. Often these dependencies can be installed and managed with the Conda package repository. For example `r nrow(out_df_deps)` Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) [`r my_date`]. 
+Unfortunately many tools for data analysis are not available in R, but are present in public repositories like conda. With Herper users can install, manage and run conda tools from the comfort of their R session.
+
+Furthermore, many R packages require the use of these external dependencies. Again these dependencies can be installed and managed with the Conda package repository. For example `r nrow(out_df_deps)` Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) [`r my_date`]. 
 
 <br>
 
@@ -35,7 +37,7 @@ Many R packages require the use of external dependencies. Often these dependenci
 knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png", package = "Herper"))
 ```
 
-The Herper package includes functions that allow the easy management of these external dependencies from within the R console.
+Herper provides an ad-hoc approach to handling external system requirements for R packages. For people developing packages with python conda dependencies we recommend using [basilisk](https://bioconductor.org/packages/release/bioc/html/basilisk.html) to internally support these system requirements pre-hoc.
 
 
 The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-2006), [Doug Barrows](https://github.com/dougbarrows) and [Thomas Carroll](https://github.com/ThomasCarroll) at the [Rockefeller University Bioinformatics Resources Center](https://rockefelleruniversity.github.io) with contributions from [Kathryn Rozen-Gagnon](https://github.com/kathrynrozengagnon).
@@ -51,7 +53,7 @@ Use the `BiocManager` package to download and install the package from our Githu
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
       install.packages("BiocManager")
   }
-BiocManager::install("https://github.com/RockefellerUniversity/Herper")
+BiocManager::install("Herper")
 ```
 
 <br>
@@ -140,16 +142,18 @@ _Note: **install_CondaSysReqs** can handle standard System Requirement formats, 
 ## Using R packages with System Dependencies with **with_CondaEnv**
 **with_CondaEnv** allows users to run an R command using a specific conda environment. This will give the R package access to the conda tools, Python, Perl and Java in this environment. This is done without formally activating your environment or initializing your conda. The Python/Perl/Java libraries used can also be controlled with the corresponding parameters __*_additional__.  
 
-To demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires access samtools. If this is not installed there is an error. But if the command is run using **with_CondaEnv**, then seqCNA can find samtools. 
+To demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires samtools. If this is not installed and available there is an error. 
 ```{r with_condaenv_R}
 library(seqCNA)
 data(seqsumm_HCC1143)
 try(rco <- readSeqsumm(tumour.data = seqsumm_HCC1143), silent = FALSE)
 ```
 
+Samtools is listed as a System Requirement for seqCNA, so we can first use **install_CondaSysReqs()** to install samtools. In this case we are installing samtools in the environment: seqCNA_env. We can then run the seqCNA command using **with_CondaEnv** specifying that we want to use our environment containing samtools. seqCNA can then find samtools and execute successfully. 
+
 ```{r, echo=T, eval=F}
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda)
-with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
+install_CondaSysReqs(pkg="seqCNA",env="seqCNA_env",pathToMiniConda=myMiniconda)
+with_CondaEnv(new="seqCNA_env", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
  ,pathToMiniConda = myMiniconda)
 
 ``` 
