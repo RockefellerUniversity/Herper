@@ -61,14 +61,15 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     }
 
     package_input <- paste0('"', pkg_and_vers[1], '"')
-    
+ 
     # run the search
-    condaSearch <- suppressWarnings(
+    # message(paste0('Using conda at: ', pathToConda))
+    condaSearch <- 
         system(paste(pathToConda, "search --quiet --json", package_input, channel_command),
             intern = TRUE,
             ignore.stderr = TRUE
         ) # if we want to include the output for 'conda search', which is a pretty informative error message, set this to FALSE
-    )
+    
     condaSearch <- fromJSON(paste(condaSearch, collapse = ""))
 
     # parse search results
@@ -136,7 +137,7 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                 }
                 
             } else if (ver_logic == ">=") {
-                greater_logic <- suppressWarnings(sum(res3, na.rm = TRUE) + sum(res2, na.rm = TRUE) > 0)
+                greater_logic <- (sum(res3, na.rm = TRUE) + sum(res2, na.rm = TRUE) > 0)
                 if (greater_logic) {
                     sub_df <- condaSearch_df[res4, ]
                     if (print_out) {
@@ -156,10 +157,14 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                     }
                 }
             } else if (ver_logic == "<=") {
-                lesser_logic <- suppressWarnings(sum(res1, na.rm = TRUE) +
+
+                lesser_logic <- (sum(res1, na.rm = TRUE) +
                                                      sum(res2, na.rm = TRUE) > 0)
                 if (lesser_logic) {
                     sub_df <- condaSearch_df[res5, ]
+                if (sum(compareVersion_vapply(versions_no_letters, package_version) == (-1), na.rm = TRUE) +
+                    sum(compareVersion_vapply(versions_no_letters, package_version) == 0, na.rm = TRUE) > 0) {
+                    sub_df <- condaSearch_df[compareVersion_vapply(versions_no_letters, package_version) <= 0, ]
                     if (print_out) {
                         message(paste(pkg_and_vers[1], "versions", ver_logic, package_version, "are available from the following channels:"))
                         print(sub_df)

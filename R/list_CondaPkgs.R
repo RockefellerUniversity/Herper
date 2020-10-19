@@ -34,7 +34,7 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
 
   result <- suppressWarnings(system2(pathToConda,
     shQuote(c("list", args, "--quiet", "--json")),
-    stdout = TRUE, stderr = TRUE
+    stdout = TRUE, stderr = FALSE
   ))
   result <- rjson::fromJSON(paste(result, collapse = ""))
 
@@ -46,6 +46,18 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
     } else {
       message("Unexepected conda error. conda command failed.")
     }
+  }else{
+    
+    result <- do.call(rbind.data.frame, result)
+    rownames(result) <- NULL
+    
+    if (!is.null(pkg)) {
+      return(any(result[, "name"] %in% pkg))
+    }
+    print(result[, c(
+      "name", "version", "channel",
+      "platform"
+    )])
   }
 
   result <- do.call(rbind.data.frame, result)
@@ -58,4 +70,5 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
     "name", "version", "channel",
     "platform"
   )])
+
 }

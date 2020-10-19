@@ -40,7 +40,7 @@ knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png", package =
 Herper provides an ad-hoc approach to handling external system requirements for R packages. For people developing packages with python conda dependencies we recommend using [basilisk](https://bioconductor.org/packages/release/bioc/html/basilisk.html) to internally support these system requirements pre-hoc.
 
 
-The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-2006), [Doug Barrows](https://github.com/dougbarrows) and [Thomas Carroll](https://github.com/ThomasCarroll) at the [Rockefeller University Bioinformatics Resources Center](https://rockefelleruniversity.github.io) with contributions from [Katherine Rozen-Gagnon](https://github.com/kathrynrozengagnon).
+The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-2006), [Doug Barrows](https://github.com/dougbarrows) and [Thomas Carroll](https://github.com/ThomasCarroll) at the [Rockefeller University Bioinformatics Resources Center](https://rockefelleruniversity.github.io) with contributions from [Kathryn Rozen-Gagnon](https://github.com/kathrynrozengagnon).
 
 <br>
 
