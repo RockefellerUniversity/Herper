@@ -47,18 +47,6 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
       message("Unexepected conda error. conda command failed.")
     }
   }else{
-    
-    result <- do.call(rbind.data.frame, result)
-    rownames(result) <- NULL
-    
-    if (!is.null(pkg)) {
-      return(any(result[, "name"] %in% pkg))
-    }
-    print(result[, c(
-      "name", "version", "channel",
-      "platform"
-    )])
-  }
 
   result <- do.call(rbind.data.frame, result)
   rownames(result) <- NULL
@@ -71,4 +59,4 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
     "platform"
   )])
 
-}
+}}
