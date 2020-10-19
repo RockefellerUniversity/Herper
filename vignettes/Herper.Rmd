@@ -27,7 +27,7 @@ load(system.file("extdata/Bioc_Pkg_Details.RData", package = "Herper"))
 ## What is Herper?
 The Herper package is a simple toolset to install and manage Conda packages and environments from within the R console.
 
-Unfortunately many tools for data analysis are not available in R, but are present in public repositories like conda. With Herper users can install, manage and run conda tools from the comfort of their R session.
+Unfortunately many tools for data analysis are not available in R, but are present in public repositories like conda. With Herper users can install, manage, record and run conda tools from the comfort of their R session.
 
 Furthermore, many R packages require the use of these external dependencies. Again these dependencies can be installed and managed with the Conda package repository. For example `r nrow(out_df_deps)` Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) [`r my_date`]. 
 
