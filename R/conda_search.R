@@ -162,9 +162,6 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                                                      sum(res2, na.rm = TRUE) > 0)
                 if (lesser_logic) {
                     sub_df <- condaSearch_df[res5, ]
-                if ((sum(res1, na.rm = TRUE) +
-                         sum(res2, na.rm = TRUE)) > 0) {
-                    sub_df <- condaSearch_df[compareVersion_vapply(versions_no_letters, package_version) <= 0, ]
                     if (print_out) {
                         message(paste(pkg_and_vers[1], "versions", ver_logic, package_version, "are available from the following channels:"))
                         print(sub_df)
@@ -214,7 +211,6 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                 collapse = "\n"
             )))
         }
-    }
     }
 }
 
