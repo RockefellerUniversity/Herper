@@ -120,8 +120,8 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
             res1 <- vers_comparison == (-1)
             res2 <- vers_comparison == 0
             res3 <- vers_comparison == 1
-            res4 <- suppressWarnings(vers_comparison >= 0)
-            res5 <- suppressWarnings(vers_comparison <= 0)
+            res4 <- (vers_comparison >= 0)
+            res5 <- (vers_comparison <= 0)
             
             equals_logic <- any(res2) & !(ver_logic %in% c("<=", ">="))
             
@@ -162,8 +162,8 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
                                                      sum(res2, na.rm = TRUE) > 0)
                 if (lesser_logic) {
                     sub_df <- condaSearch_df[res5, ]
-                if (sum(compareVersion_vapply(versions_no_letters, package_version) == (-1), na.rm = TRUE) +
-                    sum(compareVersion_vapply(versions_no_letters, package_version) == 0, na.rm = TRUE) > 0) {
+                if ((sum(res1, na.rm = TRUE) +
+                         sum(res2, na.rm = TRUE)) > 0) {
                     sub_df <- condaSearch_df[compareVersion_vapply(versions_no_letters, package_version) <= 0, ]
                     if (print_out) {
                         message(paste(pkg_and_vers[1], "versions", ver_logic, package_version, "are available from the following channels:"))
