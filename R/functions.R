@@ -327,18 +327,6 @@ install_CondaTools <- function(tools, env, channels = NULL,
   condaPathExists <- miniconda_exists(pathToCondaInstall)
   if (!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
 
-  # Backup conda config file. Updates will be made to config for search, but want to undo these changes.
-  # if(file.exists("~/.condarc")){
-  #   cp_pass<-file.copy("~/.condarc", "~/tmp_condarc")
-  #   if(cp_pass){
-  #     unlink("~/.condarc")
-  #   }else{stop("Backup of your .condarc file failed.")}
-  #   on.exit(file.copy("~/tmp_condarc", "~/.condarc", overwrite = TRUE))
-  #   on.exit(unlink("~/tmp_condarc"))
-  # }else{
-  #   on.exit(unlink("~/.condarc"))
-  # }
-
   # Set Channels
   defaultChannels <- c("bioconda", "defaults", "conda-forge")
   channels <- unique(c(channels, defaultChannels))
