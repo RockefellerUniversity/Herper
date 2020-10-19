@@ -139,10 +139,70 @@ _Note: **install_CondaSysReqs** can handle standard System Requirement formats, 
 
 <br>
 
-## Using R packages with System Dependencies with **with_CondaEnv**
-**with_CondaEnv** allows users to run an R command using a specific conda environment. This will give the R package access to the conda tools, Python, Perl and Java in this environment. This is done without formally activating your environment or initializing your conda. The Python/Perl/Java libraries used can also be controlled with the corresponding parameters __*_additional__.  
+## Using external software with the **with_CondaEnv** and **local_CondaEnv** functions.
 
-To demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires samtools. If this is not installed and available there is an error. 
+Once installed within a conda environment, many external software can be executed directly from the conda environment's bin directory without having to perform any additional actions.
+
+```{r with_condaenv_SalmonEval,echo=TRUE,eval=FALSE}
+pathToSalmon <- file.path(condaPaths$pathToEnvBin,"salmon")
+pathToSalmon
+system2(cmd=pathToSalmon,args = "-h")
+```
+
+```{r with_condaenv_Salmon, echo=FALSE, eval=TRUE}
+if(!identical(.Platform$OS.type, "windows")){
+pathToSalmon <- file.path(condaPaths$pathToEnvBin,"salmon")
+pathToSalmon
+system2(cmd=pathToSalmon,args = "-h")
+}
+```
+
+
+Some external software however require additional environmental variable to be set in order to execute correctly. An example of this would be **Cytoscape** which requires the java home directory and java library paths to be set prior to its execution.
+
+The Herper package uses the **[withr](https://withr.r-lib.org)** family of functions (**with_CondaEnv()** and **local_CondaEnv()**) to provide methods to **temporarily** alter the system PATH and to add or update any required environmental variables. This is done without formally activating your environment or initializing your conda.
+
+The **with_CondaEnv** allows users to run R code with the required PATH and environmental variables automatically set. The **with_CondaEnv** function accepts arguments of the Conda environment to use and the code to be executed within the this environment. Additionally we can also the **pathToMiniconda** argument to specify the miniconda install location. 
+
+The **with_CondaEnv** function will update the PATH we can now run the above salmon command without specifying the full directory path to salmon.
+
+```{r with_condaenv_SalmonWithCondaEnvEval,echo=TRUE,eval=FALSE,tidy=FALSE}
+with_CondaEnv("herper",
+              system2(cmd="salmon",args = "-h")
+              )
+```
+
+```{r with_condaenv_SalmonWithCondaEnv, echo=FALSE, eval=TRUE}
+if(!identical(.Platform$OS.type, "windows")){
+  with_CondaEnv("herper",system2(cmd="salmon",args = "-h"))
+}
+```
+
+
+The **local_CondaEnv** function acts in a similar fashion to the **with_CondaEnv** function and allows the user to temporarily update the required PATH and environmental variable from within a function. The PATH and environmental variables will be modified only until the current function ends.
+
+**local_CondaEnv** is best used within a user-created function, allowing access to the Conda environment's PATH and variables from within the the function itself but resetting all environmental variables once complete.
+
+```{r with_condaenv_SalmonLocalCondaEnv,echo=TRUE,eval=FALSE}
+salmonHelp <- function(){
+  local_CondaEnv("herper")
+  system2(cmd="salmon",args = "-h")
+}
+salmonHelp()
+```
+
+```{r with_condaenv_SalmonLocalCondaEnvEval, echo=FALSE, eval=TRUE}
+if(!identical(.Platform$OS.type, "windows")){
+  salmonHelp <- function(){
+    local_CondaEnv("herper")
+    system2(cmd="salmon",args = "-h")
+  }
+  salmonHelp()
+}
+``` 
+
+
+To further demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires samtools. If this is not installed and available there is an error. 
 ```{r with_condaenv_R}
 library(seqCNA)
 data(seqsumm_HCC1143)
@@ -167,19 +227,6 @@ with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
 ``` 
 
 <br>
-
-## Running Conda packages from R console with **with_CondaEnv**
-
-**with_CondaEnv** allows users to run an conda tools from within R. The user simply has to wrap the command in the **system()** or **system2()** functions. 
-
-```{r with_condaenv_conda, echo=T, eval=F}
-with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"), pathToMiniConda = myMiniconda)
-```
-
-```{r, echo=F, eval=T}
-if(!identical(.Platform$OS.type, "windows")){
-  with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"), pathToMiniConda = myMiniconda)}
-```
 
 ## Finding Conda packages with **conda_search**
 
