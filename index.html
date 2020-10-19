@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="The Herper package is a simple toolset to install and manage conda packages and environments from R">
-<meta property="og:description" content="Many tools for data analysis are not available in R, but are present in public repositories like conda. The Herper package provides a comprehensive set of functions to interact with the conda package managament system. With Herper users can install, manage and run conda packages from the comfort of their R session.  ">
+<meta property="og:description" content="Many tools for data analysis are not available in R, but are present in public repositories like conda. The Herper package provides a comprehensive set of functions to interact with the conda package managament system. With Herper users can install, manage and run conda packages from the comfort of their R session. Herper also provides an ad-hoc approach to handling external system requirements for R packages. For people developing packages with python conda dependencies we recommend using basilisk (https://bioconductor.org/packages/release/bioc/html/basilisk.html) to internally support these system requirments pre-hoc.  ">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -87,11 +87,12 @@
 <div id="what-is-herper" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-is-herper" class="anchor"></a>What is Herper?</h2>
-<p>The Herper package is a simple toolset to install and manage Conda packages and environments from R.</p>
-<p>Many R packages require the use of external dependencies. Often these dependencies can be installed and managed with the Conda package repository. For example 169 Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) <br><span class="math display">03<em>S</em><em>e</em><em>p</em><em>t</em><em>e</em><em>m</em><em>b</em><em>e</em><em>r</em>, 2020</span><br>.</p>
+<p>The Herper package is a simple toolset to install and manage Conda packages and environments from within the R console.</p>
+<p>Unfortunately many tools for data analysis are not available in R, but are present in public repositories like conda. With Herper users can install, manage, record and run conda tools from the comfort of their R session.</p>
+<p>Furthermore, many R packages require the use of these external dependencies. Again these dependencies can be installed and managed with the Conda package repository. For example 169 Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) <br><span class="math display">03<em>S</em><em>e</em><em>p</em><em>t</em><em>e</em><em>m</em><em>b</em><em>e</em><em>r</em>, 2020</span><br>.</p>
 <p><br></p>
 <p><img src="/Users/runner/work/_temp/Library/Herper/extdata/pkg_deps_bar_mask-1.png" width="1000px" style="display: block; margin: auto;"></p>
-<p>The Herper package includes functions that allow the easy management of these external dependencies from within the R console.</p>
+<p>Herper provides an ad-hoc approach to handling external system requirements for R packages. For people developing packages with python conda dependencies we recommend using <a href="https://bioconductor.org/packages/release/bioc/html/basilisk.html">basilisk</a> to internally support these system requirements pre-hoc.</p>
 <p>The Herper package was developed by <a href="https://github.com/matthew-paul-2006">Matt Paul</a>, <a href="https://github.com/dougbarrows">Doug Barrows</a> and <a href="https://github.com/ThomasCarroll">Thomas Carroll</a> at the <a href="https://rockefelleruniversity.github.io">Rockefeller University Bioinformatics Resources Center</a> with contributions from <a href="https://github.com/kathrynrozengagnon">Kathryn Rozen-Gagnon</a>.</p>
 <p><br></p>
 </div>
@@ -103,7 +104,7 @@
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
       <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
   <span class="op">}</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"https://github.com/RockefellerUniversity/Herper"</span><span class="op">)</span></pre></div>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"Herper"</span><span class="op">)</span></pre></div>
 <p><br> Once installed, load it into your R session:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RockefellerUniversity/Herper">Herper</a></span><span class="op">)</span></pre></div>
@@ -118,52 +119,52 @@
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="va">myMiniconda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu">tempdir2</span><span class="op">(</span><span class="op">)</span>, <span class="st">"Test"</span><span class="op">)</span>
 <span class="va">myMiniconda</span></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test"</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test"</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu"><a href="reference/install_CondaTools.html">install_CondaTools</a></span><span class="op">(</span><span class="st">"salmon"</span>, <span class="st">"herper"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## [1] "Conda and Environment Information"</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="co">## $pathToConda</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/bin/conda"</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/bin/conda"</span></span>
 <span id="cb6-4"><a href="#cb6-4"></a><span class="co">## </span></span>
 <span id="cb6-5"><a href="#cb6-5"></a><span class="co">## $environment</span></span>
 <span id="cb6-6"><a href="#cb6-6"></a><span class="co">## [1] "herper"</span></span>
 <span id="cb6-7"><a href="#cb6-7"></a><span class="co">## </span></span>
 <span id="cb6-8"><a href="#cb6-8"></a><span class="co">## $pathToEnvBin</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/envs/herper/bin"</span></span></code></pre></div>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/envs/herper/bin"</span></span></code></pre></div>
 <p><br> We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>. A vector of tools can be used to install several at once.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="va">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/install_CondaTools.html">install_CondaTools</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"samtools"</span>, <span class="st">"kallisto"</span><span class="op">)</span>, <span class="st">"herper"</span>, updateEnv <span class="op">=</span> <span class="cn">TRUE</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## [1] "Conda and Environment Information"</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="co">## $pathToConda</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/bin/conda"</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/bin/conda"</span></span>
 <span id="cb8-4"><a href="#cb8-4"></a><span class="co">## </span></span>
 <span id="cb8-5"><a href="#cb8-5"></a><span class="co">## $environment</span></span>
 <span id="cb8-6"><a href="#cb8-6"></a><span class="co">## [1] "herper"</span></span>
 <span id="cb8-7"><a href="#cb8-7"></a><span class="co">## </span></span>
 <span id="cb8-8"><a href="#cb8-8"></a><span class="co">## $pathToEnvBin</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/envs/herper/bin"</span></span></code></pre></div>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/envs/herper/bin"</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="va">pathToConda</span></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">## $pathToConda</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/bin/conda"</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/bin/conda"</span></span>
 <span id="cb10-3"><a href="#cb10-3"></a><span class="co">## </span></span>
 <span id="cb10-4"><a href="#cb10-4"></a><span class="co">## $environment</span></span>
 <span id="cb10-5"><a href="#cb10-5"></a><span class="co">## [1] "herper"</span></span>
 <span id="cb10-6"><a href="#cb10-6"></a><span class="co">## </span></span>
 <span id="cb10-7"><a href="#cb10-7"></a><span class="co">## $pathToEnvBin</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/envs/herper/bin"</span></span></code></pre></div>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/envs/herper/bin"</span></span></code></pre></div>
 <p><br> Specific package versions can be installed using conda formatted inputs into the <em>tools</em> argument i.e. “salmon==1.3”, “salmon&gt;=1.3” or “salmon&lt;=1.3”. This can also be used to specifically upgrade or downgrade existing tools in the chosen environment.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="va">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/install_CondaTools.html">install_CondaTools</a></span><span class="op">(</span><span class="st">"salmon&lt;=1.3"</span>, <span class="st">"herper"</span>, updateEnv <span class="op">=</span> <span class="cn">TRUE</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co">## [1] "Conda and Environment Information"</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="co">## $pathToConda</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/bin/conda"</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/bin/conda"</span></span>
 <span id="cb12-4"><a href="#cb12-4"></a><span class="co">## </span></span>
 <span id="cb12-5"><a href="#cb12-5"></a><span class="co">## $environment</span></span>
 <span id="cb12-6"><a href="#cb12-6"></a><span class="co">## [1] "herper"</span></span>
 <span id="cb12-7"><a href="#cb12-7"></a><span class="co">## </span></span>
 <span id="cb12-8"><a href="#cb12-8"></a><span class="co">## $pathToEnvBin</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/envs/herper/bin"</span></span></code></pre></div>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/envs/herper/bin"</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div id="install-r-package-dependencies-with-install_condasysreqs" class="section level2">
@@ -177,92 +178,117 @@
 <div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">## [1] "samtools==1.10, rmats&gt;=v4.1.0"</span></span></code></pre></div>
 <p>The user can simply supply the name of an installed R package, and <strong>install_CondaSysReqs</strong> will install the System Requirements through conda.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="va">condaPaths</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/install_CondaSysReqs.html">install_CondaSysReqs</a></span><span class="op">(</span><span class="st">"HerperTestPkg"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="reference/install_CondaSysReqs.html">install_CondaSysReqs</a></span><span class="op">(</span><span class="st">"HerperTestPkg"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
 <div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">## [1] "Conda and Environment Information"</span></span>
 <span id="cb16-2"><a href="#cb16-2"></a><span class="co">## $pathToConda</span></span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/bin/conda"</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/bin/conda"</span></span>
 <span id="cb16-4"><a href="#cb16-4"></a><span class="co">## </span></span>
 <span id="cb16-5"><a href="#cb16-5"></a><span class="co">## $environment</span></span>
 <span id="cb16-6"><a href="#cb16-6"></a><span class="co">## [1] "HerperTestPkg_0.1.0"</span></span>
 <span id="cb16-7"><a href="#cb16-7"></a><span class="co">## </span></span>
 <span id="cb16-8"><a href="#cb16-8"></a><span class="co">## $pathToEnvBin</span></span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/envs/HerperTestPkg_0.1.0/bin"</span></span></code></pre></div>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/envs/HerperTestPkg_0.1.0/bin"</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="co">## $pathToConda</span></span>
+<span id="cb16-12"><a href="#cb16-12"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/bin/conda"</span></span>
+<span id="cb16-13"><a href="#cb16-13"></a><span class="co">## </span></span>
+<span id="cb16-14"><a href="#cb16-14"></a><span class="co">## $environment</span></span>
+<span id="cb16-15"><a href="#cb16-15"></a><span class="co">## [1] "HerperTestPkg_0.1.0"</span></span>
+<span id="cb16-16"><a href="#cb16-16"></a><span class="co">## </span></span>
+<span id="cb16-17"><a href="#cb16-17"></a><span class="co">## $pathToEnvBin</span></span>
+<span id="cb16-18"><a href="#cb16-18"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/envs/HerperTestPkg_0.1.0/bin"</span></span></code></pre></div>
 <p>By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the <em>env</em> parameter. As with <strong>install_CondaTools()</strong>, user can control which version of Miniconda with the parameter <em>pathToMiniConda</em>, and whether they want to amend an existing environment with the parameter <em>updateEnv</em>.</p>
 <p><em>Note: <strong>install_CondaSysReqs</strong> can handle standard System Requirement formats, but will not work if the package has free form text. In this case just use <strong>install_CondaTools</strong></em></p>
 <p><br></p>
 </div>
-<div id="using-r-packages-with-system-dependencies-with-with_condaenv" class="section level2">
+<div id="using-external-software-with-the-with_condaenv-and-local_condaenv-functions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#using-r-packages-with-system-dependencies-with-with_condaenv" class="anchor"></a>Using R packages with System Dependencies with <strong>with_CondaEnv</strong>
-</h2>
-<p><strong>with_CondaEnv</strong> allows users to run an R command using a specific conda environment. This will give the R package access to the conda tools, Python, Perl and Java in this environment. This is done without formally activating your environment or initializing your conda. The Python/Perl/Java libraries used can also be controlled with the corresponding parameters __*_additional__.</p>
-<p>To demonstrate this we will use the first command from the <a href="https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html">seqCNA</a> vignette. This step requires access samtools. If this is not installed there is an error. But if the command is run using <strong>with_CondaEnv</strong>, then seqCNA can find samtools.</p>
+<a href="#using-external-software-with-the-with_condaenv-and-local_condaenv-functions" class="anchor"></a>Using external software with the <strong>with_CondaEnv</strong> and <strong>local_CondaEnv</strong> functions.</h2>
+<p>Once installed within a conda environment, many external software can be executed directly from the conda environment’s bin directory without having to perform any additional actions.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="va">pathToSalmon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">pathToConda</span><span class="op">$</span><span class="va">pathToEnvBin</span>,<span class="st">"salmon"</span><span class="op">)</span>
+<span class="va">pathToSalmon</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system2.html">system2</a></span><span class="op">(</span>cmd<span class="op">=</span><span class="va">pathToSalmon</span>,args <span class="op">=</span> <span class="st">"-h"</span><span class="op">)</span></pre></div>
+<p>Some external software however require additional environmental variable to be set in order to execute correctly. An example of this would be <strong>Cytoscape</strong> which requires the java home directory and java library paths to be set prior to its execution.</p>
+<p>The Herper package uses the <strong><a href="https://withr.r-lib.org">withr</a></strong> family of functions (<strong>with_CondaEnv()</strong> and <strong>local_CondaEnv()</strong>) to provide methods to <strong>temporarily</strong> alter the system PATH and to add or update any required environmental variables. This is done without formally activating your environment or initializing your conda.</p>
+<p>The <strong>with_CondaEnv</strong> allows users to run R code with the required PATH and environmental variables automatically set. The <strong>with_CondaEnv</strong> function accepts arguments of the Conda environment to use and the code to be executed within the this environment. Additionally we can also the <strong>pathToMiniconda</strong> argument to specify the miniconda install location.</p>
+<p>The <strong>with_CondaEnv</strong> function will update the PATH we can now run the above salmon command without specifying the full directory path to salmon.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="fu"><a href="reference/with_CondaEnv.html">with_CondaEnv</a></span><span class="op">(</span><span class="st">"herper"</span>,
+              <span class="fu"><a href="https://rdrr.io/r/base/system2.html">system2</a></span><span class="op">(</span>command<span class="op">=</span><span class="st">"salmon"</span>,args <span class="op">=</span> <span class="st">"-h"</span><span class="op">)</span>,
+              pathToMiniConda<span class="op">=</span><span class="va">myMiniconda</span><span class="op">)</span></pre></div>
+<p>The <strong>local_CondaEnv</strong> function acts in a similar fashion to the <strong>with_CondaEnv</strong> function and allows the user to temporarily update the required PATH and environmental variable from within a function. The PATH and environmental variables will be modified only until the current function ends.</p>
+<p><strong>local_CondaEnv</strong> is best used within a user-created function, allowing access to the Conda environment’s PATH and variables from within the the function itself but resetting all environmental variables once complete.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit">
+<span class="va">salmonHelp</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="reference/with_CondaEnv.html">local_CondaEnv</a></span><span class="op">(</span><span class="st">"herper"</span>,pathToMiniConda<span class="op">=</span><span class="va">myMiniconda</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/system2.html">system2</a></span><span class="op">(</span>command<span class="op">=</span><span class="st">"salmon"</span>,args <span class="op">=</span> <span class="st">"-h"</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">salmonHelp</span><span class="op">(</span><span class="op">)</span></pre></div>
+<p>To further demonstrate this we will use the first command from the <a href="https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html">seqCNA</a> vignette. This step requires samtools. If this is not installed and available there is an error.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">seqCNA</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">seqsumm_HCC1143</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="va">rco</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seqCNA/man/readSeqsumm.html">readSeqsumm</a></span><span class="op">(</span>tumour.data <span class="op">=</span> <span class="va">seqsumm_HCC1143</span><span class="op">)</span>, silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="reference/install_CondaSysReqs.html">install_CondaSysReqs</a></span><span class="op">(</span><span class="st">"seqCNA"</span>,env<span class="op">=</span><span class="st">"seqCNA"</span>,pathToMiniConda<span class="op">=</span><span class="va">myMiniconda</span><span class="op">)</span>
-<span class="fu"><a href="reference/with_CondaEnv.html">with_CondaEnv</a></span><span class="op">(</span><span class="st">"seqCNA"</span>, <span class="va">rco</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seqCNA/man/readSeqsumm.html">readSeqsumm</a></span><span class="op">(</span>tumour.data<span class="op">=</span><span class="va">seqsumm_HCC1143</span><span class="op">)</span>
+<p>Samtools is listed as a System Requirement for seqCNA, so we can first use <strong>install_CondaSysReqs()</strong> to install samtools. In this case we are installing samtools in the environment: seqCNA_env. We can then run the seqCNA command using <strong>with_CondaEnv</strong> specifying that we want to use our environment containing samtools. seqCNA can then find samtools and execute successfully.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit">
+<span class="fu"><a href="reference/install_CondaSysReqs.html">install_CondaSysReqs</a></span><span class="op">(</span>pkg<span class="op">=</span><span class="st">"seqCNA"</span>,env<span class="op">=</span><span class="st">"seqCNA_env"</span>,pathToMiniConda<span class="op">=</span><span class="va">myMiniconda</span><span class="op">)</span>
+<span class="fu"><a href="reference/with_CondaEnv.html">with_CondaEnv</a></span><span class="op">(</span>new<span class="op">=</span><span class="st">"seqCNA_env"</span>, <span class="va">rco</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seqCNA/man/readSeqsumm.html">readSeqsumm</a></span><span class="op">(</span>tumour.data<span class="op">=</span><span class="va">seqsumm_HCC1143</span><span class="op">)</span>
  ,pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co">## [1] "Conda and Environment Information"</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="co">## $pathToConda</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/bin/conda"</span></span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="co">## </span></span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="co">## $environment</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a><span class="co">## [1] "seqCNA"</span></span>
-<span id="cb19-7"><a href="#cb19-7"></a><span class="co">## </span></span>
-<span id="cb19-8"><a href="#cb19-8"></a><span class="co">## $pathToEnvBin</span></span>
-<span id="cb19-9"><a href="#cb19-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/envs/seqCNA/bin"</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">## [1] "Conda and Environment Information"</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="co">## $pathToConda</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/bin/conda"</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="co">## </span></span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="co">## $environment</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="co">## [1] "seqCNA"</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="co">## </span></span>
+<span id="cb22-8"><a href="#cb22-8"></a><span class="co">## $pathToEnvBin</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a><span class="co">## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/envs/seqCNA/bin"</span></span></code></pre></div>
 <p><br></p>
-</div>
-<div id="running-conda-packages-from-r-console-with-with_condaenv" class="section level2">
-<h2 class="hasAnchor">
-<a href="#running-conda-packages-from-r-console-with-with_condaenv" class="anchor"></a>Running Conda packages from R console with <strong>with_CondaEnv</strong>
-</h2>
-<p><strong>with_CondaEnv</strong> allows users to run an conda tools from within R. The user simply has to wrap the command in the <strong>system()</strong> or <strong>system2()</strong> functions.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="fu"><a href="reference/with_CondaEnv.html">with_CondaEnv</a></span><span class="op">(</span><span class="st">"HerperTestPkg_0.1.0"</span>, <span class="fu"><a href="https://rdrr.io/r/base/system2.html">system2</a></span><span class="op">(</span>command <span class="op">=</span> <span class="st">"rmats.py"</span>, args <span class="op">=</span> <span class="st">"-h"</span><span class="op">)</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
 </div>
 <div id="finding-conda-packages-with-conda_search" class="section level2">
 <h2 class="hasAnchor">
 <a href="#finding-conda-packages-with-conda_search" class="anchor"></a>Finding Conda packages with <strong>conda_search</strong>
 </h2>
 <p>If the user is unsure of the exact name, or version of a tool available on conda, they can use the <strong>conda_search</strong> function.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="fu"><a href="reference/conda_search.html">conda_search</a></span><span class="op">(</span><span class="st">"salmon"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">## Warning in system(paste(pathToConda, "search --quiet --json", package_input, : running command '/</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="co">## var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/bin/conda search --quiet --json</span></span>
-<span id="cb22-3"><a href="#cb22-3"></a><span class="co">## "salmon" 2&gt;/dev/null' had status 1</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a></span>
-<span id="cb22-5"><a href="#cb22-5"></a><span class="co">## [1] FALSE</span></span></code></pre></div>
-<p>Specific package versions can be searched for using the conda format i.e. “salmon==1.3”, “salmon&gt;=1.3” or “salmon&lt;=1.3”. Searches will also find close matches for incorrect queries. Channels to search in can be controlled with <em>channels</em> parameter.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="fu"><a href="reference/conda_search.html">conda_search</a></span><span class="op">(</span><span class="st">"salmon&lt;=1.0"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="reference/conda_search.html">conda_search</a></span><span class="op">(</span><span class="st">"salmon"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
 <div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co">## Warning in system(paste(pathToConda, "search --quiet --json", package_input, : running command '/</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a><span class="co">## var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQ6DVNB/rr/Test/bin/conda search --quiet --json</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="co">## var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/bin/conda search --quiet --json</span></span>
 <span id="cb24-3"><a href="#cb24-3"></a><span class="co">## "salmon" 2&gt;/dev/null' had status 1</span></span>
 <span id="cb24-4"><a href="#cb24-4"></a></span>
-<span id="cb24-5"><a href="#cb24-5"></a><span class="co">## [1] FALSE</span></span></code></pre></div>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="co">## Warning in conda_search("salmon", pathToMiniConda = myMiniconda): package salmon not found</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a></span>
+<span id="cb24-7"><a href="#cb24-7"></a><span class="co">## [1] FALSE</span></span></code></pre></div>
+<p>Specific package versions can be searched for using the conda format i.e. “salmon==1.3”, “salmon&gt;=1.3” or “salmon&lt;=1.3”. Searches will also find close matches for incorrect queries. Channels to search in can be controlled with <em>channels</em> parameter.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit">
+<span class="fu"><a href="reference/conda_search.html">conda_search</a></span><span class="op">(</span><span class="st">"salmon&lt;=1.0"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co">## Warning in system(paste(pathToConda, "search --quiet --json", package_input, : running command '/</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="co">## var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp3JLF73/rr/Test/bin/conda search --quiet --json</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a><span class="co">## "salmon" 2&gt;/dev/null' had status 1</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a></span>
+<span id="cb26-5"><a href="#cb26-5"></a><span class="co">## Warning in conda_search("salmon&lt;=1.0", pathToMiniConda = myMiniconda): package salmon&lt;=1.0 not found</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a></span>
+<span id="cb26-7"><a href="#cb26-7"></a><span class="co">## [1] FALSE</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit">
 <span class="fu"><a href="reference/conda_search.html">conda_search</a></span><span class="op">(</span><span class="st">"salm"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb26"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co">## [1] FALSE</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co">## [1] FALSE</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div id="export-of-conda-environments-to-yaml-files-using-export_condaenv" class="section level2">
 <h2 class="hasAnchor">
 <a href="#export-of-conda-environments-to-yaml-files-using-export_condaenv" class="anchor"></a>Export of Conda environments to YAML files using <strong>export_CondaEnv</strong>.</h2>
 <p>The <strong>export_CondaEnv</strong> function allows the user to export the environment information to a <em>.yml</em> file. These environment YAML files contain all essential information about the package, allowing for reproducibility and easy distribution of Conda system configuration for collaboration.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit">
+<div class="sourceCode" id="cb29"><pre class="downlit">
 <span class="va">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"herper_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%Y%m%d"</span><span class="op">)</span>, <span class="st">".yml"</span><span class="op">)</span>
 <span class="fu"><a href="reference/export_CondaEnv.html">export_CondaEnv</a></span><span class="op">(</span><span class="st">"herper"</span>, <span class="va">yml_name</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb28"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co">## [1] "herper_20201015.yml"</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co">## [1] "herper_20201019.yml"</span></span></code></pre></div>
 <p><br></p>
 <p>The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the <em>depends</em> paramter.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit">
+<div class="sourceCode" id="cb31"><pre class="downlit">
 <span class="va">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"herper_nodeps_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%Y%m%d"</span><span class="op">)</span>, <span class="st">".yml"</span><span class="op">)</span>
 <span class="fu"><a href="reference/export_CondaEnv.html">export_CondaEnv</a></span><span class="op">(</span><span class="st">"herper"</span>, <span class="va">yml_name</span>, depends <span class="op">=</span> <span class="cn">FALSE</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb30"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co">## [1] "herper_nodeps_20201015.yml"</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co">## [1] "herper_nodeps_20201019.yml"</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div id="import-of-conda-environments-from-yaml-files-using-import_condaenv" class="section level2">
@@ -270,7 +296,7 @@
 <a href="#import-of-conda-environments-from-yaml-files-using-import_condaenv" class="anchor"></a>Import of Conda environments from YAML files using <strong>import_CondaEnv</strong>.</h2>
 <p>The <strong>import_CondaEnv</strong> function allows the user to create a new conda environment from a <em>.yml</em> file. These can be previously exported from <strong>export_CondaEnv</strong>, conda, renv or manually created.</p>
 <p>Users can simply provide a path to the YAML file for import. They can also specify the environment name, but by default the name will be taken from the YAML.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit">
+<div class="sourceCode" id="cb33"><pre class="downlit">
 <span class="va">testYML</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/test.yml"</span>,package<span class="op">=</span><span class="st">"Herper"</span><span class="op">)</span>
 <span class="fu"><a href="reference/export_CondaEnv.html">import_CondaEnv</a></span><span class="op">(</span>yml_import<span class="op">=</span><span class="va">testYML</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
 <p><br></p>
@@ -281,15 +307,15 @@
 </h2>
 <p>The <strong>list_CondaEnv</strong> function allows users to check what environments already exist within the given conda build.</p>
 <p>If the User is using multiple builds of conda and wants to check environments across all them, they can include the parameter <em>allCondas = TRUE</em>.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit">
+<div class="sourceCode" id="cb34"><pre class="downlit">
 <span class="fu"><a href="reference/list_CondaEnv.html">list_CondaEnv</a></span><span class="op">(</span>pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co">##                                                                    conda path                 env</span></span>
-<span id="cb33-2"><a href="#cb33-2"></a><span class="co">## 1 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpQ6DVNB/rr/Test                Test</span></span>
-<span id="cb33-3"><a href="#cb33-3"></a><span class="co">## 2 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpQ6DVNB/rr/Test HerperTestPkg_0.1.0</span></span>
-<span id="cb33-4"><a href="#cb33-4"></a><span class="co">## 3 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpQ6DVNB/rr/Test              herper</span></span>
-<span id="cb33-5"><a href="#cb33-5"></a><span class="co">## 4 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpQ6DVNB/rr/Test             my_test</span></span>
-<span id="cb33-6"><a href="#cb33-6"></a><span class="co">## 5 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpQ6DVNB/rr/Test        r-reticulate</span></span>
-<span id="cb33-7"><a href="#cb33-7"></a><span class="co">## 6 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpQ6DVNB/rr/Test              seqCNA</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co">##                                                                    conda path                 env</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a><span class="co">## 1 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp3JLF73/rr/Test                Test</span></span>
+<span id="cb35-3"><a href="#cb35-3"></a><span class="co">## 2 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp3JLF73/rr/Test HerperTestPkg_0.1.0</span></span>
+<span id="cb35-4"><a href="#cb35-4"></a><span class="co">## 3 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp3JLF73/rr/Test              herper</span></span>
+<span id="cb35-5"><a href="#cb35-5"></a><span class="co">## 4 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp3JLF73/rr/Test             my_test</span></span>
+<span id="cb35-6"><a href="#cb35-6"></a><span class="co">## 5 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp3JLF73/rr/Test        r-reticulate</span></span>
+<span id="cb35-7"><a href="#cb35-7"></a><span class="co">## 6 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp3JLF73/rr/Test              seqCNA</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div id="checking-for-packages-in-an-environment-with-list_condapkgs" class="section level2">
@@ -297,78 +323,78 @@
 <a href="#checking-for-packages-in-an-environment-with-list_condapkgs" class="anchor"></a>Checking for packages in an environment with <strong>list_CondaPkgs</strong>
 </h2>
 <p>The <strong>list_CondaPkgs</strong> function allows users to check what packages are installed in a given environment.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit">
+<div class="sourceCode" id="cb36"><pre class="downlit">
 <span class="fu"><a href="reference/list_CondaPkgs.html">list_CondaPkgs</a></span><span class="op">(</span><span class="st">"my_test"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co">##                  name   version     channel platform</span></span>
-<span id="cb35-2"><a href="#cb35-2"></a><span class="co">## 1            brotlipy     0.7.0 conda-forge   osx-64</span></span>
-<span id="cb35-3"><a href="#cb35-3"></a><span class="co">## 2     ca-certificates 2020.6.20 conda-forge   osx-64</span></span>
-<span id="cb35-4"><a href="#cb35-4"></a><span class="co">## 3             certifi 2020.6.20 conda-forge   osx-64</span></span>
-<span id="cb35-5"><a href="#cb35-5"></a><span class="co">## 4                cffi    1.14.3 conda-forge   osx-64</span></span>
-<span id="cb35-6"><a href="#cb35-6"></a><span class="co">## 5             chardet     3.0.4 conda-forge   osx-64</span></span>
-<span id="cb35-7"><a href="#cb35-7"></a><span class="co">## 6               click     7.1.2 conda-forge   noarch</span></span>
-<span id="cb35-8"><a href="#cb35-8"></a><span class="co">## 7         coloredlogs      14.0 conda-forge   osx-64</span></span>
-<span id="cb35-9"><a href="#cb35-9"></a><span class="co">## 8           colormath     3.0.0 conda-forge   noarch</span></span>
-<span id="cb35-10"><a href="#cb35-10"></a><span class="co">## 9        cryptography     3.1.1 conda-forge   osx-64</span></span>
-<span id="cb35-11"><a href="#cb35-11"></a><span class="co">## 10             cycler    0.10.0 conda-forge   noarch</span></span>
-<span id="cb35-12"><a href="#cb35-12"></a><span class="co">## 11          decorator     4.4.2 conda-forge   noarch</span></span>
-<span id="cb35-13"><a href="#cb35-13"></a><span class="co">## 12           freetype    2.10.3 conda-forge   osx-64</span></span>
-<span id="cb35-14"><a href="#cb35-14"></a><span class="co">## 13             future    0.18.2 conda-forge   osx-64</span></span>
-<span id="cb35-15"><a href="#cb35-15"></a><span class="co">## 14      humanfriendly       8.2 conda-forge   osx-64</span></span>
-<span id="cb35-16"><a href="#cb35-16"></a><span class="co">## 15               idna      2.10 conda-forge   noarch</span></span>
-<span id="cb35-17"><a href="#cb35-17"></a><span class="co">## 16 importlib-metadata     2.0.0 conda-forge   noarch</span></span>
-<span id="cb35-18"><a href="#cb35-18"></a><span class="co">## 17             jinja2    2.11.2 conda-forge   noarch</span></span>
-<span id="cb35-19"><a href="#cb35-19"></a><span class="co">## 18               jpeg        9d conda-forge   osx-64</span></span>
-<span id="cb35-20"><a href="#cb35-20"></a><span class="co">## 19         kiwisolver     1.2.0 conda-forge   osx-64</span></span>
-<span id="cb35-21"><a href="#cb35-21"></a><span class="co">## 20              lcms2      2.11 conda-forge   osx-64</span></span>
-<span id="cb35-22"><a href="#cb35-22"></a><span class="co">## 21            libblas     3.8.0 conda-forge   osx-64</span></span>
-<span id="cb35-23"><a href="#cb35-23"></a><span class="co">## 22           libcblas     3.8.0 conda-forge   osx-64</span></span>
-<span id="cb35-24"><a href="#cb35-24"></a><span class="co">## 23             libcxx    11.0.0 conda-forge   osx-64</span></span>
-<span id="cb35-25"><a href="#cb35-25"></a><span class="co">## 24             libffi     3.2.1    bioconda   osx-64</span></span>
-<span id="cb35-26"><a href="#cb35-26"></a><span class="co">## 25        libgfortran     5.0.0 conda-forge   osx-64</span></span>
-<span id="cb35-27"><a href="#cb35-27"></a><span class="co">## 26       libgfortran5     9.3.0 conda-forge   osx-64</span></span>
-<span id="cb35-28"><a href="#cb35-28"></a><span class="co">## 27          liblapack     3.8.0 conda-forge   osx-64</span></span>
-<span id="cb35-29"><a href="#cb35-29"></a><span class="co">## 28        libopenblas    0.3.10 conda-forge   osx-64</span></span>
-<span id="cb35-30"><a href="#cb35-30"></a><span class="co">## 29             libpng    1.6.37 conda-forge   osx-64</span></span>
-<span id="cb35-31"><a href="#cb35-31"></a><span class="co">## 30            libtiff     4.1.0 conda-forge   osx-64</span></span>
-<span id="cb35-32"><a href="#cb35-32"></a><span class="co">## 31       libwebp-base     1.1.0 conda-forge   osx-64</span></span>
-<span id="cb35-33"><a href="#cb35-33"></a><span class="co">## 32        llvm-openmp    11.0.0 conda-forge   osx-64</span></span>
-<span id="cb35-34"><a href="#cb35-34"></a><span class="co">## 33              lz4-c     1.9.2 conda-forge   osx-64</span></span>
-<span id="cb35-35"><a href="#cb35-35"></a><span class="co">## 34           lzstring     1.0.4 conda-forge   noarch</span></span>
-<span id="cb35-36"><a href="#cb35-36"></a><span class="co">## 35           markdown     3.3.1 conda-forge   noarch</span></span>
-<span id="cb35-37"><a href="#cb35-37"></a><span class="co">## 36         markupsafe     1.1.1 conda-forge   osx-64</span></span>
-<span id="cb35-38"><a href="#cb35-38"></a><span class="co">## 37    matplotlib-base     3.3.2 conda-forge   osx-64</span></span>
-<span id="cb35-39"><a href="#cb35-39"></a><span class="co">## 38            multiqc       1.9    bioconda   noarch</span></span>
-<span id="cb35-40"><a href="#cb35-40"></a><span class="co">## 39            ncurses       6.2 conda-forge   osx-64</span></span>
-<span id="cb35-41"><a href="#cb35-41"></a><span class="co">## 40           networkx       2.5 conda-forge   noarch</span></span>
-<span id="cb35-42"><a href="#cb35-42"></a><span class="co">## 41              numpy    1.19.2 conda-forge   osx-64</span></span>
-<span id="cb35-43"><a href="#cb35-43"></a><span class="co">## 42            olefile      0.46 conda-forge   noarch</span></span>
-<span id="cb35-44"><a href="#cb35-44"></a><span class="co">## 43            openssl    1.1.1h conda-forge   osx-64</span></span>
-<span id="cb35-45"><a href="#cb35-45"></a><span class="co">## 44             pillow     8.0.0 conda-forge   osx-64</span></span>
-<span id="cb35-46"><a href="#cb35-46"></a><span class="co">## 45                pip    20.2.3 conda-forge   noarch</span></span>
-<span id="cb35-47"><a href="#cb35-47"></a><span class="co">## 46          pycparser      2.20 conda-forge   noarch</span></span>
-<span id="cb35-48"><a href="#cb35-48"></a><span class="co">## 47          pyopenssl    19.1.0 conda-forge   noarch</span></span>
-<span id="cb35-49"><a href="#cb35-49"></a><span class="co">## 48          pyparsing     2.4.7 conda-forge   noarch</span></span>
-<span id="cb35-50"><a href="#cb35-50"></a><span class="co">## 49            pysocks     1.7.1 conda-forge   osx-64</span></span>
-<span id="cb35-51"><a href="#cb35-51"></a><span class="co">## 50             python    3.6.11 conda-forge   osx-64</span></span>
-<span id="cb35-52"><a href="#cb35-52"></a><span class="co">## 51    python-dateutil     2.8.1 conda-forge   noarch</span></span>
-<span id="cb35-53"><a href="#cb35-53"></a><span class="co">## 52         python_abi       3.6 conda-forge   osx-64</span></span>
-<span id="cb35-54"><a href="#cb35-54"></a><span class="co">## 53             pyyaml     5.3.1 conda-forge   osx-64</span></span>
-<span id="cb35-55"><a href="#cb35-55"></a><span class="co">## 54           readline       8.0 conda-forge   osx-64</span></span>
-<span id="cb35-56"><a href="#cb35-56"></a><span class="co">## 55           requests    2.24.0 conda-forge   noarch</span></span>
-<span id="cb35-57"><a href="#cb35-57"></a><span class="co">## 56         setuptools    49.6.0 conda-forge   osx-64</span></span>
-<span id="cb35-58"><a href="#cb35-58"></a><span class="co">## 57         simplejson     3.8.1    bioconda   osx-64</span></span>
-<span id="cb35-59"><a href="#cb35-59"></a><span class="co">## 58                six    1.15.0 conda-forge   noarch</span></span>
-<span id="cb35-60"><a href="#cb35-60"></a><span class="co">## 59            spectra    0.0.11 conda-forge   noarch</span></span>
-<span id="cb35-61"><a href="#cb35-61"></a><span class="co">## 60             sqlite    3.33.0 conda-forge   osx-64</span></span>
-<span id="cb35-62"><a href="#cb35-62"></a><span class="co">## 61                 tk    8.6.10 conda-forge   osx-64</span></span>
-<span id="cb35-63"><a href="#cb35-63"></a><span class="co">## 62            tornado     6.0.4 conda-forge   osx-64</span></span>
-<span id="cb35-64"><a href="#cb35-64"></a><span class="co">## 63            urllib3   1.25.10 conda-forge   noarch</span></span>
-<span id="cb35-65"><a href="#cb35-65"></a><span class="co">## 64              wheel    0.35.1 conda-forge   noarch</span></span>
-<span id="cb35-66"><a href="#cb35-66"></a><span class="co">## 65                 xz     5.2.5 conda-forge   osx-64</span></span>
-<span id="cb35-67"><a href="#cb35-67"></a><span class="co">## 66               yaml     0.2.5 conda-forge   osx-64</span></span>
-<span id="cb35-68"><a href="#cb35-68"></a><span class="co">## 67               zipp     3.3.0 conda-forge   noarch</span></span>
-<span id="cb35-69"><a href="#cb35-69"></a><span class="co">## 68               zlib    1.2.11 conda-forge   osx-64</span></span>
-<span id="cb35-70"><a href="#cb35-70"></a><span class="co">## 69               zstd     1.4.5 conda-forge   osx-64</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">##                  name   version     channel platform</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a><span class="co">## 1            brotlipy     0.7.0 conda-forge   osx-64</span></span>
+<span id="cb37-3"><a href="#cb37-3"></a><span class="co">## 2     ca-certificates 2020.6.20 conda-forge   osx-64</span></span>
+<span id="cb37-4"><a href="#cb37-4"></a><span class="co">## 3             certifi 2020.6.20 conda-forge   osx-64</span></span>
+<span id="cb37-5"><a href="#cb37-5"></a><span class="co">## 4                cffi    1.14.3 conda-forge   osx-64</span></span>
+<span id="cb37-6"><a href="#cb37-6"></a><span class="co">## 5             chardet     3.0.4 conda-forge   osx-64</span></span>
+<span id="cb37-7"><a href="#cb37-7"></a><span class="co">## 6               click     7.1.2 conda-forge   noarch</span></span>
+<span id="cb37-8"><a href="#cb37-8"></a><span class="co">## 7         coloredlogs      14.0 conda-forge   osx-64</span></span>
+<span id="cb37-9"><a href="#cb37-9"></a><span class="co">## 8           colormath     3.0.0 conda-forge   noarch</span></span>
+<span id="cb37-10"><a href="#cb37-10"></a><span class="co">## 9        cryptography     3.1.1 conda-forge   osx-64</span></span>
+<span id="cb37-11"><a href="#cb37-11"></a><span class="co">## 10             cycler    0.10.0 conda-forge   noarch</span></span>
+<span id="cb37-12"><a href="#cb37-12"></a><span class="co">## 11          decorator     4.4.2 conda-forge   noarch</span></span>
+<span id="cb37-13"><a href="#cb37-13"></a><span class="co">## 12           freetype    2.10.3 conda-forge   osx-64</span></span>
+<span id="cb37-14"><a href="#cb37-14"></a><span class="co">## 13             future    0.18.2 conda-forge   osx-64</span></span>
+<span id="cb37-15"><a href="#cb37-15"></a><span class="co">## 14      humanfriendly       8.2 conda-forge   osx-64</span></span>
+<span id="cb37-16"><a href="#cb37-16"></a><span class="co">## 15               idna      2.10 conda-forge   noarch</span></span>
+<span id="cb37-17"><a href="#cb37-17"></a><span class="co">## 16 importlib-metadata     2.0.0 conda-forge   noarch</span></span>
+<span id="cb37-18"><a href="#cb37-18"></a><span class="co">## 17             jinja2    2.11.2 conda-forge   noarch</span></span>
+<span id="cb37-19"><a href="#cb37-19"></a><span class="co">## 18               jpeg        9d conda-forge   osx-64</span></span>
+<span id="cb37-20"><a href="#cb37-20"></a><span class="co">## 19         kiwisolver     1.2.0 conda-forge   osx-64</span></span>
+<span id="cb37-21"><a href="#cb37-21"></a><span class="co">## 20              lcms2      2.11 conda-forge   osx-64</span></span>
+<span id="cb37-22"><a href="#cb37-22"></a><span class="co">## 21            libblas     3.8.0 conda-forge   osx-64</span></span>
+<span id="cb37-23"><a href="#cb37-23"></a><span class="co">## 22           libcblas     3.8.0 conda-forge   osx-64</span></span>
+<span id="cb37-24"><a href="#cb37-24"></a><span class="co">## 23             libcxx    11.0.0 conda-forge   osx-64</span></span>
+<span id="cb37-25"><a href="#cb37-25"></a><span class="co">## 24             libffi     3.2.1    bioconda   osx-64</span></span>
+<span id="cb37-26"><a href="#cb37-26"></a><span class="co">## 25        libgfortran     5.0.0 conda-forge   osx-64</span></span>
+<span id="cb37-27"><a href="#cb37-27"></a><span class="co">## 26       libgfortran5     9.3.0 conda-forge   osx-64</span></span>
+<span id="cb37-28"><a href="#cb37-28"></a><span class="co">## 27          liblapack     3.8.0 conda-forge   osx-64</span></span>
+<span id="cb37-29"><a href="#cb37-29"></a><span class="co">## 28        libopenblas    0.3.10 conda-forge   osx-64</span></span>
+<span id="cb37-30"><a href="#cb37-30"></a><span class="co">## 29             libpng    1.6.37 conda-forge   osx-64</span></span>
+<span id="cb37-31"><a href="#cb37-31"></a><span class="co">## 30            libtiff     4.1.0 conda-forge   osx-64</span></span>
+<span id="cb37-32"><a href="#cb37-32"></a><span class="co">## 31       libwebp-base     1.1.0 conda-forge   osx-64</span></span>
+<span id="cb37-33"><a href="#cb37-33"></a><span class="co">## 32        llvm-openmp    11.0.0 conda-forge   osx-64</span></span>
+<span id="cb37-34"><a href="#cb37-34"></a><span class="co">## 33              lz4-c     1.9.2 conda-forge   osx-64</span></span>
+<span id="cb37-35"><a href="#cb37-35"></a><span class="co">## 34           lzstring     1.0.4 conda-forge   noarch</span></span>
+<span id="cb37-36"><a href="#cb37-36"></a><span class="co">## 35           markdown     3.3.1 conda-forge   noarch</span></span>
+<span id="cb37-37"><a href="#cb37-37"></a><span class="co">## 36         markupsafe     1.1.1 conda-forge   osx-64</span></span>
+<span id="cb37-38"><a href="#cb37-38"></a><span class="co">## 37    matplotlib-base     3.3.2 conda-forge   osx-64</span></span>
+<span id="cb37-39"><a href="#cb37-39"></a><span class="co">## 38            multiqc       1.9    bioconda   noarch</span></span>
+<span id="cb37-40"><a href="#cb37-40"></a><span class="co">## 39            ncurses       6.2 conda-forge   osx-64</span></span>
+<span id="cb37-41"><a href="#cb37-41"></a><span class="co">## 40           networkx       2.5 conda-forge   noarch</span></span>
+<span id="cb37-42"><a href="#cb37-42"></a><span class="co">## 41              numpy    1.19.2 conda-forge   osx-64</span></span>
+<span id="cb37-43"><a href="#cb37-43"></a><span class="co">## 42            olefile      0.46 conda-forge   noarch</span></span>
+<span id="cb37-44"><a href="#cb37-44"></a><span class="co">## 43            openssl    1.1.1h conda-forge   osx-64</span></span>
+<span id="cb37-45"><a href="#cb37-45"></a><span class="co">## 44             pillow     8.0.0 conda-forge   osx-64</span></span>
+<span id="cb37-46"><a href="#cb37-46"></a><span class="co">## 45                pip    20.2.4 conda-forge   noarch</span></span>
+<span id="cb37-47"><a href="#cb37-47"></a><span class="co">## 46          pycparser      2.20 conda-forge   noarch</span></span>
+<span id="cb37-48"><a href="#cb37-48"></a><span class="co">## 47          pyopenssl    19.1.0 conda-forge   noarch</span></span>
+<span id="cb37-49"><a href="#cb37-49"></a><span class="co">## 48          pyparsing     2.4.7 conda-forge   noarch</span></span>
+<span id="cb37-50"><a href="#cb37-50"></a><span class="co">## 49            pysocks     1.7.1 conda-forge   osx-64</span></span>
+<span id="cb37-51"><a href="#cb37-51"></a><span class="co">## 50             python    3.6.11 conda-forge   osx-64</span></span>
+<span id="cb37-52"><a href="#cb37-52"></a><span class="co">## 51    python-dateutil     2.8.1 conda-forge   noarch</span></span>
+<span id="cb37-53"><a href="#cb37-53"></a><span class="co">## 52         python_abi       3.6 conda-forge   osx-64</span></span>
+<span id="cb37-54"><a href="#cb37-54"></a><span class="co">## 53             pyyaml     5.3.1 conda-forge   osx-64</span></span>
+<span id="cb37-55"><a href="#cb37-55"></a><span class="co">## 54           readline       8.0 conda-forge   osx-64</span></span>
+<span id="cb37-56"><a href="#cb37-56"></a><span class="co">## 55           requests    2.24.0 conda-forge   noarch</span></span>
+<span id="cb37-57"><a href="#cb37-57"></a><span class="co">## 56         setuptools    49.6.0 conda-forge   osx-64</span></span>
+<span id="cb37-58"><a href="#cb37-58"></a><span class="co">## 57         simplejson     3.8.1    bioconda   osx-64</span></span>
+<span id="cb37-59"><a href="#cb37-59"></a><span class="co">## 58                six    1.15.0 conda-forge   noarch</span></span>
+<span id="cb37-60"><a href="#cb37-60"></a><span class="co">## 59            spectra    0.0.11 conda-forge   noarch</span></span>
+<span id="cb37-61"><a href="#cb37-61"></a><span class="co">## 60             sqlite    3.33.0 conda-forge   osx-64</span></span>
+<span id="cb37-62"><a href="#cb37-62"></a><span class="co">## 61                 tk    8.6.10 conda-forge   osx-64</span></span>
+<span id="cb37-63"><a href="#cb37-63"></a><span class="co">## 62            tornado     6.0.4 conda-forge   osx-64</span></span>
+<span id="cb37-64"><a href="#cb37-64"></a><span class="co">## 63            urllib3   1.25.11 conda-forge   noarch</span></span>
+<span id="cb37-65"><a href="#cb37-65"></a><span class="co">## 64              wheel    0.35.1 conda-forge   noarch</span></span>
+<span id="cb37-66"><a href="#cb37-66"></a><span class="co">## 65                 xz     5.2.5 conda-forge   osx-64</span></span>
+<span id="cb37-67"><a href="#cb37-67"></a><span class="co">## 66               yaml     0.2.5 conda-forge   osx-64</span></span>
+<span id="cb37-68"><a href="#cb37-68"></a><span class="co">## 67               zipp     3.3.1 conda-forge   noarch</span></span>
+<span id="cb37-69"><a href="#cb37-69"></a><span class="co">## 68               zlib    1.2.11 conda-forge   osx-64</span></span>
+<span id="cb37-70"><a href="#cb37-70"></a><span class="co">## 69               zstd     1.4.5 conda-forge   osx-64</span></span></code></pre></div>
 <p><br><br></p>
 </div>
 <div id="acknowledgements" class="section level2">
@@ -380,34 +406,34 @@
 <div id="session-information" class="section level2">
 <h2 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session Information</h2>
-<div class="sourceCode" id="cb36"><pre class="downlit">
+<div class="sourceCode" id="cb38"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb37"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">## R version 4.0.3 (2020-10-10)</span></span>
-<span id="cb37-2"><a href="#cb37-2"></a><span class="co">## Platform: x86_64-apple-darwin17.0 (64-bit)</span></span>
-<span id="cb37-3"><a href="#cb37-3"></a><span class="co">## Running under: macOS Catalina 10.15.7</span></span>
-<span id="cb37-4"><a href="#cb37-4"></a><span class="co">## </span></span>
-<span id="cb37-5"><a href="#cb37-5"></a><span class="co">## Matrix products: default</span></span>
-<span id="cb37-6"><a href="#cb37-6"></a><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib</span></span>
-<span id="cb37-7"><a href="#cb37-7"></a><span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib</span></span>
-<span id="cb37-8"><a href="#cb37-8"></a><span class="co">## </span></span>
-<span id="cb37-9"><a href="#cb37-9"></a><span class="co">## locale:</span></span>
-<span id="cb37-10"><a href="#cb37-10"></a><span class="co">## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
-<span id="cb37-11"><a href="#cb37-11"></a><span class="co">## </span></span>
-<span id="cb37-12"><a href="#cb37-12"></a><span class="co">## attached base packages:</span></span>
-<span id="cb37-13"><a href="#cb37-13"></a><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
-<span id="cb37-14"><a href="#cb37-14"></a><span class="co">## </span></span>
-<span id="cb37-15"><a href="#cb37-15"></a><span class="co">## other attached packages:</span></span>
-<span id="cb37-16"><a href="#cb37-16"></a><span class="co">##  [1] seqCNA_1.34.0       seqCNA.annot_1.24.0 adehabitatLT_0.3.25 CircStats_0.2-6    </span></span>
-<span id="cb37-17"><a href="#cb37-17"></a><span class="co">##  [5] boot_1.3-25         MASS_7.3-53         adehabitatMA_0.3.14 ade4_1.7-15        </span></span>
-<span id="cb37-18"><a href="#cb37-18"></a><span class="co">##  [9] sp_1.4-4            doSNOW_1.0.18       snow_0.4-3          iterators_1.0.13   </span></span>
-<span id="cb37-19"><a href="#cb37-19"></a><span class="co">## [13] foreach_1.5.1       GLAD_2.52.0         Herper_0.99.1       reticulate_1.16    </span></span>
-<span id="cb37-20"><a href="#cb37-20"></a><span class="co">## </span></span>
-<span id="cb37-21"><a href="#cb37-21"></a><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span id="cb37-22"><a href="#cb37-22"></a><span class="co">##  [1] Rcpp_1.0.5       knitr_1.30       magrittr_1.5     lattice_0.20-41  rjson_0.2.20    </span></span>
-<span id="cb37-23"><a href="#cb37-23"></a><span class="co">##  [6] rlang_0.4.8      stringr_1.4.0    tools_4.0.3      parallel_4.0.3   grid_4.0.3      </span></span>
-<span id="cb37-24"><a href="#cb37-24"></a><span class="co">## [11] xfun_0.18        withr_2.3.0      htmltools_0.5.0  yaml_2.2.1       digest_0.6.25   </span></span>
-<span id="cb37-25"><a href="#cb37-25"></a><span class="co">## [16] Matrix_1.2-18    codetools_0.2-16 evaluate_0.14    rmarkdown_2.4    stringi_1.5.3   </span></span>
-<span id="cb37-26"><a href="#cb37-26"></a><span class="co">## [21] compiler_4.0.3   jsonlite_1.7.1</span></span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co">## R version 4.0.3 (2020-10-10)</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a><span class="co">## Platform: x86_64-apple-darwin17.0 (64-bit)</span></span>
+<span id="cb39-3"><a href="#cb39-3"></a><span class="co">## Running under: macOS Catalina 10.15.7</span></span>
+<span id="cb39-4"><a href="#cb39-4"></a><span class="co">## </span></span>
+<span id="cb39-5"><a href="#cb39-5"></a><span class="co">## Matrix products: default</span></span>
+<span id="cb39-6"><a href="#cb39-6"></a><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib</span></span>
+<span id="cb39-7"><a href="#cb39-7"></a><span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib</span></span>
+<span id="cb39-8"><a href="#cb39-8"></a><span class="co">## </span></span>
+<span id="cb39-9"><a href="#cb39-9"></a><span class="co">## locale:</span></span>
+<span id="cb39-10"><a href="#cb39-10"></a><span class="co">## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
+<span id="cb39-11"><a href="#cb39-11"></a><span class="co">## </span></span>
+<span id="cb39-12"><a href="#cb39-12"></a><span class="co">## attached base packages:</span></span>
+<span id="cb39-13"><a href="#cb39-13"></a><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
+<span id="cb39-14"><a href="#cb39-14"></a><span class="co">## </span></span>
+<span id="cb39-15"><a href="#cb39-15"></a><span class="co">## other attached packages:</span></span>
+<span id="cb39-16"><a href="#cb39-16"></a><span class="co">##  [1] seqCNA_1.34.0       seqCNA.annot_1.24.0 adehabitatLT_0.3.25 CircStats_0.2-6    </span></span>
+<span id="cb39-17"><a href="#cb39-17"></a><span class="co">##  [5] boot_1.3-25         MASS_7.3-53         adehabitatMA_0.3.14 ade4_1.7-15        </span></span>
+<span id="cb39-18"><a href="#cb39-18"></a><span class="co">##  [9] sp_1.4-4            doSNOW_1.0.19       snow_0.4-3          iterators_1.0.13   </span></span>
+<span id="cb39-19"><a href="#cb39-19"></a><span class="co">## [13] foreach_1.5.1       GLAD_2.52.0         Herper_0.99.1       reticulate_1.16    </span></span>
+<span id="cb39-20"><a href="#cb39-20"></a><span class="co">## </span></span>
+<span id="cb39-21"><a href="#cb39-21"></a><span class="co">## loaded via a namespace (and not attached):</span></span>
+<span id="cb39-22"><a href="#cb39-22"></a><span class="co">##  [1] Rcpp_1.0.5       knitr_1.30       magrittr_1.5     lattice_0.20-41  rjson_0.2.20    </span></span>
+<span id="cb39-23"><a href="#cb39-23"></a><span class="co">##  [6] rlang_0.4.8      stringr_1.4.0    tools_4.0.3      parallel_4.0.3   grid_4.0.3      </span></span>
+<span id="cb39-24"><a href="#cb39-24"></a><span class="co">## [11] xfun_0.18        withr_2.3.0      htmltools_0.5.0  yaml_2.2.1       digest_0.6.26   </span></span>
+<span id="cb39-25"><a href="#cb39-25"></a><span class="co">## [16] Matrix_1.2-18    codetools_0.2-16 evaluate_0.14    rmarkdown_2.4    stringi_1.5.3   </span></span>
+<span id="cb39-26"><a href="#cb39-26"></a><span class="co">## [21] compiler_4.0.3   jsonlite_1.7.1</span></span></code></pre></div>
 </div>
 
   </div>
