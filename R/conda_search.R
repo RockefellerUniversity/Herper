@@ -215,4 +215,6 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
             )))
         }
     }
+    }
 }
+
