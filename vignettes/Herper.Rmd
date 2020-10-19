@@ -25,9 +25,11 @@ load(system.file("extdata/Bioc_Pkg_Details.RData", package = "Herper"))
 ---
 
 ## What is Herper?
-The Herper package is a simple toolset to install and manage Conda packages and environments from R.
+The Herper package is a simple toolset to install and manage Conda packages and environments from within the R console.
 
-Many R packages require the use of external dependencies. Often these dependencies can be installed and managed with the Conda package repository. For example `r nrow(out_df_deps)` Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) [`r my_date`]. 
+Unfortunately many tools for data analysis are not available in R, but are present in public repositories like conda. With Herper users can install, manage and run conda tools from the comfort of their R session.
+
+Furthermore, many R packages require the use of these external dependencies. Again these dependencies can be installed and managed with the Conda package repository. For example `r nrow(out_df_deps)` Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) [`r my_date`]. 
 
 <br>
 
@@ -35,7 +37,7 @@ Many R packages require the use of external dependencies. Often these dependenci
 knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png", package = "Herper"))
 ```
 
-The Herper package includes functions that allow the easy management of these external dependencies from within the R console.
+Herper provides an ad-hoc approach to handling external system requirements for R packages. For people developing packages with python conda dependencies we recommend using [basilisk](https://bioconductor.org/packages/release/bioc/html/basilisk.html) to internally support these system requirements pre-hoc.
 
 
 The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-2006), [Doug Barrows](https://github.com/dougbarrows) and [Thomas Carroll](https://github.com/ThomasCarroll) at the [Rockefeller University Bioinformatics Resources Center](https://rockefelleruniversity.github.io) with contributions from [Katherine Rozen-Gagnon](https://github.com/kathrynrozengagnon).
