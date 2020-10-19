@@ -36,6 +36,16 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
 
     pathToCondaInstall <- pathToMiniConda
     pathToConda <- miniconda_conda(pathToCondaInstall)
+    
+    condaPathExists <- miniconda_exists(pathToMiniConda)
+    
+    if (!condaPathExists) {
+        result<-menu(c("Yes", "No"), title=strwrap(paste("Conda does not exist at", pathToMiniConda, ". Do you want to install it there?")))
+        if(result==1){
+            reticulate::install_miniconda(pathToMiniConda)
+        }else{
+            stop(strwrap("Please specify the location of an existing conda directory, or where you would like to install conda and retry."))    
+        }}
 
     if (!is.null(channel)) {
         chan <- channel_list(channel)

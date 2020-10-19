@@ -27,7 +27,17 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
   } else {
     pathToMiniConda <- reticulate::miniconda_path()
   }
-
+  condaPathExists <- miniconda_exists(pathToMiniConda)
+  
+  if (!condaPathExists) {
+    result<-menu(c("Yes", "No"), title=strwrap(paste("Conda does not exist at", pathToMiniConda, ". Do you want to install it here?")))
+  if(result==1){
+  reticulate::install_miniconda(pathToMiniConda)
+  }else{
+  stop(strwrap("Please specify the location of an exisintg conda directory, or where you would like to install conda and retry."))    
+    }}
+  
+  
   pathToConda <- miniconda_conda(pathToMiniConda)
 
   args <- paste0("-n", env)
