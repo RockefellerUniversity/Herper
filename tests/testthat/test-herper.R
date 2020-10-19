@@ -14,7 +14,7 @@ test_that("install_CondaTools", {
 
 #Test install with mock
 test_that("install_CondaTools_mock", {
-  mockr::with_mock(
+  with_mock(
     conda_install_silentJSON = function(...) {},
     {expect_equal(names(install_CondaTools("multiqc", "herper2", pathToMiniConda = myMiniconda)), c("pathToConda","environment","pathToEnvBin"))})})
 
