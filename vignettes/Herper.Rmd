@@ -130,7 +130,7 @@ utils::packageDescription("HerperTestPkg", fields = "SystemRequirements")
 The user can simply supply the name of an installed R package, and **install_CondaSysReqs** will install the System Requirements through conda. 
 ```{r install_CondaSysReqs}
 
-condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda)
+install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda)
 ```
 
 By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the *env* parameter. As with **install_CondaTools()**, user can control which version of Miniconda with the parameter *pathToMiniConda*, and whether they want to amend an existing environment with the parameter *updateEnv*.
@@ -144,16 +144,16 @@ _Note: **install_CondaSysReqs** can handle standard System Requirement formats, 
 Once installed within a conda environment, many external software can be executed directly from the conda environment's bin directory without having to perform any additional actions.
 
 ```{r with_condaenv_SalmonEval,echo=TRUE,eval=FALSE}
-pathToSalmon <- file.path(condaPaths$pathToEnvBin,"salmon")
+pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
 pathToSalmon
 system2(cmd=pathToSalmon,args = "-h")
 ```
 
 ```{r with_condaenv_Salmon, echo=FALSE, eval=TRUE}
 if(!identical(.Platform$OS.type, "windows")){
-pathToSalmon <- file.path(condaPaths$pathToEnvBin,"salmon")
+pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
 pathToSalmon
-system2(cmd=pathToSalmon,args = "-h")
+system2(command=pathToSalmon, args = "-h")
 }
 ```
 
@@ -168,13 +168,14 @@ The **with_CondaEnv** function will update the PATH we can now run the above sal
 
 ```{r with_condaenv_SalmonWithCondaEnvEval,echo=TRUE,eval=FALSE,tidy=FALSE}
 with_CondaEnv("herper",
-              system2(cmd="salmon",args = "-h")
-              )
+              system2(command="salmon",args = "-h"),
+              pathToMiniConda=myMiniconda)
 ```
 
 ```{r with_condaenv_SalmonWithCondaEnv, echo=FALSE, eval=TRUE}
 if(!identical(.Platform$OS.type, "windows")){
-  with_CondaEnv("herper",system2(cmd="salmon",args = "-h"))
+  with_CondaEnv("herper",system2(command="salmon",args = "-h"),
+                pathToMiniConda=myMiniconda)
 }
 ```
 
@@ -185,8 +186,8 @@ The **local_CondaEnv** function acts in a similar fashion to the **with_CondaEnv
 
 ```{r with_condaenv_SalmonLocalCondaEnv,echo=TRUE,eval=FALSE}
 salmonHelp <- function(){
-  local_CondaEnv("herper")
-  system2(cmd="salmon",args = "-h")
+  local_CondaEnv("herper",pathToMiniConda=myMiniconda)
+  system2(command="salmon",args = "-h")
 }
 salmonHelp()
 ```
@@ -194,8 +195,8 @@ salmonHelp()
 ```{r with_condaenv_SalmonLocalCondaEnvEval, echo=FALSE, eval=TRUE}
 if(!identical(.Platform$OS.type, "windows")){
   salmonHelp <- function(){
-    local_CondaEnv("herper")
-    system2(cmd="salmon",args = "-h")
+    local_CondaEnv("herper",  pathToMiniConda=myMiniconda)
+    system2(command="salmon",args = "-h")
   }
   salmonHelp()
 }
