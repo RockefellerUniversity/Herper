@@ -138,7 +138,8 @@
   channels <span class='op'>=</span> <span class='cn'>NULL</span>,
   pathToMiniConda <span class='op'>=</span> <span class='cn'>NULL</span>,
   updateEnv <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  search <span class='op'>=</span> <span class='cn'>TRUE</span>
+  search <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -168,6 +169,10 @@
       <th>search</th>
       <td><p>Whether to search for the package name and version before installing. It is highly recommended this be set to TRUE as information about available versions or similar packages will be included in the output if the exact match is not found.</p></td>
     </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Print messages on progress (Default is FALSE)</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -180,16 +185,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>condaDir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"r-miniconda"</span><span class='op'>)</span>
 <span class='va'>condaPaths</span> <span class='op'>&lt;-</span> <span class='fu'>install_CondaTools</span><span class='op'>(</span><span class='st'>"salmon"</span>, <span class='st'>"salmon"</span>, pathToMiniConda <span class='op'>=</span> <span class='va'>condaDir</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>The environment salmon does not currently exist and will be created. </span></div><div class='output co'>#&gt; <span class='message'>The package(s) (salmon) are in the salmon environment. </span></div><div class='output co'>#&gt; [1] "Conda and Environment Information"
-#&gt; $pathToConda
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpMK826x/r-miniconda/bin/conda"
-#&gt; 
-#&gt; $environment
-#&gt; [1] "salmon"
-#&gt; 
-#&gt; $pathToEnvBin
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpMK826x/r-miniconda/envs/salmon/bin"
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>condaPaths</span><span class='op'>$</span><span class='va'>pathToEnvBin</span>, <span class='st'>"salmon"</span><span class='op'>)</span>, args <span class='op'>=</span> <span class='st'>"--help"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/system2.html'>system2</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>condaPaths</span><span class='op'>$</span><span class='va'>pathToEnvBin</span>, <span class='st'>"salmon"</span><span class='op'>)</span>, args <span class='op'>=</span> <span class='st'>"--help"</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
