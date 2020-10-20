@@ -466,13 +466,15 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
   
   condaPathExists <- miniconda_exists(pathToMiniConda)
   
+  # if (!condaPathExists) {
+  #   result<-menu(c("Yes", "No"), title=strwrap(paste("Conda does not exist at", pathToMiniConda, ". Do you want to install it here?")))
+  #   if(result==1){
+  #     reticulate::install_miniconda(pathToMiniConda)
+  #   }else{
+  #     stop(strwrap("Please specify the location of an exisintg conda directory, or where you would like to install conda and retry."))    
+  #   }}
   if (!condaPathExists) {
-    result<-menu(c("Yes", "No"), title=strwrap(paste("Conda does not exist at", pathToMiniConda, ". Do you want to install it here?")))
-    if(result==1){
-      reticulate::install_miniconda(pathToMiniConda)
-    }else{
-      stop(strwrap("Please specify the location of an exisintg conda directory, or where you would like to install conda and retry."))    
-    }}
+    stop("There is no conda installed at", pathToMiniConda.)} 
   
   name_check<-FALSE
 
