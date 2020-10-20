@@ -12,11 +12,6 @@ test_that("1_install_CondaTools", {
   }else{expect_message(install_CondaTools("multi", "herper", pathToMiniConda = myMiniconda))}
 })
 
-#Test install with mock
-# test_that("2_install_CondaTools_mock", {
-#   mockr::with_mock(
-#     conda_install_silentJSON = function(...) {},
-#     {expect_equal(names(install_CondaTools("multiqc", "herper2", pathToMiniConda = myMiniconda)), c("pathToConda","environment","pathToEnvBin"))})})
 
 #Test that installed functionality works
 test_that("3_with_CondaEnv", {
@@ -25,7 +20,7 @@ test_that("3_with_CondaEnv", {
 })
 
 #Conda search testing
-# test_that("4_conda_search", {
-#   expect_true(conda_search("multiqc",pathToMiniConda=myMiniconda))
-# })
+test_that("4_conda_search", {
+  expect_true(conda_search("multiqc",pathToMiniConda=myMiniconda))
+})
 
