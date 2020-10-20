@@ -145,15 +145,15 @@ Once installed within a conda environment, many external software can be execute
 
 ```{r with_condaenv_SalmonEval,echo=TRUE,eval=FALSE}
 pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
-pathToSalmon
-system2(cmd=pathToSalmon,args = "-h")
+Res <- system2(command=pathToSalmon, args = "-h",stdout = TRUE)
+Res
 ```
 
 ```{r with_condaenv_Salmon, echo=FALSE, eval=TRUE}
 if(!identical(.Platform$OS.type, "windows")){
 pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
-pathToSalmon
-system2(command=pathToSalmon, args = "-h")
+Res <- system2(command=pathToSalmon, args = "-h",stdout = TRUE)
+cat(Res,sep = "\n")
 }
 ```
 
@@ -162,20 +162,22 @@ Some external software however require additional environmental variable to be s
 
 The Herper package uses the **[withr](https://withr.r-lib.org)** family of functions (**with_CondaEnv()** and **local_CondaEnv()**) to provide methods to **temporarily** alter the system PATH and to add or update any required environmental variables. This is done without formally activating your environment or initializing your conda.
 
-The **with_CondaEnv** allows users to run R code with the required PATH and environmental variables automatically set. The **with_CondaEnv** function accepts arguments of the Conda environment to use and the code to be executed within the this environment. Additionally we can also the **pathToMiniconda** argument to specify the miniconda install location. 
+The **with_CondaEnv** allows users to run R code with the required PATH and environmental variables automatically set. The **with_CondaEnv** function simply requires the name of conda environment and the code to be executed within this environment. Additionally we can also the **pathToMiniconda** argument to specify any custom miniconda install location. 
 
 The **with_CondaEnv** function will update the PATH we can now run the above salmon command without specifying the full directory path to salmon.
 
 ```{r with_condaenv_SalmonWithCondaEnvEval,echo=TRUE,eval=FALSE,tidy=FALSE}
-with_CondaEnv("herper",
-              system2(command="salmon",args = "-h"),
-              pathToMiniConda=myMiniconda)
+res <- with_CondaEnv("herper",
+                      system2(command="salmon",args = "-h",stdout = TRUE),
+                      pathToMiniConda=myMiniconda)
+res
 ```
 
 ```{r with_condaenv_SalmonWithCondaEnv, echo=FALSE, eval=TRUE}
 if(!identical(.Platform$OS.type, "windows")){
-  with_CondaEnv("herper",system2(command="salmon",args = "-h"),
+  res <- with_CondaEnv("herper",system2(command="salmon",args = "-h",stdout = TRUE),
                 pathToMiniConda=myMiniconda)
+  cat(res,sep = "\n")
 }
 ```
 
@@ -187,7 +189,8 @@ The **local_CondaEnv** function acts in a similar fashion to the **with_CondaEnv
 ```{r with_condaenv_SalmonLocalCondaEnv,echo=TRUE,eval=FALSE}
 salmonHelp <- function(){
   local_CondaEnv("herper",pathToMiniConda=myMiniconda)
-  system2(command="salmon",args = "-h")
+  helpMessage <- system2(command="salmon",args = "-h",stdout = TRUE)
+  helpMessage
 }
 salmonHelp()
 ```
@@ -196,7 +199,8 @@ salmonHelp()
 if(!identical(.Platform$OS.type, "windows")){
   salmonHelp <- function(){
     local_CondaEnv("herper",  pathToMiniConda=myMiniconda)
-    system2(command="salmon",args = "-h")
+    helpMessage <- system2(command="salmon",args = "-h",stdout = TRUE)
+    cat(helpMessage,sep = "\n")
   }
   salmonHelp()
 }
@@ -214,16 +218,17 @@ Samtools is listed as a System Requirement for seqCNA, so we can first use **ins
 
 ```{r, echo=T, eval=F}
 install_CondaSysReqs(pkg="seqCNA",env="seqCNA_env",pathToMiniConda=myMiniconda)
-with_CondaEnv(new="seqCNA_env", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
+rco <- with_CondaEnv(new="seqCNA_env",readSeqsumm(tumour.data=seqsumm_HCC1143)
  ,pathToMiniConda = myMiniconda)
-
+summary(rco)
 ``` 
 
 ```{r, echo=F, eval=T}
 if(!identical(.Platform$OS.type, "windows")){
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda)
-with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
+install_CondaSysReqs("seqCNA",env="seqCNA_env",pathToMiniConda=myMiniconda)
+rco <- with_CondaEnv(new="seqCNA_env",readSeqsumm(tumour.data=seqsumm_HCC1143)
  ,pathToMiniConda = myMiniconda)
+summary(rco)
 }
 ``` 
 
