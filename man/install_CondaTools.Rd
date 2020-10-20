@@ -10,7 +10,8 @@ install_CondaTools(
   channels = NULL,
   pathToMiniConda = NULL,
   updateEnv = FALSE,
-  search = TRUE
+  search = TRUE,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ install_CondaTools(
 \item{updateEnv}{Update existing package's conda environment if already installed.}
 
 \item{search}{Whether to search for the package name and version before installing. It is highly recommended this be set to TRUE as information about available versions or similar packages will be included in the output if the exact match is not found.}
+
+\item{verbose}{Print messages on progress (Default is FALSE)}
 }
 \value{
 Nothing returned. Output written to file.

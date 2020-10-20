@@ -11,7 +11,8 @@ install_CondaSysReqs(
   pathToMiniConda = NULL,
   updateEnv = FALSE,
   SysReqsAsJSON = FALSE,
-  SysReqsSep = ","
+  SysReqsSep = ",",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ install_CondaSysReqs(
 \item{SysReqsAsJSON}{Parse the SystemRequirements in JSON format (see Details). Default is TRUE.}
 
 \item{SysReqsSep}{Separator used in SystemRequirement field.}
+
+\item{verbose}{Print messages on progress (Default is FALSE).}
 }
 \value{
 Nothing returned. Output written to file.

@@ -209,6 +209,7 @@ conda_install_silentJSON <- function(envname = NULL,
 #' @param updateEnv Update existing package's conda environment if already installed.
 #' @param SysReqsAsJSON Parse the SystemRequirements in JSON format (see Details). Default is TRUE.
 #' @param SysReqsSep Separator used in SystemRequirement field.
+#' @param verbose Print messages on progress (Default is FALSE).
 #' @return Nothing returned. Output written to file.
 #' @import utils rjson
 #' @examples
@@ -221,7 +222,8 @@ conda_install_silentJSON <- function(envname = NULL,
 #' @export
 install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
                                  pathToMiniConda = NULL, updateEnv = FALSE,
-                                 SysReqsAsJSON = FALSE, SysReqsSep = ",") {
+                                 SysReqsAsJSON = FALSE, SysReqsSep = ",",
+                                 verbose=FALSE) {
 
   packageDesciptions <- utils::packageDescription(pkg, fields = "SystemRequirements")
   if (is.na(packageDesciptions)) {
@@ -271,7 +273,7 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
   idx <- grepl("GNU|C++", CondaSysReq$main$packages, perl = TRUE)
   if (sum(idx) > 0) {
     CondaSysReq$main$packages <- CondaSysReq$main$packages[!idx]
-    message("C++ and/or GNU Make will not been installed, to avoid conflicts. If you do want these installed in your conda, please use the install_CondaTools function.")
+    if(verbose)message("C++ and/or GNU Make will not been installed, to avoid conflicts. If you do want these installed in your conda, please use the install_CondaTools function.")
     if (!length(CondaSysReq$main$packages) > 0) {
       stop("There are no pacakges to install beyond C++ and/or GNU Make.")
     }
@@ -283,7 +285,7 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
     environment <- env
   }
 
-  result <- install_CondaTools(tools = CondaSysReq$main$packages, env = environment, channels = channels, pathToMiniConda = pathToMiniConda, updateEnv = updateEnv)
+  result <- install_CondaTools(tools = CondaSysReq$main$packages, env = environment, channels = channels, pathToMiniConda = pathToMiniConda, updateEnv = updateEnv,verbose=verbose)
   return(result)
  
 }
@@ -305,6 +307,7 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param updateEnv Update existing package's conda environment if already installed.
 #' @param search Whether to search for the package name and version before installing. It is highly recommended this be set to TRUE as information about available versions or similar packages will be included in the output if the exact match is not found.
+#' @param verbose Print messages on progress (Default is FALSE)
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
@@ -314,7 +317,8 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @export
 install_CondaTools <- function(tools, env, channels = NULL,
                                pathToMiniConda = NULL, updateEnv = FALSE,
-                               search = TRUE) {
+                               search = TRUE,
+                               verbose = FALSE) {
   # pathToMiniConda <- "~/Desktop/testConda"
 
   # Setup miniconda
@@ -364,7 +368,7 @@ install_CondaTools <- function(tools, env, channels = NULL,
 
 
   if (!condaPkgEnvPathExists) {
-    message(paste0("The environment ", environment, " does not currently exist and will be created. \n"))
+    if(verbose)message(paste0("The environment ", environment, " does not currently exist and will be created. \n"))
     conda_create_silentJSON(envname = environment, conda = pathToConda)
   }
   if (!condaPkgEnvPathExists | (condaPkgEnvPathExists & updateEnv)) {
@@ -373,15 +377,17 @@ install_CondaTools <- function(tools, env, channels = NULL,
       conda = pathToConda,
       channel = channels
     )
-    message(paste0("The package(s) (", paste(tools, collapse = ", "), ") are in the ", environment, " environment. \n"))
+    if(verbose)message(paste0("The package(s) (", paste(tools, collapse = ", "), ") are in the ", environment, " environment. \n"))
   } else if (condaPkgEnvPathExists & !updateEnv) {
-    message(paste0("The environment ", environment, " already exists but the tools were not installed because the 'updateEnv' argument was set to FALSE. \n"))
+    if(verbose)message(paste0("The environment ", environment, " already exists but the tools were not installed because the 'updateEnv' argument was set to FALSE. \n"))
   }
   pathToEnvBin <- file.path(dirname(dirname(pathToConda)), "envs", environment, "bin")
-  return({
-    print("Conda and Environment Information")
-    print(list(pathToConda = pathToConda, environment = environment, pathToEnvBin = pathToEnvBin))
-  })
+  condaPaths <- list(pathToConda = pathToConda, environment = environment, pathToEnvBin = pathToEnvBin)
+  if(verbose){
+    message("Conda and Environment Information")
+    message(condaPaths)
+  }
+  return(condaPaths)
 }
 
 
