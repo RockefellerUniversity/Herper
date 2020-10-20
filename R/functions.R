@@ -480,7 +480,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
   #     stop(strwrap("Please specify the location of an exisintg conda directory, or where you would like to install conda and retry."))    
   #   }}
   if (!condaPathExists) {
-    stop("There is no conda installed at", pathToMiniConda.)} 
+    stop("There is no conda installed at", pathToMiniConda)} 
   
   name_check<-FALSE
 

@@ -41,7 +41,7 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     
     
     if (!condaPathExists) {
-        stop("There is no conda installed at", pathToMiniConda.)} 
+        stop("There is no conda installed at", pathToMiniConda)} 
     # if (!condaPathExists) {
     #     result<-menu(c("Yes", "No"), title=strwrap(paste("Conda does not exist at", pathToMiniConda, ". Do you want to install it there?")))
     #     if(result==1){
