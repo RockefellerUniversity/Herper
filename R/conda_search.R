@@ -49,13 +49,11 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     #     }else{
     #         stop(strwrap("Please specify the location of an existing conda directory, or where you would like to install conda and retry."))    
     #     }}
-
-    if (!is.null(channel)) {
-        chan <- channel_list(channel)
-        channel_command <- paste(c(" ",paste(unlist(chan), collapse=" ")), collapse="")
-    } else {
-        channel_command <- NULL
-    }
+    
+    defaultChannels <- c("bioconda", "defaults", "conda-forge")
+    channel <- unique(c(channel, defaultChannels))
+    chan <- channel_list(channel)
+    channel_command <- paste(c(" ",paste(unlist(chan), collapse=" ")), collapse="")
     
     #parse version info
     version_sep <- c("[<>)(=]")
