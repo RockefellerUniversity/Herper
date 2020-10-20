@@ -25,7 +25,7 @@ test_that("3_with_CondaEnv", {
 })
 
 #Conda search testing
-test_that("4_conda_search", {
-  expect_true(conda_search("multiqc",pathToMiniConda=myMiniconda))
-})
+# test_that("4_conda_search", {
+#   expect_true(conda_search("multiqc",pathToMiniConda=myMiniconda))
+# })
 
