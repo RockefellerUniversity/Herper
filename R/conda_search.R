@@ -53,7 +53,7 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     defaultChannels <- c("bioconda", "defaults", "conda-forge")
     channel <- unique(c(channel, defaultChannels))
     chan <- channel_list(channel)
-    channel_command <- paste(c(" ",paste(unlist(chan), collapse=" ")), collapse="")
+    channel_command <- paste(unlist(chan), collapse=" ")
     
     #parse version info
     version_sep <- c("[<>)(=]")
