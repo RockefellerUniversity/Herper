@@ -74,7 +74,7 @@ The **install_CondaTools()** function allows the user to specify required Conda 
 
 Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location - `r reticulate::miniconda_path()`) and the user's requested conda environment built within the same directory (by default `r file.path(reticulate::miniconda_path(),"envs","USERS_ENVIRONMENT_HERE")`). 
 
-If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the *pathToMiniConda* parameter.
+If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the *pathToMiniConda* parameter. In this example we are installing in a temporary directory, but most likely you will want to install/use a stable version of Miniconda. 
 
 
 ```{r, echo=F, eval=T}
