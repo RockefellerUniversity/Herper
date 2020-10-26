@@ -25,9 +25,11 @@ load(system.file("extdata/Bioc_Pkg_Details.RData", package = "Herper"))
 ---
 
 ## What is Herper?
-The Herper package is a simple toolset to install and manage Conda packages and environments from R.
+The Herper package is a simple toolset to install and manage Conda packages and environments from within the R console.
 
-Many R packages require the use of external dependencies. Often these dependencies can be installed and managed with the Conda package repository. For example `r nrow(out_df_deps)` Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) [`r my_date`]. 
+Unfortunately many tools for data analysis are not available in R, but are present in public repositories like conda. With Herper users can install, manage, record and run conda tools from the comfort of their R session.
+
+Furthermore, many R packages require the use of these external dependencies. Again these dependencies can be installed and managed with the Conda package repository. For example `r nrow(out_df_deps)` Bioconductor packages have external dependencies listed in their System Requirements field (often with these packages having several requirements) [`r my_date`]. 
 
 <br>
 
@@ -35,7 +37,7 @@ Many R packages require the use of external dependencies. Often these dependenci
 knitr::include_graphics(system.file("extdata/pkg_deps_bar_mask-1.png", package = "Herper"))
 ```
 
-The Herper package includes functions that allow the easy management of these external dependencies from within the R console.
+Herper provides an ad-hoc approach to handling external system requirements for R packages. For people developing packages with python conda dependencies we recommend using [basilisk](https://bioconductor.org/packages/release/bioc/html/basilisk.html) to internally support these system requirements pre-hoc.
 
 
 The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-2006), [Doug Barrows](https://github.com/dougbarrows) and [Thomas Carroll](https://github.com/ThomasCarroll) at the [Rockefeller University Bioinformatics Resources Center](https://rockefelleruniversity.github.io) with contributions from [Kathryn Rozen-Gagnon](https://github.com/kathrynrozengagnon).
@@ -51,7 +53,7 @@ Use the `BiocManager` package to download and install the package from our Githu
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
       install.packages("BiocManager")
   }
-BiocManager::install("https://github.com/RockefellerUniversity/Herper")
+BiocManager::install("Herper")
 ```
 
 <br>
@@ -72,15 +74,17 @@ The **install_CondaTools()** function allows the user to specify required Conda 
 
 Miniconda is installed as part of the process (by default into the r-reticulate's default Conda location - `r reticulate::miniconda_path()`) and the user's requested conda environment built within the same directory (by default `r file.path(reticulate::miniconda_path(),"envs","USERS_ENVIRONMENT_HERE")`). 
 
-If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the *pathToMiniConda* parameter.
+If you already have Miniconda installed or you would like to install to a custom location, you can specify the path with the *pathToMiniConda* parameter. In this example we are installing in a temporary directory, but most likely you will want to install/use a stable version of Miniconda. 
 
 
 ```{r, echo=F, eval=T}
 tempdir2 <- function() {
-    temp <- gsub("\\", "/", tempdir(), fixed = TRUE)
-    if(dir.exists(temp)){
-      temp <- file.path(temp,"rr")
+    tempDir <- tempdir()
+    if(dir.exists(tempDir)){
+      tempDir <- file.path(tempDir,"rr")
     }
+    tempDir <- gsub("\\", "/", tempDir, fixed = TRUE)
+    tempDir
 }
 ```
 
@@ -126,7 +130,7 @@ utils::packageDescription("HerperTestPkg", fields = "SystemRequirements")
 The user can simply supply the name of an installed R package, and **install_CondaSysReqs** will install the System Requirements through conda. 
 ```{r install_CondaSysReqs}
 
-condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda)
+install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda)
 ```
 
 By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the *env* parameter. As with **install_CondaTools()**, user can control which version of Miniconda with the parameter *pathToMiniConda*, and whether they want to amend an existing environment with the parameter *updateEnv*.
@@ -135,45 +139,100 @@ _Note: **install_CondaSysReqs** can handle standard System Requirement formats, 
 
 <br>
 
-## Using R packages with System Dependencies with **with_CondaEnv**
-**with_CondaEnv** allows users to run an R command using a specific conda environment. This will give the R package access to the conda tools, Python, Perl and Java in this environment. This is done without formally activating your environment or initializing your conda. The Python/Perl/Java libraries used can also be controlled with the corresponding parameters __*_additional__.  
+## Using external software with the **with_CondaEnv** and **local_CondaEnv** functions.
 
-To demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires access samtools. If this is not installed there is an error. But if the command is run using **with_CondaEnv**, then seqCNA can find samtools. 
+Once installed within a conda environment, many external software can be executed directly from the conda environment's bin directory without having to perform any additional actions.
+
+```{r with_condaenv_SalmonEval,echo=TRUE,eval=FALSE}
+pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
+Res <- system2(command=pathToSalmon, args = "-h",stdout = TRUE)
+Res
+```
+
+```{r with_condaenv_Salmon, echo=FALSE, eval=TRUE}
+if(!identical(.Platform$OS.type, "windows")){
+pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
+Res <- system2(command=pathToSalmon, args = "-h",stdout = TRUE)
+cat(Res,sep = "\n")
+}
+```
+
+
+Some external software however require additional environmental variable to be set in order to execute correctly. An example of this would be **Cytoscape** which requires the java home directory and java library paths to be set prior to its execution.
+
+The Herper package uses the **[withr](https://withr.r-lib.org)** family of functions (**with_CondaEnv()** and **local_CondaEnv()**) to provide methods to **temporarily** alter the system PATH and to add or update any required environmental variables. This is done without formally activating your environment or initializing your conda.
+
+The **with_CondaEnv** allows users to run R code with the required PATH and environmental variables automatically set. The **with_CondaEnv** function simply requires the name of conda environment and the code to be executed within this environment. Additionally we can also the **pathToMiniconda** argument to specify any custom miniconda install location. 
+
+The **with_CondaEnv** function will update the PATH we can now run the above salmon command without specifying the full directory path to salmon.
+
+```{r with_condaenv_SalmonWithCondaEnvEval,echo=TRUE,eval=FALSE,tidy=FALSE}
+res <- with_CondaEnv("herper",
+                      system2(command="salmon",args = "-h",stdout = TRUE),
+                      pathToMiniConda=myMiniconda)
+res
+```
+
+```{r with_condaenv_SalmonWithCondaEnv, echo=FALSE, eval=TRUE}
+if(!identical(.Platform$OS.type, "windows")){
+  res <- with_CondaEnv("herper",system2(command="salmon",args = "-h",stdout = TRUE),
+                pathToMiniConda=myMiniconda)
+  cat(res,sep = "\n")
+}
+```
+
+
+The **local_CondaEnv** function acts in a similar fashion to the **with_CondaEnv** function and allows the user to temporarily update the required PATH and environmental variable from within a function. The PATH and environmental variables will be modified only until the current function ends.
+
+**local_CondaEnv** is best used within a user-created function, allowing access to the Conda environment's PATH and variables from within the the function itself but resetting all environmental variables once complete.
+
+```{r with_condaenv_SalmonLocalCondaEnv,echo=TRUE,eval=FALSE}
+salmonHelp <- function(){
+  local_CondaEnv("herper",pathToMiniConda=myMiniconda)
+  helpMessage <- system2(command="salmon",args = "-h",stdout = TRUE)
+  helpMessage
+}
+salmonHelp()
+```
+
+```{r with_condaenv_SalmonLocalCondaEnvEval, echo=FALSE, eval=TRUE}
+if(!identical(.Platform$OS.type, "windows")){
+  salmonHelp <- function(){
+    local_CondaEnv("herper",  pathToMiniConda=myMiniconda)
+    helpMessage <- system2(command="salmon",args = "-h",stdout = TRUE)
+    cat(helpMessage,sep = "\n")
+  }
+  salmonHelp()
+}
+``` 
+
+
+To further demonstrate this we will use the first command from the [seqCNA](https://www.bioconductor.org/packages/release/bioc/html/seqCNA.html) vignette. This step requires samtools. If this is not installed and available there is an error. 
 ```{r with_condaenv_R}
 library(seqCNA)
 data(seqsumm_HCC1143)
 try(rco <- readSeqsumm(tumour.data = seqsumm_HCC1143), silent = FALSE)
 ```
 
-```{r, echo=T, eval=F}
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda)
-with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
- ,pathToMiniConda = myMiniconda)
+Samtools is listed as a System Requirement for seqCNA, so we can first use **install_CondaSysReqs()** to install samtools. In this case we are installing samtools in the environment: seqCNA_env. We can then run the seqCNA command using **with_CondaEnv** specifying that we want to use our environment containing samtools. seqCNA can then find samtools and execute successfully. 
 
+```{r, echo=T, eval=F}
+install_CondaSysReqs(pkg="seqCNA",env="seqCNA_env",pathToMiniConda=myMiniconda)
+rco <- with_CondaEnv(new="seqCNA_env",readSeqsumm(tumour.data=seqsumm_HCC1143)
+ ,pathToMiniConda = myMiniconda)
+summary(rco)
 ``` 
 
 ```{r, echo=F, eval=T}
 if(!identical(.Platform$OS.type, "windows")){
-install_CondaSysReqs("seqCNA",env="seqCNA",pathToMiniConda=myMiniconda)
-with_CondaEnv("seqCNA", rco <- readSeqsumm(tumour.data=seqsumm_HCC1143)
+install_CondaSysReqs("seqCNA",env="seqCNA_env",pathToMiniConda=myMiniconda)
+rco <- with_CondaEnv(new="seqCNA_env",readSeqsumm(tumour.data=seqsumm_HCC1143)
  ,pathToMiniConda = myMiniconda)
+summary(rco)
 }
 ``` 
 
 <br>
-
-## Running Conda packages from R console with **with_CondaEnv**
-
-**with_CondaEnv** allows users to run an conda tools from within R. The user simply has to wrap the command in the **system()** or **system2()** functions. 
-
-```{r with_condaenv_conda, echo=T, eval=F}
-with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"), pathToMiniConda = myMiniconda)
-```
-
-```{r, echo=F, eval=T}
-if(!identical(.Platform$OS.type, "windows")){
-  with_CondaEnv("HerperTestPkg_0.1.0", system2(command = "rmats.py", args = "-h"), pathToMiniConda = myMiniconda)}
-```
 
 ## Finding Conda packages with **conda_search**
 
