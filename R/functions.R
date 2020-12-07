@@ -503,7 +503,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
     }
   }
 
-  args <- paste("-f", yml_import,sep=" ")
-  result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json", args)), stdout = TRUE, stderr = TRUE)
+  # args <- paste(yml_import,sep=" ")
+  result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json","-f", yml_import)), stdout = TRUE, stderr = TRUE)
 
 }
