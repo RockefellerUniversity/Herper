@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Herper</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
                         <h4 class="author">Matt Paul - <a href="mailto:mpaul@rockefeller.edu" class="email">mpaul@rockefeller.edu</a>
 </h4>
             
-            <h4 class="date">10/26/2020</h4>
+            <h4 class="date">12/07/2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/RockefellerUniversity/Herper/blob/master/vignettes/QuickStart.Rmd"><code>vignettes/QuickStart.Rmd</code></a></small>
       <div class="hidden name"><code>QuickStart.Rmd</code></div>
@@ -104,33 +104,33 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Use the <code>BiocManager</code> package to download and install the package from our Github repository:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"Herper"</span><span class="op">)</span></pre></div>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"Herper"</span><span class="op">)</span></code></pre></div>
 <p>Once installed, load it into your R session:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RockefellerUniversity/Herper">Herper</a></span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RockefellerUniversity/Herper">Herper</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="install-conda-packages-with-install_condatools-" class="section level2">
 <h2 class="hasAnchor">
 <a href="#install-conda-packages-with-install_condatools-" class="anchor"></a>Install Conda packages with <strong>install_CondaTools</strong>.</h2>
 <p>The <strong>install_CondaTools()</strong> function allows the user to specify required Conda software and the desired environment to install into.</p>
 <p>Miniconda is installed as part of the process (by default into the r-reticulate’s default Conda location). If you already have Miniconda installed (or want to control the location of miniconda installation), you can specify the path with the <em>pathToMiniConda</em> parameter.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">myMiniconda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"Test"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span><span class="op">(</span><span class="st">"salmon"</span>, <span class="st">"herper"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">myMiniconda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"Test"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span><span class="op">(</span><span class="st">"salmon"</span>, <span class="st">"herper"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="install-r-package-dependencies-with-install_condasysreqs-" class="section level2">
 <h2 class="hasAnchor">
 <a href="#install-r-package-dependencies-with-install_condasysreqs-" class="anchor"></a>Install R package dependencies with <strong>install_CondaSysReqs</strong>.</h2>
 <p>The <strong>install_CondaSysReqs</strong> checks the System Requirements for the specified R package, and uses Conda to install this software.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">testPkg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/HerperTestPkg"</span>,package<span class="op">=</span><span class="st">"Herper"</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">testPkg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/HerperTestPkg"</span>,package<span class="op">=</span><span class="st">"Herper"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">testPkg</span>,type <span class="op">=</span> <span class="st">"source"</span>,repos <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
 <span class="va">condaDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"r-miniconda"</span><span class="op">)</span>
 <span class="va">condaPaths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/install_CondaSysReqs.html">install_CondaSysReqs</a></span><span class="op">(</span><span class="st">"HerperTestPkg"</span>,pathToMiniConda<span class="op">=</span><span class="va">condaDir</span>,SysReqsAsJSON<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#' system2(file.path(condaPaths$pathToEnvBin,"samtools"),args = "--help")</span></pre></div>
+<span class="co">#' system2(file.path(condaPaths$pathToEnvBin,"samtools"),args = "--help")</span></code></pre></div>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2 class="hasAnchor">
@@ -140,8 +140,8 @@
 <div id="session-information" class="section level2">
 <h2 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session Information</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## R version 4.0.3 (2020-10-10)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
 ## Running under: macOS Catalina 10.15.7
@@ -157,18 +157,18 @@
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] Herper_0.99.3    reticulate_1.18  BiocStyle_2.16.1
+## [1] Herper_1.0.1     reticulate_1.18  BiocStyle_2.18.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.5          knitr_1.30          magrittr_1.5        lattice_0.20-41    
-##  [5] rjson_0.2.20        R6_2.4.1            ragg_0.4.0          rlang_0.4.8        
-##  [9] stringr_1.4.0       tools_4.0.3         grid_4.0.3          xfun_0.18          
+##  [1] Rcpp_1.0.5          knitr_1.30          magrittr_2.0.1      lattice_0.20-41    
+##  [5] rjson_0.2.20        R6_2.5.0            ragg_0.4.0          rlang_0.4.9        
+##  [9] stringr_1.4.0       tools_4.0.3         grid_4.0.3          xfun_0.19          
 ## [13] withr_2.3.0         htmltools_0.5.0     systemfonts_0.3.2   yaml_2.2.1         
-## [17] assertthat_0.2.1    rprojroot_1.3-2     digest_0.6.27       pkgdown_1.6.1      
-## [21] crayon_1.3.4        bookdown_0.21       textshaping_0.1.2   Matrix_1.2-18      
+## [17] assertthat_0.2.1    rprojroot_2.0.2     digest_0.6.27       pkgdown_1.6.1      
+## [21] crayon_1.3.4        bookdown_0.21       textshaping_0.2.1   Matrix_1.2-18      
 ## [25] BiocManager_1.30.10 fs_1.5.0            memoise_1.1.0       evaluate_0.14      
 ## [29] rmarkdown_2.5       stringi_1.5.3       compiler_4.0.3      desc_1.2.0         
-## [33] backports_1.1.10    jsonlite_1.7.1</code></pre>
+## [33] jsonlite_1.7.1</code></pre>
 </div>
   </div>
 
