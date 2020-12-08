@@ -452,6 +452,7 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
+#' @importFrom yaml read_yaml write_yaml
 #' @examples
 #' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml", package = "Herper")
 #' condaDir <- file.path(tempdir(), "r-miniconda")
@@ -459,8 +460,7 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' export_CondaEnv("herper_test", yml_export = tempfile(), pathToMiniConda = condaDir)
 #' @export
 import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
-  # pathToMiniConda <- "~/Desktop/testConda"
-
+  
   if (is.null(pathToMiniConda)) {
     pathToMiniConda <- reticulate::miniconda_path()
   } else {
@@ -491,13 +491,20 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
     }
     tmpname <- paste0("tmp_", substr(stats::rnorm(1), 5, 7), ".yml")
     file.copy(yml_import, tmpname)
-    on.exit(unlink(tmpname))
-    tmp <- readLines(tmpname)
-    tmp[1] <- paste0("name: ", name)
-    writeLines(tmp, tmpname)
+    # on.exit(unlink(tmpname))
+    tmp <- yaml::read_yaml(tmpname)
+    tmp$dependencies <- c(tmp$dependencies," ")
+    writeLines(gsub("- \' \'\n","",
+         yaml::as.yaml(c(list("name"=name),
+                         tmp[!names(tmp) %in% c("name")])
+                       )
+         ),tmpname)
+    
     yml_import <- tmpname
   } else {
-    name <- gsub("name: ", "", readLines(yml_import, n = 1))
+    tmp <- yaml::read_yaml(yml_import)
+    if(!("name" %in% names(tmp)))stop("No name information found in file, please provide a name for the environment to the import_CondaEnv's name argument")
+    name <- tmp$name
     if (list_CondaEnv(pathToMiniConda = pathToMiniConda, env = name)) {
       stop(strwrap(paste("Conda environment with the name", name, "already exists. Try using list_CondaEnv to see what envirnoment names are already in use.")))
     }
