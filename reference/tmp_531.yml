@@ -1,0 +1,9 @@
+name: HerperTest
+channels:
+- bioconda
+- conda-forge
+- defaults
+dependencies:
+- multiqc=1.9=py_1
+prefix: C:\Users\asyou\AppData\Local\Temp\Rtmpc5ukfk\Test\envs\herper_test
+
