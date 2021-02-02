@@ -59,7 +59,7 @@ Miniconda is installed as part of the process (by default into the r-reticulate'
 
 ```{r install_Condatools, echo=T, eval=F}
 myMiniconda <- file.path(tempdir(),"Test")
-install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
+install_CondaTools("salmon==1.3.0", "herper", pathToMiniConda = myMiniconda)
 ```
 
 ## Install R package dependencies with **install_CondaSysReqs**. 

@@ -92,7 +92,7 @@ tempdir2 <- function() {
 ```{r installCondaTools, echo=T, eval=T}
 myMiniconda <- file.path(tempdir2(), "Test")
 myMiniconda
-install_CondaTools("salmon", "herper", pathToMiniConda = myMiniconda)
+install_CondaTools("salmon==1.3.0", "herper", pathToMiniConda = myMiniconda)
 ```
 
 <br>
@@ -246,7 +246,7 @@ Specific package versions can be searched for using the conda format i.e. "salmo
 
 ```{r conda_search_nuance}
 conda_search("salmon<=1.0", pathToMiniConda = myMiniconda)
-conda_search("salm", pathToMiniConda = myMiniconda)
+conda_search("salmo", pathToMiniConda = myMiniconda)
 ```
 
 <br>
