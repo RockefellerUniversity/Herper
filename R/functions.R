@@ -450,6 +450,7 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' @param yml_import conda environment yml file
 #' @param name Name of the environment to create.
 #' @param pathToMiniConda NULL Path to miniconda installation
+#' @param install TRUE/FALSE whether to install miniconda at path if it doesn't exist. 
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
 #' @importFrom yaml read_yaml write_yaml
@@ -459,7 +460,7 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' import_CondaEnv(testYML, "herper_test", pathToMiniConda = condaDir)
 #' export_CondaEnv("herper_test", yml_export = tempfile(), pathToMiniConda = condaDir)
 #' @export
-import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
+import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, install=TRUE) {
   
   if (is.null(pathToMiniConda)) {
     pathToMiniConda <- reticulate::miniconda_path()
@@ -472,6 +473,16 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
   
   condaPathExists <- miniconda_exists(pathToMiniConda)
   
+  
+  if (install){
+  if (!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
+  
+  # Set Channels
+  defaultChannels <- c("bioconda", "defaults", "conda-forge")
+  channels <- unique(c(channels, defaultChannels))
+  pathToConda <- miniconda_conda(pathToCondaInstall)
+  
+  }else{
   # if (!condaPathExists) {
   #   result<-menu(c("Yes", "No"), title=strwrap(paste("Conda does not exist at", pathToMiniConda, ". Do you want to install it here?")))
   #   if(result==1){
@@ -481,6 +492,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL) {
   #   }}
   if (!condaPathExists) {
     stop("There is no conda installed at", pathToMiniConda)} 
+  }
   
   name_check<-FALSE
 
