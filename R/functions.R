@@ -450,7 +450,8 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' @param yml_import conda environment yml file
 #' @param name Name of the environment to create.
 #' @param pathToMiniConda NULL Path to miniconda installation
-#' @param install TRUE/FALSE whether to install miniconda at path if it doesn't exist. 
+#' @param install TRUE/FALSE whether to install miniconda at path if it doesn't exist.
+#' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
 #' @importFrom yaml read_yaml write_yaml
@@ -460,7 +461,7 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' import_CondaEnv(testYML, "herper_test", pathToMiniConda = condaDir)
 #' export_CondaEnv("herper_test", yml_export = tempfile(), pathToMiniConda = condaDir)
 #' @export
-import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, install=TRUE) {
+import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, install=TRUE, channels=NULL) {
   
   if (is.null(pathToMiniConda)) {
     pathToMiniConda <- reticulate::miniconda_path()
