@@ -454,7 +454,6 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
-#' @importFrom yaml read_yaml write_yaml
 #' @examples
 #' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml", package = "Herper")
 #' condaDir <- file.path(tempdir(), "r-miniconda")
@@ -505,25 +504,31 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, ins
     tmpname <- paste0("tmp_", substr(stats::rnorm(1), 5, 7), ".yml")
     file.copy(yml_import, tmpname)
     # on.exit(unlink(tmpname))
-    tmp <- yaml::read_yaml(tmpname)
-    tmp$dependencies <- c(tmp$dependencies," ")
-    writeLines(gsub("- \' \'\n","",
-         yaml::as.yaml(c(list("name"=name),
-                         tmp[!names(tmp) %in% c("name")])
-                       )
-         ),tmpname)
+    on.exit(unlink(tmpname))
+    tmp <- readLines(tmpname)
+    tmp[1] <- paste0("name: ", name)
+    writeLines(tmp, tmpname)
+    # tmp <- yaml::read_yaml(tmpname)
+    # tmp$dependencies <- c(tmp$dependencies," ")
+    # writeLines(gsub("- \' \'\n","",
+    #      yaml::as.yaml(c(list("name"=name),
+    #                      tmp[!names(tmp) %in% c("name")])
+    #                    )
+    #      ),tmpname)
     
     yml_import <- tmpname
   } else {
-    tmp <- yaml::read_yaml(yml_import)
-    if(!("name" %in% names(tmp)))stop("No name information found in file, please provide a name for the environment to the import_CondaEnv's name argument")
-    name <- tmp$name
+    # tmp <- yaml::read_yaml(yml_import)
+    # if(!("name" %in% names(tmp)))stop("No name information found in file, please provide a name for the environment to the import_CondaEnv's name argument")
+    # name <- tmp$name
+    name <- gsub("name: ", "", readLines(yml_import, n = 1))
     if (list_CondaEnv(pathToMiniConda = pathToMiniConda, env = name)) {
       stop(strwrap(paste("Conda environment with the name", name, "already exists. Try using list_CondaEnv to see what envirnoment names are already in use.")))
     }
   }
-
+  args <- paste0("-f", yml_import)
+  result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json", args)), stdout = TRUE, stderr = TRUE)
   # args <- paste(yml_import,sep=" ")
-  result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json","-f", yml_import)), stdout = TRUE, stderr = TRUE)
+  # result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json","-f", yml_import)), stdout = TRUE, stderr = TRUE)
 
 }

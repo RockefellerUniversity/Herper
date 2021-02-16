@@ -12,7 +12,13 @@ export_CondaEnv(
   depends = TRUE
 )
 
-import_CondaEnv(yml_import, name = NULL, pathToMiniConda = NULL)
+import_CondaEnv(
+  yml_import,
+  name = NULL,
+  pathToMiniConda = NULL,
+  install = TRUE,
+  channels = NULL
+)
 }
 \arguments{
 \item{env_name}{Name of environment you want to save}
@@ -26,6 +32,10 @@ import_CondaEnv(yml_import, name = NULL, pathToMiniConda = NULL)
 \item{yml_import}{conda environment yml file}
 
 \item{name}{Name of the environment to create.}
+
+\item{install}{TRUE/FALSE whether to install miniconda at path if it doesn't exist.}
+
+\item{channels}{Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)}
 }
 \value{
 Nothing returned. Output written to file.
