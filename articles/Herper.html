@@ -86,7 +86,7 @@
                         <h4 class="author">Matt Paul - <a href="mailto:mpaul@rockefeller.edu" class="email">mpaul@rockefeller.edu</a>
 </h4>
             
-            <h4 class="date">02/03/2021</h4>
+            <h4 class="date">02/16/2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/RockefellerUniversity/Herper/blob/master/vignettes/Herper.Rmd"><code>vignettes/Herper.Rmd</code></a></small>
       <div class="hidden name"><code>Herper.Rmd</code></div>
@@ -132,30 +132,30 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">myMiniconda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu">tempdir2</span><span class="op">(</span><span class="op">)</span>, <span class="st">"Test"</span><span class="op">)</span>
 <span class="va">myMiniconda</span></code></pre></div>
-<pre><code>## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpAT0YKz/rr/Test"</code></pre>
+<pre><code>## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpo2W83f/rr/Test"</code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span><span class="op">(</span><span class="st">"salmon==1.3.0"</span>, <span class="st">"herper"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></code></pre></div>
 <pre><code>## $pathToConda
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpAT0YKz/rr/Test/bin/conda"
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpo2W83f/rr/Test/bin/conda"
 ## 
 ## $environment
 ## [1] "herper"
 ## 
 ## $pathToEnvBin
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpAT0YKz/rr/Test/envs/herper/bin"</code></pre>
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpo2W83f/rr/Test/envs/herper/bin"</code></pre>
 <p><br> We can add additional tools to our Conda environment by specifying <em>updateEnv = TRUE</em>. A vector of tools can be used to install several at once.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"samtools"</span>, <span class="st">"kallisto"</span><span class="op">)</span>, <span class="st">"herper"</span>, updateEnv <span class="op">=</span> <span class="cn">TRUE</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span>
 
 <span class="va">pathToConda</span></code></pre></div>
 <pre><code>## $pathToConda
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpAT0YKz/rr/Test/bin/conda"
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpo2W83f/rr/Test/bin/conda"
 ## 
 ## $environment
 ## [1] "herper"
 ## 
 ## $pathToEnvBin
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpAT0YKz/rr/Test/envs/herper/bin"</code></pre>
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpo2W83f/rr/Test/envs/herper/bin"</code></pre>
 <p><br> Specific package versions can be installed using conda formatted inputs into the <em>tools</em> argument i.e. “salmon==1.3”, “salmon&gt;=1.3” or “salmon&lt;=1.3”. This can also be used to specifically upgrade or downgrade existing tools in the chosen environment.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pathToConda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/install_CondaTools.html">install_CondaTools</a></span><span class="op">(</span><span class="st">"salmon&lt;=1.3"</span>, <span class="st">"herper"</span>, updateEnv <span class="op">=</span> <span class="cn">TRUE</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></code></pre></div>
@@ -174,13 +174,13 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/install_CondaSysReqs.html">install_CondaSysReqs</a></span><span class="op">(</span><span class="st">"HerperTestPkg"</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></code></pre></div>
 <pre><code>## $pathToConda
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpAT0YKz/rr/Test/bin/conda"
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpo2W83f/rr/Test/bin/conda"
 ## 
 ## $environment
 ## [1] "HerperTestPkg_0.1.0"
 ## 
 ## $pathToEnvBin
-## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpAT0YKz/rr/Test/envs/HerperTestPkg_0.1.0/bin"</code></pre>
+## [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpo2W83f/rr/Test/envs/HerperTestPkg_0.1.0/bin"</code></pre>
 <p>By default these packages are installed in a new environment, which has the name name of the R package and its version number. Users can control the environment name using the <em>env</em> parameter. As with <strong>install_CondaTools()</strong>, user can control which version of Miniconda with the parameter <em>pathToMiniConda</em>, and whether they want to amend an existing environment with the parameter <em>updateEnv</em>.</p>
 <p><em>Note: <strong>install_CondaSysReqs</strong> can handle standard System Requirement formats, but will not work if the package has free form text. In this case just use <strong>install_CondaTools</strong></em></p>
 <p><br></p>
@@ -329,13 +329,13 @@
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"herper_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%Y%m%d"</span><span class="op">)</span>, <span class="st">".yml"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span><span class="op">(</span><span class="st">"herper"</span>, <span class="va">yml_name</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "herper_20210203.yml"</code></pre>
+<pre><code>## [1] "herper_20210216.yml"</code></pre>
 <p><br></p>
 <p>The YAML export will contain all packages in the environment by default. If the user wants to only export the packages that were specifically installed and not their dependencies they can use the <em>depends</em> paramter.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">yml_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"herper_nodeps_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"%Y%m%d"</span><span class="op">)</span>, <span class="st">".yml"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/export_CondaEnv.html">export_CondaEnv</a></span><span class="op">(</span><span class="st">"herper"</span>, <span class="va">yml_name</span>, depends <span class="op">=</span> <span class="cn">FALSE</span>, pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "herper_nodeps_20210203.yml"</code></pre>
+<pre><code>## [1] "herper_nodeps_20210216.yml"</code></pre>
 <p><br></p>
 </div>
 <div id="import-of-conda-environments-from-yaml-files-using-import_condaenv-" class="section level2">
@@ -357,11 +357,11 @@
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/list_CondaEnv.html">list_CondaEnv</a></span><span class="op">(</span>pathToMiniConda <span class="op">=</span> <span class="va">myMiniconda</span><span class="op">)</span></code></pre></div>
 <pre><code>##                                                                    conda path                 env
-## 1 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpAT0YKz/rr/Test HerperTestPkg_0.1.0
-## 2 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpAT0YKz/rr/Test              herper
-## 3 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpAT0YKz/rr/Test             my_test
-## 4 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpAT0YKz/rr/Test        r-reticulate
-## 5 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpAT0YKz/rr/Test          seqCNA_env</code></pre>
+## 1 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmpo2W83f/rr/Test HerperTestPkg_0.1.0
+## 2 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmpo2W83f/rr/Test              herper
+## 3 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmpo2W83f/rr/Test             my_test
+## 4 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmpo2W83f/rr/Test        r-reticulate
+## 5 /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmpo2W83f/rr/Test          seqCNA_env</code></pre>
 <p><br></p>
 </div>
 <div id="checking-for-packages-in-an-environment-with-list_condapkgs" class="section level2">
@@ -380,7 +380,7 @@
 ## 6               click     7.1.2 conda-forge   noarch
 ## 7         coloredlogs      15.0 conda-forge   osx-64
 ## 8           colormath     3.0.0 conda-forge   noarch
-## 9        cryptography     3.3.1 conda-forge   osx-64
+## 9        cryptography     3.4.4 conda-forge   osx-64
 ## 10             cycler    0.10.0 conda-forge   noarch
 ## 11          decorator     4.4.2 conda-forge   noarch
 ## 12           freetype    2.10.4 conda-forge   osx-64
@@ -391,7 +391,7 @@
 ## 17             jinja2    2.11.3 conda-forge   noarch
 ## 18               jpeg        9d conda-forge   osx-64
 ## 19         kiwisolver     1.3.1 conda-forge   osx-64
-## 20              lcms2      2.11 conda-forge   osx-64
+## 20              lcms2      2.12 conda-forge   osx-64
 ## 21            libblas     3.9.0 conda-forge   osx-64
 ## 22           libcblas     3.9.0 conda-forge   osx-64
 ## 23             libcxx    11.0.1 conda-forge   osx-64
@@ -455,7 +455,7 @@
 <a href="#session-information" class="anchor"></a>Session Information</h2>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## R version 4.0.3 (2020-10-10)
+<pre><code>## R version 4.0.4 (2021-02-15)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
 ## Running under: macOS Catalina 10.15.7
 ## 
@@ -471,24 +471,24 @@
 ## 
 ## other attached packages:
 ##  [1] seqCNA_1.36.0       seqCNA.annot_1.26.0 adehabitatLT_0.3.25 CircStats_0.2-6    
-##  [5] boot_1.3-25         MASS_7.3-53         adehabitatMA_0.3.14 ade4_1.7-16        
+##  [5] boot_1.3-26         MASS_7.3-53         adehabitatMA_0.3.14 ade4_1.7-16        
 ##  [9] sp_1.4-5            doSNOW_1.0.19       snow_0.4-3          iterators_1.0.13   
 ## [13] foreach_1.5.1       GLAD_2.54.0         Herper_1.0.1        reticulate_1.18    
 ## [17] BiocStyle_2.18.1   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] progress_1.2.2      xfun_0.20           lattice_0.20-41     vctrs_0.3.6        
+##  [1] progress_1.2.2      xfun_0.21           lattice_0.20-41     vctrs_0.3.6        
 ##  [5] htmltools_0.5.1.1   yaml_2.2.1          rlang_0.4.10        pkgdown_1.6.1      
-##  [9] withr_2.4.1         lifecycle_0.2.0     stringr_1.4.0       ragg_0.4.1         
-## [13] codetools_0.2-16    memoise_2.0.0       evaluate_0.14       knitr_1.31         
-## [17] fastmap_1.1.0       parallel_4.0.3      highr_0.8           Rcpp_1.0.6         
-## [21] BiocManager_1.30.10 cachem_1.0.1        desc_1.2.0          jsonlite_1.7.2     
-## [25] systemfonts_1.0.0   fs_1.5.0            textshaping_0.2.1   rjson_0.2.20       
+##  [9] withr_2.4.1         lifecycle_1.0.0     stringr_1.4.0       ragg_1.1.0         
+## [13] codetools_0.2-18    memoise_2.0.0       evaluate_0.14       knitr_1.31         
+## [17] fastmap_1.1.0       parallel_4.0.4      highr_0.8           Rcpp_1.0.6         
+## [21] BiocManager_1.30.10 cachem_1.0.4        desc_1.2.0          jsonlite_1.7.2     
+## [25] systemfonts_1.0.1   fs_1.5.0            textshaping_0.3.0   rjson_0.2.20       
 ## [29] hms_1.0.0           digest_0.6.27       stringi_1.5.3       bookdown_0.21      
-## [33] grid_4.0.3          rprojroot_2.0.2     tools_4.0.3         magrittr_2.0.1     
-## [37] crayon_1.4.0        pkgconfig_2.0.3     ellipsis_0.3.1      Matrix_1.2-18      
+## [33] grid_4.0.4          rprojroot_2.0.2     tools_4.0.4         magrittr_2.0.1     
+## [37] crayon_1.4.1        pkgconfig_2.0.3     ellipsis_0.3.1      Matrix_1.3-2       
 ## [41] prettyunits_1.1.1   assertthat_0.2.1    rmarkdown_2.6       R6_2.5.0           
-## [45] compiler_4.0.3</code></pre>
+## [45] compiler_4.0.4</code></pre>
 </div>
   </div>
 
