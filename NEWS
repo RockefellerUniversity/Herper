@@ -4,5 +4,5 @@ Changes in version 0.99.0 (2020-09-17)
 Changes in version 0.99.2 (2020-10-19)
 + Updates for Bioconductor review
 
-Changes in version 1.0.2 (2021-02-19)
+Changes in version 1.1.1 (2021-02-19)
 + Include option to build miniconda in import from yml, and update vignette
