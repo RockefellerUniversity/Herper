@@ -140,7 +140,7 @@ jobs:
 
       - name: Set BiocVersion
         run: |
-          if(system("${{ matrix.config.r }}")=="release"){
+          if("${{ matrix.config.r }}"=="release"){
           BiocManager::install( ask = FALSE)  
           }else{
           BiocManager::install(version = "devel", ask = FALSE)
