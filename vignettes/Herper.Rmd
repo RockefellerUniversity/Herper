@@ -92,7 +92,7 @@ tempdir2 <- function() {
 ```{r installCondaTools, echo=T, eval=T}
 myMiniconda <- file.path(tempdir2(), "Test")
 myMiniconda
-install_CondaTools("salmon==1.3.0", "herper", pathToMiniConda = myMiniconda)
+install_CondaTools("samtools", "herper", pathToMiniConda = myMiniconda)
 ```
 
 <br>
@@ -101,7 +101,7 @@ We can add additional tools to our Conda environment by specifying *updateEnv = 
 
 ```{r ,updateCondaTools, echo=T, eval=T}
 
-pathToConda <- install_CondaTools(c("samtools", "kallisto"), "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
+pathToConda <- install_CondaTools(c("salmon", "kallisto"), "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
 
 pathToConda
 ```
