@@ -112,6 +112,7 @@ Specific package versions can be installed using conda formatted inputs into the
 ```{r ,versionCondaTools, echo=T, eval=T}
 
 pathToConda <- install_CondaTools("salmon<=1.3", "herper", updateEnv = TRUE, pathToMiniConda = myMiniconda)
+
 ```
 
 
@@ -144,15 +145,15 @@ _Note: **install_CondaSysReqs** can handle standard System Requirement formats, 
 Once installed within a conda environment, many external software can be executed directly from the conda environment's bin directory without having to perform any additional actions.
 
 ```{r with_condaenv_SalmonEval,echo=TRUE,eval=FALSE}
-pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
-Res <- system2(command=pathToSalmon, args = "-h",stdout = TRUE)
+pathToSamtools <- file.path(pathToConda$pathToEnvBin,"samtools")
+Res <- system2(command=pathToSamtools, args = "help",stdout = TRUE)
 Res
 ```
 
 ```{r with_condaenv_Salmon, echo=FALSE, eval=TRUE}
 if(!identical(.Platform$OS.type, "windows")){
-pathToSalmon <- file.path(pathToConda$pathToEnvBin,"salmon")
-Res <- system2(command=pathToSalmon, args = "-h",stdout = TRUE)
+pathToSamtools <- file.path(pathToConda$pathToEnvBin,"samtools")
+Res <- system2(command=pathToSamtools, args = "help",stdout = TRUE)
 cat(Res,sep = "\n")
 }
 ```
@@ -164,19 +165,20 @@ The Herper package uses the **[withr](https://withr.r-lib.org)** family of funct
 
 The **with_CondaEnv** allows users to run R code with the required PATH and environmental variables automatically set. The **with_CondaEnv** function simply requires the name of conda environment and the code to be executed within this environment. Additionally we can also the **pathToMiniconda** argument to specify any custom miniconda install location. 
 
-The **with_CondaEnv** function will update the PATH we can now run the above salmon command without specifying the full directory path to salmon.
+The **with_CondaEnv** function will update the PATH we can now run the above samtools command without specifying the full directory path to samtools.
 
 ```{r with_condaenv_SalmonWithCondaEnvEval,echo=TRUE,eval=FALSE,tidy=FALSE}
 res <- with_CondaEnv("herper",
-                      system2(command="salmon",args = "-h",stdout = TRUE),
+                      system2(command="samtools",args = "help",stdout = TRUE),
                       pathToMiniConda=myMiniconda)
 res
 ```
 
 ```{r with_condaenv_SalmonWithCondaEnv, echo=FALSE, eval=TRUE}
 if(!identical(.Platform$OS.type, "windows")){
-  res <- with_CondaEnv("herper",system2(command="salmon",args = "-h",stdout = TRUE),
-                pathToMiniConda=myMiniconda)
+  res <- with_CondaEnv("herper",
+                      system2(command="samtools",args = "help",stdout = TRUE),
+                      pathToMiniConda=myMiniconda)
   cat(res,sep = "\n")
 }
 ```
@@ -187,22 +189,22 @@ The **local_CondaEnv** function acts in a similar fashion to the **with_CondaEnv
 **local_CondaEnv** is best used within a user-created function, allowing access to the Conda environment's PATH and variables from within the the function itself but resetting all environmental variables once complete.
 
 ```{r with_condaenv_SalmonLocalCondaEnv,echo=TRUE,eval=FALSE}
-salmonHelp <- function(){
-  local_CondaEnv("herper",pathToMiniConda=myMiniconda)
-  helpMessage <- system2(command="salmon",args = "-h",stdout = TRUE)
+samtoolsHelp <- function(){
+  local_CondaEnv("herper", pathToMiniConda=myMiniconda)
+  helpMessage <- system2(command="samtools",args = "help",stdout = TRUE)
   helpMessage
 }
-salmonHelp()
+samtoolsHelp()
 ```
 
 ```{r with_condaenv_SalmonLocalCondaEnvEval, echo=FALSE, eval=TRUE}
 if(!identical(.Platform$OS.type, "windows")){
-  salmonHelp <- function(){
+  samtoolsHelp <- function(){
     local_CondaEnv("herper",  pathToMiniConda=myMiniconda)
-    helpMessage <- system2(command="salmon",args = "-h",stdout = TRUE)
+    helpMessage <- system2(command="samtools",args = "help",stdout = TRUE)
     cat(helpMessage,sep = "\n")
   }
-  salmonHelp()
+  samtoolsHelp()
 }
 ``` 
 
