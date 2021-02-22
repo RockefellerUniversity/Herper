@@ -54,7 +54,7 @@ jobs:
           - { os: ubuntu-latest, r: '4.1.0', cont: "bioconductor/bioconductor_docker:devel", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
           - { os: macOS-latest, r: '4.1.0'}
           - { os: windows-latest, r: '4.1.0'}
-          - { os: ubuntu-latest,   r: 'release', cont: "bioconductor/bioconductor_docker:RELEASE_3_12", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/2020-10-28" }
+          - { os: ubuntu-latest,   r: 'release', cont: "bioconductor/bioconductor_docker:RELEASE_3_12", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/1301345" }
           - { os: windows-latest,   r: 'release'}
           - { os: macOS-latest,   r: 'release'}
     env:
