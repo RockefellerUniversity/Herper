@@ -1,0 +1,28 @@
+name: herper
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - bzip2=1.0.8=h1de35cc_0
+  - ca-certificates=2020.10.14=0
+  - hdf5=1.10.5=nompi_h0cbb7df_1103
+  - htslib=1.11=h422799e_0
+  - icu=64.2=h6de7cb9_1
+  - jemalloc=5.2.1=hb1e8313_4
+  - kallisto=0.46.2=hc0c33ce_1
+  - krb5=1.18.2=h75d18d8_0
+  - libcurl=7.71.1=h8a08a2b_1
+  - libcxx=10.0.0=1
+  - libdeflate=1.6=h0b31af3_0
+  - libedit=3.1.20191231=h1de35cc_1
+  - libgfortran=3.0.1=h93005f0_2
+  - libssh2=1.9.0=ha12b0ac_1
+  - ncurses=6.2=h0a44026_1
+  - openssl=1.1.1h=haf1e3a3_0
+  - salmon=1.3.0=hb70dc8d_0
+  - samtools=1.11=h725deca_0
+  - tbb=2020.3=h879752b_0
+  - xz=5.2.5=h1de35cc_0
+  - zlib=1.2.11=h1de35cc_3
+prefix: /var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpDzkb9J/rr/Test/envs/herper

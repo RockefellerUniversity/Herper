@@ -1,0 +1,10 @@
+name: herper
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - salmon
+  - kallisto
+  - samtools
+prefix: /var/folders/zy/x35d37h50sq2_fp3zrjydcl00000gn/T/RtmpDzkb9J/rr/Test/envs/herper
