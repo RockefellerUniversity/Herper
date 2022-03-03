@@ -327,9 +327,11 @@ install_CondaTools <- function(tools, env, channels = NULL,
   } else {
     pathToMiniConda <- file.path(pathToMiniConda)
   }
-  pathToCondaInstall <- pathToMiniConda
+  pathToCondaInstall <- path.expand(pathToMiniConda)
   condaPathExists <- miniconda_exists(pathToCondaInstall)
-  if (!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
+  if (!condaPathExists) {
+    message("No Miniconda found at: ",pathToCondaInstall, "\n")
+    reticulate::install_miniconda(pathToCondaInstall)}
 
   # Set Channels
   defaultChannels <- c("bioconda", "defaults", "conda-forge")
