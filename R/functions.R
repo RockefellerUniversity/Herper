@@ -339,6 +339,9 @@ install_CondaTools <- function(tools, env, channels = NULL,
   pathToConda <- miniconda_conda(pathToCondaInstall)
 
   if (search == TRUE) {
+  
+    message("Checking that conda packages are available.\n")
+    
     checks <- lapply(as.list(tools), conda_search, print_out = FALSE, pathToMiniConda = pathToMiniConda, channel = channels)
     checks <- simplify2array(checks)
 
@@ -359,6 +362,8 @@ install_CondaTools <- function(tools, env, channels = NULL,
         stop("The package and/or version are not available in conda. Check above for details.")
       }
     }
+    
+    message("Conda packages are available for install.\n")
   }
 
   environment <- env
