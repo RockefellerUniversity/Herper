@@ -169,6 +169,8 @@ install_miniconda_silent <- function(path = pathToCondaInstall,
 #'   specify multiple channels, including the Conda Forge, you can use
 #'   `c("conda-forge", <other channels>)`.
 #'
+#' @param verbose Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.
+#' 
 #' @return Nothing returned, conda environment created.
 #' @keywords internal
 #'
@@ -176,7 +178,8 @@ install_miniconda_silent <- function(path = pathToCondaInstall,
 conda_create_silentJSON <- function(envname = NULL,
                                     forge = TRUE,
                                     channel = character(),
-                                    conda = "auto") {
+                                    conda = "auto", 
+                                    verbose=FALSE) {
 
   # resolve conda binary
   conda <- conda_binary(conda)
@@ -197,9 +200,13 @@ conda_create_silentJSON <- function(envname = NULL,
   chan <- channel_list(channels) 
   
   args <- c(args, chan)
-
-  result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
-
+  
+  if(verbose==TRUE){
+  result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = TRUE)
+  }else{
+  result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)  
+  }
+  
   if (result != 0L) {
     stop("Error ", result, " occurred creating conda environment ", envname,
       call. = FALSE
@@ -226,6 +233,8 @@ conda_create_silentJSON <- function(envname = NULL,
 #'   When specified, the `forge` argument is ignored. If you need to
 #'   specify multiple channels, including the Conda Forge, you can use
 #'   `c("conda-forge", <other channels>)`.
+#'   
+#' @param verbose Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.
 #'
 #' @return Nothing returned, packages are installed in specified environment.
 #'
@@ -237,6 +246,7 @@ conda_install_silentJSON <- function(envname = NULL,
                                      forge = TRUE,
                                      channel = character(),
                                      conda = "auto",
+                                     verbose=FALSE,
                                      ...) {
   # resolve conda binary
   conda <- conda_binary(conda)
@@ -257,9 +267,13 @@ conda_install_silentJSON <- function(envname = NULL,
   chan <- channel_list(channels) 
 
   args <- c(args, chan, packages)
-
+  
+  if(verbose==TRUE){
+  result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = TRUE)  
+  }else{
   result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
-
+  }
+  
   # check for errors
   if (result != 0L) {
     fmt <- "one or more Python packages failed to install [error code %i]"
@@ -286,7 +300,7 @@ conda_install_silentJSON <- function(envname = NULL,
 #' @param updateEnv Update existing package's conda environment if already installed.
 #' @param SysReqsAsJSON Parse the SystemRequirements in JSON format (see Details). Default is TRUE.
 #' @param SysReqsSep Separator used in SystemRequirement field.
-#' @param verbose Print messages on progress (Default is FALSE).
+#' @param verbose Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.
 #' @return Nothing returned. Output written to file.
 #' @import utils rjson
 #' @examples
@@ -352,7 +366,7 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
     CondaSysReq$main$packages <- CondaSysReq$main$packages[!idx]
     if(verbose)message("C++ and/or GNU Make will not been installed, to avoid conflicts. If you do want these installed in your conda, please use the install_CondaTools function.")
     if (!length(CondaSysReq$main$packages) > 0) {
-      stop("There are no pacakges to install beyond C++ and/or GNU Make.")
+      stop("There are no packages to install beyond C++ and/or GNU Make.")
     }
   }
 
