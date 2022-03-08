@@ -76,6 +76,83 @@ stopf <- function(fmt, ..., call. = FALSE) {
 
 ###
 
+
+#' Silent version of reticulate's install_miniconda
+#'
+#' Reticulate's install_miniconda with silent output
+#'
+#'
+#' @name install_miniconda_silent
+#' @rdname install_miniconda_silent
+#'
+#' @param path Path to where miniconda will be installed
+#' 
+#' @param verbose Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.
+#' 
+#' @param update Should miniconda be updated (Default is TRUE).
+#'
+#' @return Nothing returned, miniconda installed.
+#' @keywords internal
+#'
+#' @import reticulate
+#' 
+install_miniconda_silent <- function(path = pathToCondaInstall, 
+                                     verbose = FALSE, 
+                                     update = TRUE) {
+
+  if (grepl(" ", path, fixed = TRUE))
+    if(verbose==TRUE | verbose==FALSE){
+    stop("\n Cannot install Miniconda into a path containing spaces")
+    }else{stop()}
+
+  if(verbose==TRUE | verbose==FALSE){
+    message("* Installing Miniconda along with core packages -- please wait a moment ...")
+  }
+    
+    url <- reticulate:::miniconda_installer_url()
+    installer <- reticulate:::miniconda_installer_download(url)
+    
+    if(verbose!=TRUE){
+    is_unix <- reticulate:::is_unix
+    is_osx <- reticulate:::is_osx
+    newDef <- deparse(reticulate:::miniconda_installer_run)
+    iLine <- grep("status <-",newDef)
+    newDef[iLine] <- "    status <- system2(installer, args, stdout=FALSE)"
+    miniconda_installer_run_silent <- eval(parse(text=newDef))
+    miniconda_installer_run_silent(installer, update, path)
+    }else{
+    reticulate:::miniconda_installer_run(installer, update, path)  
+    }
+    
+    ok <- reticulate:::miniconda_exists(path) && reticulate:::miniconda_test(path)
+    
+  if (!ok) 
+    stopf("\nMiniconda installation failed [unknown reason]")
+  if (update)
+    if(verbose==TRUE | verbose==FALSE){
+      message("* Making sure Miniconda is up to date ...")
+    }
+    conda <- miniconda_conda(path)
+    if(verbose!=TRUE){
+      system2(conda, c("update", "--yes", "--name", "base", "conda"), stdout = FALSE)
+    }else{
+      system2(conda, c("update", "--yes", "--name", "base", "conda"))
+    }
+    
+  #python <- reticulate:::miniconda_python_package()
+  # if(verbose!=TRUE){
+  # conda_create_silentJSON(envname = "r-reticulate", packages = c(python, "numpy"), 
+  #                         conda = conda)
+  # }else{
+  # conda_create("r-reticulate", packages = c(python, "numpy"), 
+  #            conda = conda)}
+  
+  if(verbose==TRUE | verbose==FALSE){
+  reticulate:::messagef("* Miniconda has been successfully installed at %s.", 
+                      reticulate:::pretty_path(path))}
+
+}
+  
 #' Silent/json version of reticulate's conda_create
 #'
 #' Reticulate's conda_create with silent output and json output capability
@@ -327,55 +404,60 @@ install_CondaTools <- function(tools, env, channels = NULL,
   } else {
     pathToMiniConda <- file.path(pathToMiniConda)
   }
-  pathToCondaInstall <- path.expand(pathToMiniConda)
+  pathToMiniConda <- path.expand(pathToMiniConda)
+  pathToCondaInstall <- pathToMiniConda
   condaPathExists <- miniconda_exists(pathToCondaInstall)
   if (!condaPathExists) {
-    message("No Miniconda found at: ",pathToCondaInstall, "\n")
-    reticulate::install_miniconda(pathToCondaInstall)}
+    if(verbose==TRUE | verbose==FALSE){
+    message("* No Miniconda found at: ",pathToCondaInstall)}
+    install_miniconda_silent(pathToCondaInstall, verbose = verbose)}
 
   # Set Channels
   defaultChannels <- c("bioconda", "defaults", "conda-forge")
   channels <- unique(c(channels, defaultChannels))
   pathToConda <- miniconda_conda(pathToCondaInstall)
 
-  if (search == TRUE & (verbose==TRUE | verbose==FALSE)) {
-  
-    message("Checking that conda packages are available.\n")
+  if (search == TRUE) {
+    
+    if(verbose==TRUE | verbose==FALSE){
+    message("* Checking if your conda packages are available.\n")
+    }
     
     checks <- lapply(as.list(tools), conda_search, print_out = FALSE, pathToMiniConda = pathToMiniConda, channel = channels)
     checks <- simplify2array(checks)
 
     if (sum(checks[1, ] == FALSE) > 0) {
       idx <- which(checks[1, ] == FALSE)
+      
+      if(verbose==TRUE | verbose==FALSE){
       lapply(list(idx), function(x) {
-        message(paste0('The package "', tools[x], '" has no matches.\nThere are these packages and versions available: \n'))
+        message(paste0('\nThe package "', tools[x], '" has no matches.\nThere are these packages and versions available: \n'))
         if (is.null(dim(checks[2, x][[1]]))) {
           message(paste0(checks[2, x], "\n"))
         } else {
           print(checks[2, x])
         }
       })
+      
       if (is_windows()) {
-        message(strwrap("The package and/or version are not available in conda. Check above for details. Unfortunately many packages are unavailable on conda for windows."))
+        message(strwrap("\nThe package and/or version are not available in conda. Check above for details. Unfortunately many packages are unavailable on conda for windows."))
         return()
-      } else {
-        stop("The package and/or version are not available in conda. Check above for details.")
       }
+      }
+      
+    stop("\nThe package and/or version are not available in conda. Check above for details.")
     }
-    
-    message("Conda packages are available for install.\n")
-  }
+    if(verbose==TRUE | verbose==FALSE){
+    message("* Conda packages are available for install.\n")
+  }}
 
   environment <- env
   pathToCondaPkgEnv <- file.path(pathToMiniConda, "envs", environment)
 
   condaPkgEnvPathExists <- dir.exists(pathToCondaPkgEnv)
 
-
-
-
   if (!condaPkgEnvPathExists) {
-    if(verbose==TRUE | verbose==FALSE)message(paste0("The environment ", environment, " does not currently exist and will be created. \n"))
+    if(verbose==TRUE | verbose==FALSE)message(paste0("* The environment '", environment, "' does not currently exist and will be created. \n"))
     conda_create_silentJSON(envname = environment, conda = pathToConda)
   }
   if (!condaPkgEnvPathExists | (condaPkgEnvPathExists & updateEnv)) {
@@ -384,15 +466,17 @@ install_CondaTools <- function(tools, env, channels = NULL,
       conda = pathToConda,
       channel = channels
     )
-    if(verbose==TRUE | verbose==FALSE)message(paste0("The package(s) (", paste(tools, collapse = ", "), ") are in the ", environment, " environment. \n"))
+    if(verbose==TRUE | verbose==FALSE)message(paste0("The package(s) (", paste(tools, collapse = ", "), ") are in the '", environment, "' environment. \n"))
   } else if (condaPkgEnvPathExists & !updateEnv) {
-    if(verbose==TRUE | verbose==FALSE)message(paste0("The environment ", environment, " already exists but the tools were not installed because the 'updateEnv' argument was set to FALSE. \n"))
+    if(verbose==TRUE | verbose==FALSE)message(paste0("The environment '", environment, "' already exists but the tools were not installed because the 'updateEnv' argument was set to FALSE. \n"))
   }
   pathToEnvBin <- file.path(dirname(dirname(pathToConda)), "envs", environment, "bin")
   condaPaths <- list(pathToConda = pathToConda, environment = environment, pathToEnvBin = pathToEnvBin)
   if(verbose==TRUE | verbose==FALSE){
     message("Conda and Environment Information")
-    message(condaPaths)
+    message(paste0(names(condaPaths[1]), " : ", condaPaths[1]))
+    message(paste0(names(condaPaths[2]), " : ", condaPaths[2]))
+    message(paste0(names(condaPaths[3]), " : ", condaPaths[3]))
   }
   return(condaPaths)
 }

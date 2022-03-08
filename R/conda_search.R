@@ -81,6 +81,7 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
             ignore.stderr = TRUE
         ) # if we want to include the output for 'conda search', which is a pretty informative error message, set this to FALSE
     
+    
     condaSearch <- fromJSON(paste(condaSearch, collapse = ""))
 
     # parse search results
@@ -99,6 +100,8 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
             } else {
                 return(list(exact_match = FALSE, version_matches = NULL))
             }
+        } else if (condaSearch$exception_name == "CondaHTTPError") {
+          stop("HTTP Connection to Conda repo failed. This is likely an intermittent issue and you can just retry. If this keeps happening you might need to check if Conda is blocked on your network.")
         } else {
             if (print_out) {
                 message("conda command failed, but not sure why. We didn't get the normal error messages we look for when a package or channel isn't found")
