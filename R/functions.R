@@ -430,14 +430,15 @@ install_CondaTools <- function(tools, env, channels = NULL,
       idx <- which(checks[1, ] == FALSE)
       
       if(verbose==TRUE | verbose==FALSE){
-      lapply(list(idx), function(x) {
+       for (i in 1:length(idx)) {
+         x <- idx[i]
         message(paste0('\nThe package "', tools[x], '" has no matches.\nThere are these packages and versions available: \n'))
         if (is.null(dim(checks[2, x][[1]]))) {
           message(paste0(checks[2, x], "\n"))
         } else {
           print(checks[2, x])
         }
-      })
+      }
       
       if (is_windows()) {
         message(strwrap("\nThe package and/or version are not available in conda. Check above for details. Unfortunately many packages are unavailable on conda for windows."))
