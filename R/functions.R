@@ -411,7 +411,12 @@ install_CondaTools <- function(tools, env, channels = NULL,
                                search = TRUE,
                                verbose = FALSE) {
   # pathToMiniConda <- "~/Desktop/testConda"
-
+  
+  #verbose argument check
+  if(!(verbose %in% c(TRUE,FALSE,"SILENT","silent","Silent"))){
+    stop(paste0("verbose argument is set to: ", verbose,". It must either be TRUE, FALSE, or 'silent'."))
+  }
+  
   # Setup miniconda
   if (is.null(pathToMiniConda)) {
     pathToMiniConda <- reticulate::miniconda_path()
