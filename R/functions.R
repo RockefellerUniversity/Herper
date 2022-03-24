@@ -1,7 +1,3 @@
-is_windows <- function() {
-  identical(.Platform$OS.type, "windows")
-}
-
 tempdir2 <- function() {
   gsub("\\", "/", tempdir(), fixed = TRUE)
 }
@@ -29,7 +25,26 @@ channel_list<-function(channel){
 }
 
 #####
-# following are internal functions from reticulate used in the conda_create_silentJSON() and conda_install_silentJSON() functions
+# following are internal functions from reticulate
+
+is_windows <- function() {
+  identical(.Platform$OS.type, "windows")
+}
+
+is_windows <- function() {
+  identical(.Platform$OS.type, "unix")
+}
+
+is_osx <- function() {
+  Sys.info()["sysname"] == "Darwin"
+}
+
+is_linux <- function () {
+  identical(tolower(Sys.info()[["sysname"]]), "linux")
+}
+
+
+
 
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
@@ -68,7 +83,6 @@ condaenv_resolve <- function(envname = NULL) {
     resolve = identity
   )
 }
-
 
 stopf <- function(fmt, ..., call. = FALSE) {
   stop(sprintf(fmt, ...), call. = call.)
@@ -182,7 +196,7 @@ conda_create_silentJSON <- function(envname = NULL,
                                     verbose=FALSE) {
 
   # resolve conda binary
-  conda <- conda_binary(conda)
+  conda <- reticulate::conda_binary(conda)
 
   # resolve environment name
   envname <- condaenv_resolve(envname)
@@ -249,7 +263,7 @@ conda_install_silentJSON <- function(envname = NULL,
                                      verbose=FALSE,
                                      ...) {
   # resolve conda binary
-  conda <- conda_binary(conda)
+  conda <- reticulate::conda_binary(conda)
 
   # resolve environment name
   envname <- condaenv_resolve(envname)
@@ -429,7 +443,12 @@ install_CondaTools <- function(tools, env, channels = NULL,
   if (!condaPathExists) {
     if(verbose==TRUE | verbose==FALSE){
     message("* No Miniconda found at: ",pathToCondaInstall)}
-    install_miniconda_silent(pathToCondaInstall, verbose = verbose)}
+    install_miniconda_silent(pathToCondaInstall, verbose = verbose)
+  }else{
+    if(verbose==TRUE | verbose==FALSE){
+      message("* Using Miniconda at: ",pathToCondaInstall)}  
+    }
+  
 
   # Set Channels
   defaultChannels <- c("bioconda", "defaults", "conda-forge")
@@ -439,7 +458,7 @@ install_CondaTools <- function(tools, env, channels = NULL,
   if (search == TRUE) {
     
     if(verbose==TRUE | verbose==FALSE){
-    message("* Checking if your conda packages are available.\n")
+    message("* Checking if your conda packages are available ...")
     }
     
     checks <- lapply(as.list(tools), conda_search, print_out = FALSE, pathToMiniConda = pathToMiniConda, channel = channels)
@@ -468,7 +487,7 @@ install_CondaTools <- function(tools, env, channels = NULL,
     stop("\nThe package and/or version are not available in conda. Check above for details.")
     }
     if(verbose==TRUE | verbose==FALSE){
-    message("* Conda packages are available for install.\n")
+    message("* Conda packages are available for install.")
   }}
 
   environment <- env
@@ -477,7 +496,9 @@ install_CondaTools <- function(tools, env, channels = NULL,
   condaPkgEnvPathExists <- dir.exists(pathToCondaPkgEnv)
 
   if (!condaPkgEnvPathExists) {
-    if(verbose==TRUE | verbose==FALSE)message(paste0("* The environment '", environment, "' does not currently exist and will be created. \n"))
+    if(verbose==TRUE | verbose==FALSE){
+      message(paste0("* The environment '", environment, "' does not currently exist."))
+      message(paste0("* Creating the environment '", environment, "' and installing tools ..."))}
     conda_create_silentJSON(envname = environment, conda = pathToConda)
   }
   if (!condaPkgEnvPathExists | (condaPkgEnvPathExists & updateEnv)) {
@@ -486,7 +507,7 @@ install_CondaTools <- function(tools, env, channels = NULL,
       conda = pathToConda,
       channel = channels
     )
-    if(verbose==TRUE | verbose==FALSE)message(paste0("The package(s) (", paste(tools, collapse = ", "), ") are in the '", environment, "' environment. \n"))
+    if(verbose==TRUE | verbose==FALSE)message(paste0("* The package(s) (", paste(tools, collapse = ", "), ") are in the '", environment, "' environment."))
   } else if (condaPkgEnvPathExists & !updateEnv) {
     if(verbose==TRUE | verbose==FALSE)message(paste0("The environment '", environment, "' already exists but the tools were not installed because the 'updateEnv' argument was set to FALSE. \n"))
   }
