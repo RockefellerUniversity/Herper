@@ -415,7 +415,7 @@ conda_install_silentJSON <- function(envname = NULL,
 #'
 #' @author Thomas Carroll
 #' @param pkg Package to install Conda System Requirements from.
-#' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
+#' @param channels Channels for miniconda (bioconda and conda-forge are defaults).
 #' @param env Name of Conda environment to install tools into.
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param updateEnv Update existing package's conda environment if already installed.
@@ -515,7 +515,7 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @author Thomas Carroll
 #' @param tools Vector of software to install using conda.
 #' @param env Name of Conda environment to install tools into.
-#' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
+#' @param channels Channels for miniconda (bioconda and conda-forge are defaults).
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param updateEnv Update existing package's conda environment if already installed.
 #' @param search Whether to search for the package name and version before installing. It is highly recommended this be set to TRUE as information about available versions or similar packages will be included in the output if the exact match is not found.
@@ -558,8 +558,10 @@ install_CondaTools <- function(tools, env, channels = NULL,
   
 
   # Set Channels
-  defaultChannels <- c("bioconda", "defaults", "conda-forge")
-  channels <- unique(c(channels, defaultChannels))
+  if( is.null(channels) ){
+    channels <- c("bioconda", "defaults", "conda-forge")
+  }
+  
   pathToConda <- miniconda_conda(pathToCondaInstall)
 
   if (search == TRUE) {
@@ -690,7 +692,7 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' @param name Name of the environment to create.
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param install TRUE/FALSE whether to install miniconda at path if it doesn't exist.
-#' @param channels Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)
+#' @param channels Channels for miniconda (bioconda and conda-forge are defaults).
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
 #' @examples
@@ -717,8 +719,9 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, ins
   if (!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
   
   # Set Channels
-  defaultChannels <- c("bioconda", "defaults", "conda-forge")
-  channels <- unique(c(channels, defaultChannels))
+  if( is.null(channels) ){
+      channels <- c("bioconda", "defaults", "conda-forge")
+  }
   pathToConda <- miniconda_conda(pathToCondaInstall)
   
   }else{
