@@ -1,5 +1,38 @@
+# Some small internal Functions
+
 tempdir2 <- function() {
   gsub("\\", "/", tempdir(), fixed = TRUE)
+}
+
+channel_list<-function(channel){
+  chan<-list()
+  for (ch in channel) {
+    chan <- c(chan, "-c", ch)
+  }
+  return(chan)
+}
+
+#####
+# Following are internal functions from reticulate. We are taking these dependencies on (which in a few cases have very light modifications) so we can take control of the messaging. 
+
+is_windows <- function() {
+  identical(.Platform$OS.type, "windows")
+}
+
+is_unix <- function() {
+  identical(.Platform$OS.type, "unix")
+}
+
+is_osx <- function() {
+  Sys.info()["sysname"] == "Darwin"
+}
+
+is_linux <- function() {
+  identical(tolower(Sys.info()[["sysname"]]), "linux")
+}
+
+is_condaenv <- function(dir) {
+  file.exists(file.path(dir, "conda-meta"))
 }
 
 miniconda_exists <- function(path = miniconda_path()) {
@@ -16,35 +49,123 @@ miniconda_conda <- function(path = miniconda_path()) {
   file.path(path, exe)
 }
 
-channel_list<-function(channel){
-  chan<-list()
-  for (ch in channel) {
-    chan <- c(chan, "-c", ch)
+miniconda_installer_arch <- function(info) {
+  arch <- getOption("reticulate.miniconda.arch")
+  if (!is.null(arch)) 
+    return(arch)
+  if (info$machine == "x86-64") 
+    return("x86_64")
+  info$machine
+}
+
+miniconda_installer_url <- function(){
+  url <- getOption("reticulate.miniconda.url")
+  if (!is.null(url)) 
+    return(url)
+  info <- as.list(Sys.info())
+  if (info$sysname == "Darwin" && info$machine == "arm64") {
+    base <- "https://github.com/conda-forge/miniforge/releases/latest/download"
+    name <- "Miniforge3-MacOSX-arm64.sh"
+    return(file.path(base, name))
   }
-  return(chan)
+  base <- "https://repo.anaconda.com/miniconda"
+  info <- as.list(Sys.info())
+  arch <- miniconda_installer_arch(info)
+  version <- as.character(version)
+  name <- if (is_windows()) 
+    sprintf("Miniconda%s-latest-Windows-%s.exe", version, 
+            arch)
+  else if (is_osx()) 
+    sprintf("Miniconda%s-latest-MacOSX-%s.sh", version, arch)
+  else if (is_linux()) 
+    sprintf("Miniconda%s-latest-Linux-%s.sh", version, arch)
+  else stopf("unsupported platform %s", shQuote(Sys.info()[["sysname"]]))
+  file.path(base, name)
 }
 
-#####
-# following are internal functions from reticulate
-
-is_windows <- function() {
-  identical(.Platform$OS.type, "windows")
+miniconda_installer_download <- function(url) {
+  installer <- file.path(tempdir(), basename(url))
+  if (file.exists(installer)) 
+    return(installer)
+  messagef("* Downloading %s ...", shQuote(url))
+  status <- download.file(url, destfile = installer, mode = "wb")
+  if (!file.exists(installer)) {
+    fmt <- "download of Miniconda installer failed [status = %i]"
+    stopf(fmt, status)
+  }
+  installer
 }
 
-is_windows <- function() {
-  identical(.Platform$OS.type, "unix")
+miniconda_installer_run_silent <- function(installer, update, path, verbose=F) {
+  args <- if (is_windows()) {
+    dir.create(path, recursive = TRUE, showWarnings = FALSE)
+    c("/InstallationType=JustMe", "/AddToPath=0", "/RegisterPython=0", 
+      "/NoRegistry=1", "/S", paste("/D", utils::shortPathName(path), 
+                                   sep = "="))
+  }
+  else if (is_unix()) {
+    c("-b", if (update) "-u", "-p", shQuote(path))
+  }
+  else {
+    stopf("unsupported platform %s", shQuote(Sys.info()[["sysname"]]))
+  }
+  Sys.chmod(installer, mode = "0755")
+  if (is_osx()) {
+    old <- Sys.getenv("DYLD_FALLBACK_LIBRARY_PATH")
+    new <- if (nzchar(old)) 
+      paste(old, "/usr/lib", sep = ":")
+    else "/usr/lib"
+    Sys.setenv(DYLD_FALLBACK_LIBRARY_PATH = new)
+    on.exit(Sys.setenv(DYLD_FALLBACK_LIBRARY_PATH = old), 
+            add = TRUE)
+  }
+  
+  if(verbose!=TRUE){
+    verbose <- FALSE
+  }
+  
+  status <- system2(installer, args, stdout=verbose)
+  if (status != 0) 
+    stopf("miniconda installation failed [exit code %i]", 
+          status)
+  invisible(path)
 }
 
-is_osx <- function() {
-  Sys.info()["sysname"] == "Darwin"
+python_binary_path <- function(dir) {
+  if (is_condaenv(dir)) {
+    suffix <- if (is_windows()) 
+      "python.exe"
+    else "bin/python"
+    return(file.path(dir, suffix))
+  }
+  # if (is_virtualenv(dir)) {
+  #   suffix <- if (is_windows()) 
+  #     "Scripts/python.exe"
+  #   else "bin/python"
+  #   return(file.path(dir, suffix))
+  # }
+  suffix <- if (is_windows()) 
+    "python.exe"
+  else "python"
+  if (file.exists(file.path(dir, suffix))) 
+    return(file.path(dir, suffix))
+  stop("failed to discover Python binary associated with path '", 
+       dir, "'")
 }
 
-is_linux <- function () {
-  identical(tolower(Sys.info()[["sysname"]]), "linux")
+python_version <- function(python) {
+  code <- "import platform; print(platform.python_version())"
+  args <- c("-E", "-c", shQuote(code))
+  output <- system2(python, args, stdout = TRUE, stderr = FALSE)
+  sanitized <- gsub("[^0-9.-]", "", output)
+  numeric_version(sanitized)
 }
 
-
-
+miniconda_test <- function (path = miniconda_path()) {
+  python <- python_binary_path(path)
+  status <- tryCatch(python_version(python), error = identity)
+  !inherits(status, "error")
+}
 
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
@@ -122,23 +243,10 @@ install_miniconda_silent <- function(path = pathToCondaInstall,
   if(verbose==TRUE | verbose==FALSE){
     message("* Installing Miniconda along with core packages -- please wait a moment ...")
   }
-    
-    url <- reticulate:::miniconda_installer_url()
-    installer <- reticulate:::miniconda_installer_download(url)
-    
-    if(verbose!=TRUE){
-    is_unix <- reticulate:::is_unix
-    is_osx <- reticulate:::is_osx
-    newDef <- deparse(reticulate:::miniconda_installer_run)
-    iLine <- grep("status <-",newDef)
-    newDef[iLine] <- "    status <- system2(installer, args, stdout=FALSE)"
-    miniconda_installer_run_silent <- eval(parse(text=newDef))
-    miniconda_installer_run_silent(installer, update, path)
-    }else{
-    reticulate:::miniconda_installer_run(installer, update, path)  
-    }
-    
-    ok <- reticulate:::miniconda_exists(path) && reticulate:::miniconda_test(path)
+  
+  miniconda_installer_run_silent(installer, update, path, verbose=verbose)
+
+    ok <- miniconda_exists(path) && miniconda_test(path)
     
   if (!ok) 
     stopf("\nMiniconda installation failed [unknown reason]")
@@ -162,8 +270,7 @@ install_miniconda_silent <- function(path = pathToCondaInstall,
   #            conda = conda)}
   
   if(verbose==TRUE | verbose==FALSE){
-  reticulate:::messagef("* Miniconda has been successfully installed at %s.", 
-                      reticulate:::pretty_path(path))}
+  message(paste0("* Miniconda has been successfully installed at ", path))}
 
 }
   
