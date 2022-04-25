@@ -10,7 +10,7 @@
 #'
 #' @author Doug Barrows and Matt Paul
 #' @param package Package to search for. If an exact match is found, the funtion will return true (assuming 'package_version' is left NULL or is a valid entry). If there is not an exact match and other packages contain this text, the function will return FALSE but the alternative options will be printed if print_out = TRUE.
-#' @param channels Channels for to search in (bioconda and conda-forge are defaults).
+#' @param channel Channels for to search in (bioconda and conda-forge are defaults).
 #' @param print_out Either True or FALSE indicating whether to print out information about available builds and channels for the search entry.
 #' @param pathToMiniConda Path to miniconda installation. If this is set to NULL (default), then the output of 'reticulate::miniconda_path()' is used.
 #' @import utils rjson
@@ -24,7 +24,9 @@
 #' @export
 #'
 
-conda_search <- function(package, channel = NULL, print_out = TRUE, 
+conda_search <- function(package, 
+                         channel = NULL, 
+                         print_out = TRUE, 
                          pathToMiniConda = NULL) {
 
     #Check conda install
@@ -50,8 +52,8 @@ conda_search <- function(package, channel = NULL, print_out = TRUE,
     #         stop(strwrap("Please specify the location of an existing conda directory, or where you would like to install conda and retry."))    
     #     }}
     
-    if( is.null(channels) ){
-      channels <- c("bioconda", "defaults", "conda-forge")
+    if( is.null(channel) ){
+      channel <- c("bioconda", "defaults", "conda-forge")
     }
     chan <- channel_list(channel)
     channel_command <- paste(unlist(chan), collapse=" ")
