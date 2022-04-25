@@ -18,7 +18,7 @@ with_CondaEnv(
 )
 
 local_CondaEnv(
-  new,
+  new = list(),
   pathToMiniConda = NULL,
   path_action = "prefix",
   pythonpath_action = "replace",

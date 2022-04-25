@@ -10,7 +10,7 @@ install_CondaTools(
   channels = NULL,
   pathToMiniConda = NULL,
   updateEnv = FALSE,
-  search = TRUE,
+  search = FALSE,
   verbose = FALSE
 )
 }
@@ -19,7 +19,7 @@ install_CondaTools(
 
 \item{env}{Name of Conda environment to install tools into.}
 
-\item{channels}{Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)}
+\item{channels}{Channels for miniconda (bioconda and conda-forge are defaults).}
 
 \item{pathToMiniConda}{NULL Path to miniconda installation}
 
@@ -27,7 +27,7 @@ install_CondaTools(
 
 \item{search}{Whether to search for the package name and version before installing. It is highly recommended this be set to TRUE as information about available versions or similar packages will be included in the output if the exact match is not found.}
 
-\item{verbose}{Print messages on progress (Default is FALSE)}
+\item{verbose}{Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.}
 }
 \value{
 Nothing returned. Output written to file.

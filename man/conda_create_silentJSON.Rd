@@ -8,7 +8,8 @@ conda_create_silentJSON(
   envname = NULL,
   forge = TRUE,
   channel = character(),
-  conda = "auto"
+  conda = "auto",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ repository?}
 When specified, the `forge` argument is ignored. If you need to
 specify multiple channels, including the Conda Forge, you can use
 `c("conda-forge", <other channels>)`.}
+
+\item{verbose}{Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.}
 }
 \value{
 Nothing returned, conda environment created.

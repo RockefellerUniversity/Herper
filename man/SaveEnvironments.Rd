@@ -35,7 +35,7 @@ import_CondaEnv(
 
 \item{install}{TRUE/FALSE whether to install miniconda at path if it doesn't exist.}
 
-\item{channels}{Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)}
+\item{channels}{Channels for miniconda (bioconda and conda-forge are defaults).}
 }
 \value{
 Nothing returned. Output written to file.

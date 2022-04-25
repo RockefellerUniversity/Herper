@@ -10,6 +10,7 @@ conda_install_silentJSON(
   forge = TRUE,
   channel = character(),
   conda = "auto",
+  verbose = FALSE,
   ...
 )
 }
@@ -21,6 +22,8 @@ repository?}
 When specified, the `forge` argument is ignored. If you need to
 specify multiple channels, including the Conda Forge, you can use
 `c("conda-forge", <other channels>)`.}
+
+\item{verbose}{Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.}
 }
 \value{
 Nothing returned, packages are installed in specified environment.

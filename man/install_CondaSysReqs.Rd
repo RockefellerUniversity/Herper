@@ -18,7 +18,7 @@ install_CondaSysReqs(
 \arguments{
 \item{pkg}{Package to install Conda System Requirements from.}
 
-\item{channels}{Additional channels for miniconda (bioconda defaults and conda-forge are included automatically)}
+\item{channels}{Channels for miniconda (bioconda and conda-forge are defaults).}
 
 \item{env}{Name of Conda environment to install tools into.}
 
@@ -30,7 +30,7 @@ install_CondaSysReqs(
 
 \item{SysReqsSep}{Separator used in SystemRequirement field.}
 
-\item{verbose}{Print messages on progress (Default is FALSE).}
+\item{verbose}{Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.}
 }
 \value{
 Nothing returned. Output written to file.
@@ -43,7 +43,7 @@ testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
 install.packages(testPkg, type = "source", repos = NULL)
 condaDir <- file.path(tempdir(), "r-miniconda")
 condaPaths <- install_CondaSysReqs("HerperTestPkg", 
-    pathToMiniConda = condaDir, SysReqsAsJSON = FALSE)
+        pathToMiniConda = condaDir, SysReqsAsJSON = FALSE)
 system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
 }
 \author{
