@@ -7,7 +7,7 @@ Changes in version 0.99.2 (2020-10-19)
 Changes in version 1.1.1 (2021-02-19)
 + Include option to build miniconda in import from yml, and update vignette
 
-Changes in version ?
+Changes in version 1.6.1
 + Added vignette describing how to work with Herper on machines with old GCC compilers
 + Added additonal messaging and control of messaging
 + Fixed bug that causes error on new miniconda install when path is abbreviated with '~'
