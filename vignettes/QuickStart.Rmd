@@ -32,6 +32,7 @@ The Herper package was developed by [Matt Paul](https://github.com/matthew-paul-
 
 ______
  
+This Quick start gives a brief intro into getting up and running with Herper. Check the [documentation website](https://rockefelleruniversity.github.io/Herper_Page/) for more detailed information and use case examples.
  
 ## Installation
 
