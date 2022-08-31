@@ -70,7 +70,7 @@ The **install_CondaSysReqs** checks the System Requirements for the specified R 
 testPkg <- system.file("extdata/HerperTestPkg",package="Herper")
 install.packages(testPkg,type = "source",repos = NULL)
 condaDir <- file.path(tempdir(),"r-miniconda")
-condaPaths <- install_CondaSysReqs("HerperTestPkg",pathToMiniConda=condaDir,SysReqsAsJSON=FALSE)
+condaPaths <- install_CondaSysReqs("HerperTestPkg", pathToMiniConda = myMiniconda,SysReqsAsJSON=FALSE)
 #' system2(file.path(condaPaths$pathToEnvBin,"samtools"),args = "--help")
 
 ```
