@@ -419,12 +419,12 @@ conda_install_silentJSON <- function(envname = NULL,
 #' @return Nothing returned. Output written to file.
 #' @import utils rjson
 #' @examples
-#' testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
-#' install.packages(testPkg, type = "source", repos = NULL)
-#' condaDir <- file.path(tempdir(), "r-miniconda")
-#' condaPaths <- install_CondaSysReqs("HerperTestPkg", 
-#'         pathToMiniConda = condaDir, SysReqsAsJSON = FALSE)
-#' system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
+#' #testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
+#' #install.packages(testPkg, type = "source", repos = NULL)
+#' #condaDir <- file.path(tempdir(), "r-miniconda")
+#' #condaPaths <- install_CondaSysReqs("HerperTestPkg", 
+#' #       pathToMiniConda = condaDir, SysReqsAsJSON = FALSE)
+#' #system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
 #' @export
 install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
                                                                  pathToMiniConda = NULL, updateEnv = FALSE,
@@ -517,9 +517,9 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
-#' condaDir <- file.path(tempdir(), "r-miniconda")
-#' condaPaths <- install_CondaTools("salmon", "salmon", pathToMiniConda = condaDir)
-#' system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
+#' #condaDir <- file.path(tempdir(), "r-miniconda")
+#' #condaPaths <- install_CondaTools("salmon", "salmon", pathToMiniConda = condaDir)
+#' #system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
 #' @export
 install_CondaTools <- function(tools, env, 
                                channels = NULL,
@@ -694,10 +694,10 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
 #' @examples
-#' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml", package = "Herper")
-#' condaDir <- file.path(tempdir(), "r-miniconda")
-#' import_CondaEnv(testYML, "herper_test", pathToMiniConda = condaDir)
-#' export_CondaEnv("herper_test", yml_export = tempfile(), pathToMiniConda = condaDir)
+#' #testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml", package = "Herper")
+#' #condaDir <- file.path(tempdir(), "r-miniconda")
+#' #import_CondaEnv(testYML, "herper_test", pathToMiniConda = condaDir)
+#' #export_CondaEnv("herper_test", yml_export = tempfile(), pathToMiniConda = condaDir)
 #' @export
 import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, install=TRUE, channels=NULL) {
     

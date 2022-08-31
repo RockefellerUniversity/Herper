@@ -208,15 +208,13 @@ unset_condapaths <- function(old) {
 #'
 #' @return Nothing returned.
 #' @examples
-#' testYML <- system.file("extdata/test.yml",package="Herper")
-#' condaDir <- file.path(tempdir(),"r-miniconda")
-#' import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
-#' with_CondaEnv("HerperTest",system2(command = "multiqc",args = ,"--version"),
-#'     pathToMiniConda = condaDir)
-#' \dontrun{
-#'   install_CondaTools("cytoscape","cytoscape",updateEnv = TRUE,pathToMiniConda = condaDir)
-#'   with_CondaEnv("cytoscape",system2(command = "cytoscape.sh"),pathToMiniConda = condaDir)
-#' }
+#' #testYML <- system.file("extdata/test.yml",package="Herper")
+#' #condaDir <- file.path(tempdir(),"r-miniconda")
+#' #import_CondaEnv(testYML,"HerperTest",pathToMiniConda=condaDir)
+#' #with_CondaEnv("HerperTest",system2(command = "multiqc",args = ,"--version"),
+#' #    pathToMiniConda = condaDir)
+#' #  install_CondaTools("cytoscape","cytoscape",updateEnv = TRUE,pathToMiniConda = condaDir)
+#' #with_CondaEnv("cytoscape",system2(command = "cytoscape.sh"),pathToMiniConda = condaDir)
 #' @export
 with_CondaEnv <- withr::with_(set_condapaths,function(old)unset_condapaths(old))
 
