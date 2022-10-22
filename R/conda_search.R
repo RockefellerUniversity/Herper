@@ -16,11 +16,10 @@
 #' @import utils rjson
 #' @return TRUE/FALSE
 #' @examples
-#' #condaDir <- file.path(tempdir(), "r-miniconda")
-#' #if(!dir.exists(condaDir)){
-#' #condaPaths <- install_CondaTools("salmon", "salmon", pathToMiniConda = condaDir)
-#' #}
-#' #conda_search("salmon",pathToMiniConda=condaDir)
+#' condaPaths <- install_CondaTools("salmon2", "salmon")
+#' #'\dontrun{
+#' ## conda_search("salmon")
+#' }
 #' @export
 #'
 
