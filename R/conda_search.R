@@ -17,9 +17,7 @@
 #' @return TRUE/FALSE
 #' @examples
 #' condaPaths <- install_CondaTools("salmon2", "salmon")
-#' #'\dontrun{
-#' ## conda_search("salmon")
-#' }
+#' conda_search("salmon")
 #' @export
 #'
 

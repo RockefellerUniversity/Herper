@@ -208,11 +208,11 @@ unset_condapaths <- function(old) {
 #'
 #' @return Nothing returned.
 #' @examples
+#' \dontrun{
 #' testYML <- system.file("extdata/test.yml",package="Herper")
 #' import_CondaEnv(testYML,"HerperTest")
 #' with_CondaEnv("HerperTest",system2(command = "multiqc",args = ,"--version"))
-#'   install_CondaTools("cytoscape","cytoscape",updateEnv = TRUE)
-#' with_CondaEnv("cytoscape",system2(command = "cytoscape.sh"))
+#' }
 #' @export
 with_CondaEnv <- withr::with_(set_condapaths,function(old)unset_condapaths(old))
 

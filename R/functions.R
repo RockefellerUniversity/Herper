@@ -515,8 +515,8 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
-#' #condaPaths <- install_CondaTools("salmon", "salmon")
-#' #system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
+#' condaPaths <- install_CondaTools("salmon", "salmon")
+#' system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
 #' @export
 install_CondaTools <- function(tools, env, 
                                channels = NULL,
@@ -691,9 +691,9 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
 #' @examples
-#' #testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml", package = "Herper")
-#' #import_CondaEnv(testYML, "herper_test", pathToMiniConda = condaDir)
-#' #export_CondaEnv("herper_test", yml_export = tempfile())
+#' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml", package = "Herper")
+#' import_CondaEnv(testYML, "herper_test")
+#' export_CondaEnv("herper_test", yml_export = tempfile())
 #' @export
 import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, install=TRUE, channels=NULL) {
     
