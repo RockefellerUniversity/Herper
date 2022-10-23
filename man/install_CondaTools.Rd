@@ -36,8 +36,7 @@ Nothing returned. Output written to file.
 Install Conda requirements
 }
 \examples{
-condaDir <- file.path(tempdir(), "r-miniconda")
-condaPaths <- install_CondaTools("salmon", "salmon", pathToMiniConda = condaDir)
+condaPaths <- install_CondaTools("salmon", "salmon")
 system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
 }
 \author{

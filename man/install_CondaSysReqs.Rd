@@ -41,9 +41,7 @@ Install Conda requirements
 \examples{
 testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
 install.packages(testPkg, type = "source", repos = NULL)
-condaDir <- file.path(tempdir(), "r-miniconda")
-condaPaths <- install_CondaSysReqs("HerperTestPkg", 
-        pathToMiniConda = condaDir, SysReqsAsJSON = FALSE)
+condaPaths <- install_CondaSysReqs("HerperTestPkg", SysReqsAsJSON = FALSE)
 system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
 }
 \author{

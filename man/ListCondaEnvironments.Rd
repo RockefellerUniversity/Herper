@@ -20,10 +20,9 @@ Conda environment names and the file paths to their conda installation are print
 List Conda environments
 }
 \examples{
-condaDir <- file.path(tempdir(), "r-miniconda")
-condaPaths <- install_CondaTools("igv", "herper", pathToMiniConda = condaDir)
-list_CondaEnv(pathToMiniConda = condaDir)
-list_CondaEnv(pathToMiniConda = condaDir, env = "herper")
+condaPaths <- install_CondaTools("igv", "herper")
+list_CondaEnv()
+list_CondaEnv( env = "herper")
 }
 \author{
 Matt Paul

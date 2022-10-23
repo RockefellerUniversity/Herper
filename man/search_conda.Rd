@@ -22,11 +22,8 @@ TRUE/FALSE
 Search package availabilty
 }
 \examples{
-condaDir <- file.path(tempdir(), "r-miniconda")
-if(!dir.exists(condaDir)){
- condaPaths <- install_CondaTools("salmon", "salmon", pathToMiniConda = condaDir)
-}
-conda_search("salmon",pathToMiniConda=condaDir)
+condaPaths <- install_CondaTools("salmon2", "salmon")
+conda_search("salmon")
 }
 \author{
 Doug Barrows and Matt Paul
