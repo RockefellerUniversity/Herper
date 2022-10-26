@@ -205,14 +205,7 @@ unset_condapaths <- function(old) {
 #' @param .local_envir The environment to use for scoping.
 #' @import withr
 #' @importFrom stats setNames
-#'
 #' @return Nothing returned.
-#' @examples
-#' \dontrun{
-#' testYML <- system.file("extdata/test.yml",package="Herper")
-#' import_CondaEnv(testYML,"HerperTest")
-#' with_CondaEnv("HerperTest",system2(command = "multiqc",args = ,"--version"))
-#' }
 #' @export
 with_CondaEnv <- withr::with_(set_condapaths,function(old)unset_condapaths(old))
 
