@@ -690,10 +690,6 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' @param channels Channels for miniconda (bioconda and conda-forge are defaults).
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
-#' @examples
-#' testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml", package = "Herper")
-#' import_CondaEnv(testYML, "herper_test")
-#' export_CondaEnv("herper_test", yml_export = tempfile())
 #' @export
 import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, install=TRUE, channels=NULL) {
     
