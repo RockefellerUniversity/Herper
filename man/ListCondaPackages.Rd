@@ -20,8 +20,8 @@ Conda package information is printed to the screen. If package name is supplied 
 List Conda packages
 }
 \examples{
-condaPaths <- install_CondaTools("igv", "herper")
-list_CondaPkgs("herper")
+condaPaths <- install_CondaTools("salmon", "herperTestDWB")
+list_CondaPkgs("herperTestDWB")
 }
 \author{
 Matt Paul

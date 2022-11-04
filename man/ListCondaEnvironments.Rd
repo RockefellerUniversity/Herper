@@ -20,9 +20,9 @@ Conda environment names and the file paths to their conda installation are print
 List Conda environments
 }
 \examples{
-condaPaths <- install_CondaTools("igv", "herper")
+condaPaths <- install_CondaTools("salmon", "herperTestDWB")
 list_CondaEnv()
-list_CondaEnv( env = "herper")
+list_CondaEnv( env = "herperTestDWB")
 }
 \author{
 Matt Paul

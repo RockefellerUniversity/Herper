@@ -36,7 +36,7 @@ Nothing returned. Output written to file.
 Install Conda requirements
 }
 \examples{
-condaPaths <- install_CondaTools("salmon", "salmon")
+condaPaths <- install_CondaTools("salmon", "herperTestDWB")
 system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
 }
 \author{

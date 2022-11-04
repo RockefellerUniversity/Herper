@@ -204,25 +204,7 @@ stopf <- function(fmt, ..., call. = FALSE) {
 ###
 
 
-#' Silent version of reticulate's install_miniconda
-#'
-#' Reticulate's install_miniconda with silent output
-#'
-#'
-#' @name install_miniconda_silent
-#' @rdname install_miniconda_silent
-#'
-#' @param path Path to where miniconda will be installed
-#' 
-#' @param verbose Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.
-#' 
-#' @param update Should miniconda be updated (Default is TRUE).
-#'
-#' @return Nothing returned, miniconda installed.
-#' @keywords internal
-#'
-#' @import reticulate
-#' 
+
 install_miniconda_silent <- function(path, 
                                      verbose = FALSE, 
                                      update = TRUE) {
@@ -268,28 +250,7 @@ install_miniconda_silent <- function(path,
 
 }
     
-#' Silent/json version of reticulate's conda_create
-#'
-#' Reticulate's conda_create with silent output and json output capability
-#'
-#'
-#' @name conda_create_silentJSON
-#' @rdname conda_create_silentJSON
-#'
-#' @param forge Boolean; include the [Conda Forge](https://conda-forge.org/)
-#'     repository?
-#'
-#' @param channel An optional character vector of Conda channels to include.
-#'     When specified, the `forge` argument is ignored. If you need to
-#'     specify multiple channels, including the Conda Forge, you can use
-#'     `c("conda-forge", <other channels>)`.
-#'
-#' @param verbose Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.
-#' 
-#' @return Nothing returned, conda environment created.
-#' @keywords internal
-#'
-#' @import reticulate
+
 conda_create_silentJSON <- function(envname = NULL,
                                                                         forge = TRUE,
                                                                         channel = character(),
@@ -333,29 +294,7 @@ conda_create_silentJSON <- function(envname = NULL,
 }
 
 
-#' Silent/json version of reticulate's conda_install
-#'
-#' Reticulate's conda_install with silent output and json output capability
-#'
-#'
-#' @name conda_install_silentJSON
-#' @rdname conda_install_silentJSON
-#'
-#' @param forge Boolean; include the [Conda Forge](https://conda-forge.org/)
-#'     repository?
-#'
-#' @param channel An optional character vector of Conda channels to include.
-#'     When specified, the `forge` argument is ignored. If you need to
-#'     specify multiple channels, including the Conda Forge, you can use
-#'     `c("conda-forge", <other channels>)`.
-#'     
-#' @param verbose Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.
-#'
-#' @return Nothing returned, packages are installed in specified environment.
-#'
-#' @keywords internal
-#'
-#'
+
 conda_install_silentJSON <- function(envname = NULL,
                                                                          packages,
                                                                          forge = TRUE,
@@ -515,7 +454,7 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
-#' condaPaths <- install_CondaTools("salmon", "salmon")
+#' condaPaths <- install_CondaTools("salmon", "herperTestDWB")
 #' system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
 #' @export
 install_CondaTools <- function(tools, env, 

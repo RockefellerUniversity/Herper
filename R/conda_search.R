@@ -16,7 +16,7 @@
 #' @import utils rjson
 #' @return TRUE/FALSE
 #' @examples
-#' condaPaths <- install_CondaTools("salmon2", "salmon")
+#' condaPaths <- install_CondaTools("salmon", "herperTestDWB")
 #' conda_search("salmon")
 #' @export
 #'

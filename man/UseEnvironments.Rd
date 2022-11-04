@@ -59,11 +59,7 @@ Use Conda environments
 Use Conda environments
 }
 \examples{
-\dontrun{
-testYML <- system.file("extdata/test.yml",package="Herper")
-import_CondaEnv(testYML,"HerperTest")
-with_CondaEnv("HerperTest",system2(command = "multiqc",args = ,"--version"))
-}
+local_CondaEnv(new = "herperTestDWB")
 }
 \author{
 Thomas Carroll
