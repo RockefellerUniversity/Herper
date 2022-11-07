@@ -22,7 +22,7 @@ TRUE/FALSE
 Search package availabilty
 }
 \examples{
-condaPaths <- install_CondaTools("salmon", "herperTestDWB")
+condaPaths <- install_CondaTools("salmon", "herper_env")
 conda_search("salmon")
 }
 \author{

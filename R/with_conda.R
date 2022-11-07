@@ -218,7 +218,7 @@ with_CondaEnv <- withr::with_(set_condapaths,function(old)unset_condapaths(old))
 #' @rdname UseEnvironments
 #'
 #' @examples
-#' local_CondaEnv(new = "herperTestDWB")
+#' local_CondaEnv(new = "herper_env")
 #' @export
 local_CondaEnv <- withr::local_(set_condapaths,function(old)unset_condapaths(old))
 

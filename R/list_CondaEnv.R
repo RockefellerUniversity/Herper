@@ -14,9 +14,9 @@
 #' @return Conda environment names and the file paths to their conda installation are printed to the screen. If environment name is supplied a TRUE/FALSE will be returned depending on whether that environment is present or not.
 #' @import reticulate
 #' @examples
-#' condaPaths <- install_CondaTools("salmon", "herperTestDWB")
+#' condaPaths <- install_CondaTools("salmon", "herper_env")
 #' list_CondaEnv()
-#' list_CondaEnv( env = "herperTestDWB")
+#' list_CondaEnv( env = "herper_env")
 #' @export
 list_CondaEnv <- function(pathToMiniConda = NULL, allCondas = FALSE, env = NULL) {
   # pathToMiniConda <- "~/my_miniconda/"

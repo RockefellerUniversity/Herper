@@ -454,7 +454,7 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
-#' condaPaths <- install_CondaTools("salmon", "herperTestDWB")
+#' condaPaths <- install_CondaTools("salmon", "herper_env")
 #' system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
 #' @export
 install_CondaTools <- function(tools, env, 

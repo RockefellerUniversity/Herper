@@ -59,7 +59,7 @@ Use Conda environments
 Use Conda environments
 }
 \examples{
-local_CondaEnv(new = "herperTestDWB")
+local_CondaEnv(new = "herper_env")
 }
 \author{
 Thomas Carroll
