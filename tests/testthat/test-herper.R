@@ -13,11 +13,11 @@ myMiniconda <- file.path(tempdir2(),"Test")
 # 
 #   }
 # )
-
-
-#Test that installed functionality works
-test_that("3_with_CondaEnv", {
-  expect_equal(grepl("version", with_CondaEnv("herper", system2("multiqc","--version", stdout = TRUE),
-                                                       pathToMiniConda = myMiniconda)), TRUE)
-})
+# 
+# 
+# #Test that installed functionality works
+# test_that("3_with_CondaEnv", {
+#   expect_equal(grepl("version", with_CondaEnv("herper", system2("multiqc","--version", stdout = TRUE),
+#                                                        pathToMiniConda = myMiniconda)), TRUE)
+# })
 

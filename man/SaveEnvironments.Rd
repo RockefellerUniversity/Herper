@@ -47,13 +47,6 @@ Export Conda environment
 
 Import Conda environment
 }
-\examples{
-testYML <- system.file("extdata/HerperTestPkg_0.1.0.yml", package = "Herper")
-import_CondaEnv(testYML, "herper_test")
-export_CondaEnv("herper_test", yml_export = tempfile())
-}
 \author{
-Matt Paul
-
 Matt Paul
 }
