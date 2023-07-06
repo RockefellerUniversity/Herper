@@ -12,7 +12,8 @@ install_CondaSysReqs(
   updateEnv = FALSE,
   SysReqsAsJSON = FALSE,
   SysReqsSep = ",",
-  verbose = FALSE
+  verbose = FALSE,
+  mamba = FALSE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ install_CondaSysReqs(
 \item{SysReqsSep}{Separator used in SystemRequirement field.}
 
 \item{verbose}{Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.}
+
+\item{mamba}{A logical about whether to use the mamba solver to speed up the resolution of environment dependencies (Default is FALSE).}
 }
 \value{
 Nothing returned. Output written to file.
