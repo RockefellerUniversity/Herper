@@ -60,14 +60,17 @@ miniconda_installer_arch <- function(info) {
 
 miniconda_installer_url <- function(version = "3"){
     url <- getOption("reticulate.miniconda.url")
+    
     if (!is.null(url)) 
         return(url)
     info <- as.list(Sys.info())
+    
     if (info$sysname == "Darwin" && info$machine == "arm64") {
-        base <- cat("https://gith","ub.com/conda-forge/miniforge/releases/latest/download", sep="")
+        base <- paste0("https://gith","ub.com/conda-forge/miniforge/releases/latest/download", sep="")
         name <- "Miniforge3-MacOSX-arm64.sh"
         return(file.path(base, name))
     }
+    
     base <- "https://repo.anaconda.com/miniconda"
     info <- as.list(Sys.info())
     arch <- miniconda_installer_arch(info)
