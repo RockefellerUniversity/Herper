@@ -10,7 +10,7 @@ Description: Many tools for data analysis are not available in R, but are presen
 URL: https://github.com/RockefellerUniversity/Herper
 Depends: R (>= 4.0), reticulate
 Imports: utils, rjson, withr, stats
-Suggests: BiocStyle, testthat, knitr, rmarkdown, seqCNA
+Suggests: BiocStyle, testthat, knitr, rmarkdown
 License: GPL-3
 Encoding: UTF-8
 LazyData: false
