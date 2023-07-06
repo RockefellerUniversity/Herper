@@ -85,6 +85,7 @@ jobs:
           BiocManager::install("devtools")
           BiocManager::install("pkgdown")
           BiocManager::install("BiocStyle")
+          BiocManager::install("seqCNA")
           BiocManager::install("git2r")
         shell: Rscript {0}
 
