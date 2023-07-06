@@ -136,7 +136,8 @@ jobs:
           if("${{ matrix.config.r }}"=="release"){
           BiocManager::install( ask = FALSE)  
           }else{
-          BiocManager::install(version = "devel", ask = FALSE)
+          BiocManager::install( ask = FALSE)  
+          #BiocManager::install(version = "devel", ask = FALSE)
           }
         shell: Rscript {0}
 
