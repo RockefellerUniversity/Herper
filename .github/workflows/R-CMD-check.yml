@@ -30,11 +30,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@master
+      - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
 
-      - uses: r-lib/actions/setup-pandoc@master
+      - uses: r-lib/actions/setup-pandoc@v2
 
       - name: Query dependencies
         run: |
@@ -85,6 +85,7 @@ jobs:
           BiocManager::install("devtools")
           BiocManager::install("pkgdown")
           BiocManager::install("BiocStyle")
+          BiocManager::install("seqCNA")
           BiocManager::install("git2r")
         shell: Rscript {0}
 
@@ -99,7 +100,7 @@ jobs:
         run: R CMD INSTALL .
       - name: Make homepage
         run: |
-          file.copy("vignettes/Herper.Rmd","README.Rmd", overwrite = T)
+          file.copy("vignettes/QuickStart.Rmd","README.Rmd", overwrite = T)
           rmarkdown::render("README.Rmd", rmarkdown::md_document(variant="markdown_github"))
         shell: Rscript {0}
       - name: Deploy package
