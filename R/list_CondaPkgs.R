@@ -46,6 +46,12 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
     shQuote(c("list", args, "--quiet", "--json")),
     stdout = TRUE, stderr = FALSE
   ))
+  if(result=="[]"){
+    message(strwrap(paste("The environment ", env,
+      " is empty."
+    )))
+    
+  }
   result <- rjson::fromJSON(paste(result, collapse = ""))
 
   if ("exception_name" %in% names(result)) {
