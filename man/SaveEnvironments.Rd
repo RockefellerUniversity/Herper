@@ -17,7 +17,8 @@ import_CondaEnv(
   name = NULL,
   pathToMiniConda = NULL,
   install = TRUE,
-  channels = NULL
+  channels = NULL,
+  mamba = FALSE
 )
 }
 \arguments{
@@ -36,6 +37,8 @@ import_CondaEnv(
 \item{install}{TRUE/FALSE whether to install miniconda at path if it doesn't exist.}
 
 \item{channels}{Channels for miniconda (bioconda and conda-forge are defaults).}
+
+\item{mamba}{A logical about whether to use the mamba solver to speed up the resolution of environment dependencies (Default is FALSE).}
 }
 \value{
 Nothing returned. Output written to file.

@@ -60,14 +60,17 @@ miniconda_installer_arch <- function(info) {
 
 miniconda_installer_url <- function(version = "3"){
     url <- getOption("reticulate.miniconda.url")
+    
     if (!is.null(url)) 
         return(url)
     info <- as.list(Sys.info())
+    
     if (info$sysname == "Darwin" && info$machine == "arm64") {
         base <- paste0("https://gith","ub.com/conda-forge/miniforge/releases/latest/download", sep="")
         name <- "Miniforge3-MacOSX-arm64.sh"
         return(file.path(base, name))
     }
+    
     base <- "https://repo.anaconda.com/miniconda"
     info <- as.list(Sys.info())
     arch <- miniconda_installer_arch(info)
@@ -301,6 +304,7 @@ conda_install_silentJSON <- function(envname = NULL,
                                                                          channel = character(),
                                                                          conda = "auto",
                                                                          verbose=FALSE,
+                                                                         mamba =FALSE,
                                                                          ...) {
     # resolve conda binary
     conda <- reticulate::conda_binary(conda)
@@ -322,10 +326,18 @@ conda_install_silentJSON <- function(envname = NULL,
 
     args <- c(args, chan, packages)
     
-    if(verbose==TRUE){
-    result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = TRUE)    
+    if(mamba==TRUE){
+      if(verbose==TRUE){
+        result <- system2(conda, shQuote(c(args, "--quiet", "--json", "--solver=libmamba")), stdout = TRUE)    
+      }else{
+        result <- system2(conda, shQuote(c(args, "--quiet", "--json", "--solver=libmamba")), stdout = FALSE)
+      }
     }else{
-    result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
+      if(verbose==TRUE){
+        result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = TRUE)    
+      }else{
+        result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
+      }
     }
     
     # check for errors
@@ -355,18 +367,19 @@ conda_install_silentJSON <- function(envname = NULL,
 #' @param SysReqsAsJSON Parse the SystemRequirements in JSON format (see Details). Default is TRUE.
 #' @param SysReqsSep Separator used in SystemRequirement field.
 #' @param verbose Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.
+#' @param mamba A logical about whether to use the mamba solver to speed up the resolution of environment dependencies (Default is FALSE).
 #' @return Nothing returned. Output written to file.
 #' @import utils rjson
 #' @examples
-#' testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
-#' install.packages(testPkg, type = "source", repos = NULL)
-#' condaPaths <- install_CondaSysReqs("HerperTestPkg", SysReqsAsJSON = FALSE)
-#' system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
+#' #testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
+#' #install.packages(testPkg, type = "source", repos = NULL)
+#' #condaPaths <- install_CondaSysReqs("HerperTestPkg", SysReqsAsJSON = FALSE)
+#' #system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
 #' @export
 install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
                                                                  pathToMiniConda = NULL, updateEnv = FALSE,
                                                                  SysReqsAsJSON = FALSE, SysReqsSep = ",",
-                                                                 verbose=FALSE) {
+                                                                 verbose=FALSE, mamba=FALSE) {
 
     packageDesciptions <- utils::packageDescription(pkg, fields = "SystemRequirements")
     if (is.na(packageDesciptions)) {
@@ -428,7 +441,7 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
         environment <- env
     }
 
-    result <- install_CondaTools(tools = CondaSysReq$main$packages, env = environment, channels = channels, pathToMiniConda = pathToMiniConda, updateEnv = updateEnv,verbose=verbose)
+    result <- install_CondaTools(tools = CondaSysReq$main$packages, env = environment, channels = channels, pathToMiniConda = pathToMiniConda, updateEnv = updateEnv, verbose=verbose, mamba=mamba)
     return(result)
  
 }
@@ -451,18 +464,20 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @param updateEnv Update existing package's conda environment if already installed.
 #' @param search Whether to search for the package name and version before installing. It is highly recommended this be set to TRUE as information about available versions or similar packages will be included in the output if the exact match is not found.
 #' @param verbose Print system messages from conda on progress (Default is FALSE). There is a third option "silent" which suppresses Herper and Conda messaging.
+#' @param mamba A logical about whether to use the mamba solver to speed up the resolution of environment dependencies (Default is FALSE). 
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
-#' condaPaths <- install_CondaTools("salmon", "herper_env")
-#' system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
+#' #condaPaths <- install_CondaTools("salmon", "herper_env")
+#' #system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
 #' @export
 install_CondaTools <- function(tools, env, 
                                channels = NULL,
                                pathToMiniConda = NULL,
                                updateEnv = FALSE,
                                search = FALSE,
-                               verbose = FALSE) {
+                               verbose = FALSE,
+                               mamba=FALSE) {
     # pathToMiniConda <- "~/Desktop/testConda"
     
     #verbose argument check
@@ -495,6 +510,41 @@ install_CondaTools <- function(tools, env,
     }
     
     pathToConda <- miniconda_conda(pathToCondaInstall)
+    
+    # Set up mamba
+    if (mamba == TRUE) {
+      
+      conda <- pathToConda
+      conda <- reticulate::conda_binary(conda)
+      
+      install_dir <- strsplit(conda, "/")
+      install_dir <- paste(install_dir[[1]][-length(install_dir[[1]])], collapse="/")
+      
+      if(file.exists(file.path(install_dir,"mamba-package"))){
+        
+        if(verbose==TRUE | verbose==FALSE){
+          message("* Mamba package resolver already installed")}  
+        
+      }else{
+      
+      args <- c("install", "-n" ,"base", "conda-libmamba-solver")
+      
+      if(verbose==TRUE){
+        result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = TRUE)    
+      }else{
+        result <- system2(conda, shQuote(c(args, "--quiet", "--json")), stdout = FALSE)
+      }
+      if (result != 0L) {
+        fmt <- "Mamba package resolver failed to install [error code %i]."
+        stopf(fmt, result)
+      }
+      if(verbose==TRUE | verbose==FALSE){
+        message("* Mamba package resolver installed")}  
+      
+      }
+      
+    }
+      
 
     if (search == TRUE) {
         
@@ -547,7 +597,7 @@ install_CondaTools <- function(tools, env,
         conda_install_silentJSON(
             envname = environment, packages = tools,
             conda = pathToConda,
-            channel = channels
+            channel = channels, mamba = mamba
         )
         if(verbose==TRUE | verbose==FALSE)message(paste0("* The package(s) (", paste(tools, collapse = ", "), ") are in the '", environment, "' environment."))
     } else if (condaPkgEnvPathExists & !updateEnv) {
@@ -627,10 +677,11 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' @param pathToMiniConda NULL Path to miniconda installation
 #' @param install TRUE/FALSE whether to install miniconda at path if it doesn't exist.
 #' @param channels Channels for miniconda (bioconda and conda-forge are defaults).
+#' @param mamba A logical about whether to use the mamba solver to speed up the resolution of environment dependencies (Default is FALSE). 
 #' @return Nothing returned. Output written to file.
 #' @import reticulate
 #' @export
-import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, install=TRUE, channels=NULL) {
+import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, install=TRUE, channels=NULL, mamba=FALSE) {
     
     if (is.null(pathToMiniConda)) {
         pathToMiniConda <- reticulate::miniconda_path()
@@ -640,9 +691,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, ins
 
     pathToCondaInstall <- pathToMiniConda
     pathToConda <- miniconda_conda(pathToCondaInstall)
-    
     condaPathExists <- miniconda_exists(pathToMiniConda)
-    
     
     if (install){
     if (!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
@@ -652,6 +701,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, ins
             channels <- c("bioconda", "defaults", "conda-forge")
     }
     pathToConda <- miniconda_conda(pathToCondaInstall)
+    suppressWarnings(pathToConda <- normalizePath(pathToConda))
     
     }else{
     # if (!condaPathExists) {
@@ -697,9 +747,14 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, ins
             stop(strwrap(paste("Conda environment with the name", name, "already exists. Try using list_CondaEnv to see what envirnoment names are already in use.")))
         }
     }
-    args <- paste0("-f", yml_import)
-    result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json", args)), stdout = TRUE, stderr = TRUE)
-    # args <- paste(yml_import,sep=" ")
-    # result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json","-f", yml_import)), stdout = TRUE, stderr = TRUE)
+    args <- paste0("-f ", yml_import)
+    
+    if(mamba==TRUE){
+    
+    result <- system2(pathToConda, c("env", "create", "--quiet", "--json", "--solver=libmamba", args), stdout = TRUE, stderr = TRUE)
+     
+    }else{
+    result <- system2(pathToConda, c("env", "create", "--quiet", "--json", args), stdout = TRUE, stderr = TRUE)
+    }
 
 }
