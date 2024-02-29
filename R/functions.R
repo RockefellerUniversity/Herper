@@ -691,9 +691,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, ins
 
     pathToCondaInstall <- pathToMiniConda
     pathToConda <- miniconda_conda(pathToCondaInstall)
-    
     condaPathExists <- miniconda_exists(pathToMiniConda)
-    
     
     if (install){
     if (!condaPathExists) reticulate::install_miniconda(pathToCondaInstall)
@@ -703,6 +701,7 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, ins
             channels <- c("bioconda", "defaults", "conda-forge")
     }
     pathToConda <- miniconda_conda(pathToCondaInstall)
+    suppressWarnings(pathToConda <- normalizePath(pathToConda))
     
     }else{
     # if (!condaPathExists) {
@@ -748,14 +747,14 @@ import_CondaEnv <- function(yml_import, name = NULL, pathToMiniConda = NULL, ins
             stop(strwrap(paste("Conda environment with the name", name, "already exists. Try using list_CondaEnv to see what envirnoment names are already in use.")))
         }
     }
-    args <- paste0("-f", yml_import)
+    args <- paste0("-f ", yml_import)
     
     if(mamba==TRUE){
-    result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json", args, "--solver=libmamba")), stdout = TRUE, stderr = TRUE)
+    
+    result <- system2(pathToConda, c("env", "create", "--quiet", "--json", "--solver=libmamba", args), stdout = TRUE, stderr = TRUE)
+     
     }else{
-    result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json", args)), stdout = TRUE, stderr = TRUE)
+    result <- system2(pathToConda, c("env", "create", "--quiet", "--json", args), stdout = TRUE, stderr = TRUE)
     }
-    # args <- paste(yml_import,sep=" ")
-    # result <- system2(pathToConda, shQuote(c("env", "create", "--quiet", "--json","-f", yml_import)), stdout = TRUE, stderr = TRUE)
 
 }
