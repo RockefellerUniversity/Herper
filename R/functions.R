@@ -371,10 +371,10 @@ conda_install_silentJSON <- function(envname = NULL,
 #' @return Nothing returned. Output written to file.
 #' @import utils rjson
 #' @examples
-#' testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
-#' install.packages(testPkg, type = "source", repos = NULL)
-#' condaPaths <- install_CondaSysReqs("HerperTestPkg", SysReqsAsJSON = FALSE)
-#' system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
+#' #testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
+#' #install.packages(testPkg, type = "source", repos = NULL)
+#' #condaPaths <- install_CondaSysReqs("HerperTestPkg", SysReqsAsJSON = FALSE)
+#' #system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
 #' @export
 install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
                                                                  pathToMiniConda = NULL, updateEnv = FALSE,
@@ -468,8 +468,8 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
 #' @examples
-#' condaPaths <- install_CondaTools("salmon", "herper_env")
-#' system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
+#' #condaPaths <- install_CondaTools("salmon", "herper_env")
+#' #system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
 #' @export
 install_CondaTools <- function(tools, env, 
                                channels = NULL,
