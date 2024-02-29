@@ -46,7 +46,8 @@ list_CondaPkgs <- function(env, pathToMiniConda = NULL,
     shQuote(c("list", args, "--quiet", "--json")),
     stdout = TRUE, stderr = FALSE
   ))
-  if(result=="[]"){
+  
+  if(result[1]=="[]"){
     message(strwrap(paste("The environment ", env,
       " is empty."
     )))
