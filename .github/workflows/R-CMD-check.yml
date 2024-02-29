@@ -85,6 +85,7 @@ jobs:
           BiocManager::install("devtools")
           BiocManager::install("pkgdown")
           BiocManager::install("BiocStyle")
+          BiocManager::install("seqCNA")
           BiocManager::install("git2r")
         shell: Rscript {0}
 
@@ -99,7 +100,7 @@ jobs:
         run: R CMD INSTALL .
       - name: Make homepage
         run: |
-          file.copy("vignettes/Herper.Rmd","README.Rmd", overwrite = T)
+          file.copy("vignettes/QuickStart.Rmd","README.Rmd", overwrite = T)
           rmarkdown::render("README.Rmd", rmarkdown::md_document(variant="markdown_github"))
         shell: Rscript {0}
       - name: Deploy package
