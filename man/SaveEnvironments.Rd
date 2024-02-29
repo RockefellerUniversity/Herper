@@ -52,6 +52,4 @@ Import Conda environment
 }
 \author{
 Matt Paul
-
-Matt Paul
 }

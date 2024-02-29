@@ -42,10 +42,10 @@ Nothing returned. Output written to file.
 Install Conda requirements
 }
 \examples{
-testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
-install.packages(testPkg, type = "source", repos = NULL)
-condaPaths <- install_CondaSysReqs("HerperTestPkg", SysReqsAsJSON = FALSE)
-system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
+#testPkg <- system.file("extdata/HerperTestPkg", package = "Herper")
+#install.packages(testPkg, type = "source", repos = NULL)
+#condaPaths <- install_CondaSysReqs("HerperTestPkg", SysReqsAsJSON = FALSE)
+#system2(file.path(condaPaths$pathToEnvBin, "samtools"), args = "--help")
 }
 \author{
 Thomas Carroll
