@@ -2,10 +2,11 @@
 #'
 #' List Conda packages
 #'
+#' This function will list all packages from a specific conda environment.
+#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 #'
 #' @name list_CondaPkgs
 #' @rdname ListCondaPackages
-#'
 #'
 #' @author Matt Paul
 #' @param env environment to look in

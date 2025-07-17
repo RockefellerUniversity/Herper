@@ -2,6 +2,8 @@
 #'
 #' List Conda environments
 #'
+#' This function will list all environments available from a specific conda installation (or across all conda installations).
+#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 #'
 #' @name list_CondaEnv
 #' @rdname ListCondaEnvironments

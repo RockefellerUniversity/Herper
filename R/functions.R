@@ -353,6 +353,8 @@ conda_install_silentJSON <- function(envname = NULL,
 #'
 #' Install Conda requirements
 #'
+#' This function will install any software listed as a System Requirement in the provided R package.
+#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 #'
 #' @name install_CondaSysReqs
 #' @rdname install_CondaSysReqs
@@ -455,6 +457,8 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @name install_CondaTools
 #' @rdname install_CondaTools
 #'
+#' This function will install conda software.
+#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 #'
 #' @author Thomas Carroll
 #' @param tools Vector of software to install using conda.
@@ -620,7 +624,9 @@ install_CondaTools <- function(tools, env,
 #'
 #' Export Conda environment
 #'
-#'
+#' This function will export a yml config file corresponding to the provided conda environment.
+#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
+#' 
 #' @name export_CondaEnv
 #' @rdname SaveEnvironments
 #'
@@ -667,6 +673,8 @@ export_CondaEnv <- function(env_name, yml_export = NULL, pathToMiniConda = NULL,
 #' Import Conda environment
 #'
 #'
+#' This function will recreate a conda environment from a provided yml config file.
+#' 
 #' @name import_CondaEnv
 #' @rdname SaveEnvironments
 #'

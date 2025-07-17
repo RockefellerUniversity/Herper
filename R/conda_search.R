@@ -1,7 +1,10 @@
 
-#' Search package availabilty
+#' Search package availability
 #'
-#' Search package availabilty
+#' Search package availability
+#' 
+#' This function will search to see if a package is available from the conda repository
+#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 #'
 #'
 #' @name conda_search
@@ -17,7 +20,6 @@
 #' @return TRUE/FALSE
 #' @examples
 #' condaPaths <- install_CondaTools("salmon", "herper_env")
-#' conda_search("salmon")
 #' @export
 #'
 
