@@ -187,10 +187,11 @@ unset_condapaths <- function(old) {
 #'
 #' Use Conda environments
 #'
+#' This function will execute the provided code while using a the specific conda environment provided.
+#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 #'
 #' @name with_CondaEnv
 #' @rdname UseEnvironments
-#'
 #'
 #' @author Thomas Carroll
 #' @param new The name of conda environment to include in the temporary R environment.
@@ -213,9 +214,12 @@ with_CondaEnv <- withr::with_(set_condapaths,function(old)unset_condapaths(old))
 #'
 #' Use Conda environments
 #'
+#' This function will update the local environment to use a specific conda environment provided.
+#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 #'
 #' @name local_CondaEnv
 #' @rdname UseEnvironments
+#' 
 #'
 #' @examples
 #' local_CondaEnv(new = "herper_env")
