@@ -15,8 +15,6 @@
 #' @return Conda package information is printed to the screen. If package name is supplied a TRUE/FALSE will be returned depending on whether that package is present or not.
 #' @import reticulate rjson
 #' @examples
-#' condaPaths <- install_CondaTools("salmon", "herper_env")
-#' list_CondaPkgs("herper_env")
 #' @export
 list_CondaPkgs <- function(env, pathToMiniConda = NULL,
                            pkg = NULL) {

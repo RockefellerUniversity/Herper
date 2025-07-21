@@ -19,7 +19,6 @@
 #' @import utils rjson
 #' @return TRUE/FALSE
 #' @examples
-#' condaPaths <- install_CondaTools("salmon", "herper_env")
 #' @export
 #'
 
