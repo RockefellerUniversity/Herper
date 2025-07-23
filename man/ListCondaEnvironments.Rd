@@ -19,10 +19,9 @@ Conda environment names and the file paths to their conda installation are print
 \description{
 List Conda environments
 }
-\examples{
-condaPaths <- install_CondaTools("salmon", "herper_env")
-list_CondaEnv()
-list_CondaEnv( env = "herper_env")
+\details{
+This function will list all environments available from a specific conda installation (or across all conda installations).
+For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 }
 \author{
 Matt Paul

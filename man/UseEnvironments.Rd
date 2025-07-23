@@ -58,6 +58,13 @@ Use Conda environments
 
 Use Conda environments
 }
+\details{
+This function will execute the provided code while using a the specific conda environment provided.
+For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
+
+This function will update the local environment to use a specific conda environment provided.
+For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
+}
 \examples{
 local_CondaEnv(new = "herper_env")
 }

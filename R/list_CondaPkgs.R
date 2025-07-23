@@ -14,7 +14,6 @@
 #' @param pkg Package name. If this is supplied to list_CondaPkg, it will query whether that package is present in the given environment.
 #' @return Conda package information is printed to the screen. If package name is supplied a TRUE/FALSE will be returned depending on whether that package is present or not.
 #' @import reticulate rjson
-#' @examples
 #' @export
 list_CondaPkgs <- function(env, pathToMiniConda = NULL,
                            pkg = NULL) {

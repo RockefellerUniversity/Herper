@@ -19,9 +19,9 @@ Conda package information is printed to the screen. If package name is supplied 
 \description{
 List Conda packages
 }
-\examples{
-condaPaths <- install_CondaTools("salmon", "herper_env")
-list_CondaPkgs("herper_env")
+\details{
+This function will list all packages from a specific conda environment.
+For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 }
 \author{
 Matt Paul

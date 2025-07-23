@@ -50,6 +50,12 @@ Export Conda environment
 
 Import Conda environment
 }
+\details{
+This function will export a yml config file corresponding to the provided conda environment.
+For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
+
+This function will recreate a conda environment from a provided yml config file.
+}
 \author{
 Matt Paul
 }

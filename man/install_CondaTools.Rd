@@ -38,10 +38,10 @@ Nothing returned. Output written to file.
 \description{
 Install Conda requirements
 }
-\examples{
-#condaPaths <- install_CondaTools("salmon", "herper_env")
-#system2(file.path(condaPaths$pathToEnvBin, "salmon"), args = "--help")
+\details{
+This function will install conda software.
+For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 }
 \author{
-Thomas Carroll
+Thomas Carroll and Matt Paul
 }

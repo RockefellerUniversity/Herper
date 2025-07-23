@@ -2,7 +2,7 @@
 % Please edit documentation in R/conda_search.R
 \name{conda_search}
 \alias{conda_search}
-\title{Search package availabilty}
+\title{Search package availability}
 \usage{
 conda_search(package, channel = NULL, print_out = TRUE, pathToMiniConda = NULL)
 }
@@ -19,11 +19,11 @@ conda_search(package, channel = NULL, print_out = TRUE, pathToMiniConda = NULL)
 TRUE/FALSE
 }
 \description{
-Search package availabilty
+Search package availability
 }
-\examples{
-condaPaths <- install_CondaTools("salmon", "herper_env")
-conda_search("salmon")
+\details{
+This function will search to see if a package is available from the conda repository
+For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 }
 \author{
 Doug Barrows and Matt Paul

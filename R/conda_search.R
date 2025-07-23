@@ -18,7 +18,6 @@
 #' @param pathToMiniConda Path to miniconda installation. If this is set to NULL (default), then the output of 'reticulate::miniconda_path()' is used.
 #' @import utils rjson
 #' @return TRUE/FALSE
-#' @examples
 #' @export
 #'
 

@@ -360,7 +360,7 @@ conda_install_silentJSON <- function(envname = NULL,
 #' @rdname install_CondaSysReqs
 #'
 #'
-#' @author Thomas Carroll
+#' @author Thomas Carroll and Matt Paul
 #' @param pkg Package to install Conda System Requirements from.
 #' @param channels Channels for miniconda (bioconda and conda-forge are defaults).
 #' @param env Name of Conda environment to install tools into.
@@ -372,7 +372,6 @@ conda_install_silentJSON <- function(envname = NULL,
 #' @param mamba A logical about whether to use the mamba solver to speed up the resolution of environment dependencies (Default is FALSE).
 #' @return Nothing returned. Output written to file.
 #' @import utils rjson
-#' @examples
 #' @export
 install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
                                                                  pathToMiniConda = NULL, updateEnv = FALSE,
@@ -448,15 +447,14 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' Install Conda requirements.
 #'
 #' Install Conda requirements
-#'
+#' 
+#' This function will install conda software.
+#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
 #'
 #' @name install_CondaTools
 #' @rdname install_CondaTools
 #'
-#' This function will install conda software.
-#' For a more detailed walkthrough check our webpage: https://rockefelleruniversity.github.io/Herper_Page/
-#'
-#' @author Thomas Carroll
+#' @author Thomas Carroll and Matt Paul
 #' @param tools Vector of software to install using conda.
 #' @param env Name of Conda environment to install tools into.
 #' @param channels Channels for miniconda (bioconda and conda-forge are defaults).
@@ -467,7 +465,6 @@ install_CondaSysReqs <- function(pkg, channels = NULL, env = NULL,
 #' @param mamba A logical about whether to use the mamba solver to speed up the resolution of environment dependencies (Default is FALSE). 
 #' @return Nothing returned. Output written to file.
 #' @import utils reticulate rjson
-#' @examples
 #' @export
 install_CondaTools <- function(tools, env, 
                                channels = NULL,
